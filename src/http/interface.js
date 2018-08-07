@@ -11,7 +11,7 @@ let urlBase = '';
 switch (domain) {
   case '127.0.0.1':
   case 'localhost':
-    urlBase = 'http://localhost:3000/index';
+    urlBase = '/api/';
     break;
   default:
     break;

@@ -4,6 +4,7 @@ import { resolve } from "url";
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
+    axios.defaults.baseURL = '/api'
     const instance = axios.create({
       baseURL: config.baseURL,
       headers: config.headers,
