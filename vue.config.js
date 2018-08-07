@@ -25,7 +25,7 @@ module.exports = {
       },
     },  // 配置多个代理
   },
-  // configureWebpack: {  跨域行不通
+  // configureWebpack: {  跨域行不通 (文档地址：http://webpack.css88.com/configuration/dev-server.html)
   //   devServer: {
   //     // publicPath: baseUrl // 和 baseUrl 保持一致
   //     proxy: { // 在这里配置如下代码
