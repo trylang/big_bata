@@ -5,16 +5,16 @@ import axios from './api'
  * 如果项目很大可以将URL独立成文件，接口分成不同的模块
  */
 
-let domain = document.domain;
+let domain = document.domain
 
-let urlBase = '';
+// let urlBase = ''
 switch (domain) {
   case '127.0.0.1':
   case 'localhost':
-    urlBase = '/api/';
-    break;
+    // urlBase = 'http://localhost:3000/index'
+    break
   default:
-    break;
+    break
 }
 export const tryList = params => {
   return axios({

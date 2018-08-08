@@ -16,7 +16,7 @@ export default {
   },
   created () {
     this.$api.tryList({}).then(res => {
-      console.log(555, res);
+      console.log(555, res)
     })
   }
 }

@@ -1,18 +1,18 @@
-import apiList from './interface';
+import apiList from './interface'
 
 const install = Vue => {
   if (install.installed) {
-    return;
+    return
   }
-  install.installed = true;
+  install.installed = true
   Object.defineProperties(Vue.prototype, {
     // 挂载在Vue原型上的$api对象上
     $api: {
-      get() {
-        return apiList;
+      get () {
+        return apiList
       }
     }
   })
 }
 
-export default install;
+export default install
