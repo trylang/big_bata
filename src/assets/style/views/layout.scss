@@ -1,0 +1,81 @@
+@import '~@/assets/style/public.scss';
+
+a {
+  color: $color-primary;
+}
+.layout {
+    position: relative;
+    overflow: hidden;
+  }
+  .layout-logo {
+    width: 100px;
+    height: 30px;
+    background: #5b6270;
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 15px;
+    left: 20px;
+  }
+  .ivu-menu {
+    color: $color-primary;
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+    color: $color-actived;
+    background: #fff;
+    &::after {
+        width: 1px;
+        background: #dee0e4;
+    }
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item {
+    &::after {
+      content: '';
+      display: block;
+      width: 1px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      background: #dee0e4;
+    }
+  }
+
+  .ivu-menu-dark {
+    background: $color-primary;
+  }
+  .layout-nav {
+    margin: 0 auto;
+    margin-right: 20px;
+    padding-left: 12rem;
+  }
+  .ivu-layout-header {
+    padding: 0;
+    background: $color-primary;
+  }
+  .ivu-layout {
+    background: #fff;
+  }
+  .ivu-menu-vertical .ivu-menu-item {
+    &:hover {
+        color: $color-actived;
+    }
+  }
+  .ivu-menu-horizontal .ivu-menu-item, .ivu-menu-horizontal .ivu-menu-submenu {
+    padding: 0 14px;
+  }
+  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu {
+    color: #fff;
+    font-size: 14px;
+    padding-top: 4px;
+  }
+
+  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item-active, 
+  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item:hover, 
+  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu-active, 
+  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu:hover {
+    color: #fff;
+    padding-top: 0;
+    background: rgba(57,111,255,0.2187);
+    border-top: 4px solid #396FFF;
+  }

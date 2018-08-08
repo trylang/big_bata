@@ -1,24 +1,19 @@
 <template>
-  <div class="hello">
-    <Button type="primary">Primary</Button>
-    <Slider v-model="value1"></Slider>
+  <div class="filterBox">
+    <h2>{{title}}</h2>
   </div>
 </template>
 
 <script>
-import { Button, Table, Slider } from 'iview'
-
 export default {
-  name: 'HelloWorld',
-  components: {
-    Button, Table, Slider
-  },
+  name: 'FilterBox',
   data () {
     return {
       value1: 25
     }
   },
   props: {
+    title: String,
     msg: String
   }
 }

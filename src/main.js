@@ -3,7 +3,7 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 
 import App from './App.vue'
-import router from './router'
+import router from './router/index'
 import store from './store'
 import api from './http/index'
 
