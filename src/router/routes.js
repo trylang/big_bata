@@ -27,7 +27,7 @@ const routes = [
       name: `${pre}-ticket`,
       meta: {...meta, title: '券效果分析'},
       component: () => import('@/views/pages/data-marketing/ticket/index')
-    },  {
+    }, {
       path: 'sales-day',
       name: `${pre}-sales-day`,
       meta: {...meta, title: '日营销数据分析'},
@@ -48,8 +48,7 @@ const routes = [
       meta: {...meta, title: '系统设置'},
       component: () => import('@/views/pages/data-marketing/settings/index')
     }])('data-marketing')
-  },
+  }
 ]
 
 export default routes
-

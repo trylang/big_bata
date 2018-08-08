@@ -1,3 +1,6 @@
 <template>
-  <div>数据概览</div>
+  <div class="overview">
+    数据概览
+  </div>
 </template>
+

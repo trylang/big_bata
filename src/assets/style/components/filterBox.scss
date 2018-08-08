@@ -1,0 +1,27 @@
+@import '~@/assets/style/public.scss';
+
+.filterBox {
+  .inline-content {
+    display: flex;
+    .inline-item {
+      margin-right: 1rem;
+     .filter-date-picker {
+        width: 200;
+     }
+     .filter-select {
+       width: auto;
+     }
+    }
+  }
+}
+
+.ivu-select {
+  width: auto;
+}
+.ivu-input{
+  border: 1px solid #fff;
+}
+
+.ivu-select-selection {
+  border: 1px solid #fff;
+}

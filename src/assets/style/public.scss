@@ -3,3 +3,17 @@ $color-primary: #2A3962;
 
 // 激活色
 $color-actived: #396FFF;
+
+.ivu-icon-ios-calendar-outline {
+  &::before {
+    content: "\F116";
+  }
+}
+
+.ivu-input{
+  border: 1px solid #fff;
+}
+
+.ivu-select-selection {
+  border: 1px solid #fff;
+}
