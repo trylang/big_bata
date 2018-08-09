@@ -1,23 +1,30 @@
 @import '~@/assets/style/public.scss';
 
 .filterBox {
+  margin: 2rem 0 3px 1.5rem;
+  padding-bottom: .3rem;
+  box-shadow:-2px 2px 4px 0px rgba(221,221,221,0.5);
+  h3 {
+    color: $color-primary;
+  }
   .inline-content {
     display: flex;
+    padding-top: .5rem;
     .inline-item {
       margin-right: 1rem;
+      span {
+        color: $color-gray;
+      }
      .filter-date-picker {
-        width: 200;
+        width: 11rem;
      }
      .filter-select {
-       width: auto;
+       width: 5.6rem;
      }
     }
   }
 }
 
-.ivu-select {
-  width: auto;
-}
 .ivu-input{
   border: 1px solid #fff;
 }

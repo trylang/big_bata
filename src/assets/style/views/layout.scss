@@ -1,81 +1,145 @@
-@import '~@/assets/style/public.scss';
-
+﻿@import '~@/assets/style/public.scss';
 a {
-  color: $color-primary;
+    color: $color-primary;
 }
+
 .layout {
     position: relative;
     overflow: hidden;
-  }
-  .layout-logo {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
+}
+
+.layout-logo {
     float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-  }
-  .ivu-menu {
+    img {
+        width: 60px;
+        height: 22px;
+        position: relative;
+        top: 0px;
+        left: 78px;
+    }
+    .logo-name {
+        width: 104px;
+        height: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: FZZDHJW--GB1-0;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+        position: relative;
+        top: 18px;
+    }
+}
+
+.ivu-menu {
     color: $color-primary;
-  }
-  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+}
+
+.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
     color: $color-actived;
     background: #fff;
     &::after {
         width: 1px;
         background: #dee0e4;
     }
-  }
-  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item {
-    &::after {
-      content: '';
-      display: block;
-      width: 1px;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      background: #dee0e4;
-    }
-  }
+}
 
-  .ivu-menu-dark {
+.ivu-menu-item {
+    width: 216px;
+    height: 56px;
+}
+
+.ivu-menu-light.ivu-menu-vertical .ivu-menu-item {
+    &::after {
+        content: '';
+        display: block;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: #dee0e4;
+    }
+}
+
+.ivu-menu-dark {
     background: $color-primary;
-  }
-  .layout-nav {
+}
+
+.layout-nav {
     margin: 0 auto;
     margin-right: 20px;
-    padding-left: 12rem;
-  }
-  .ivu-layout-header {
+    padding-left: 12.5rem;
+}
+
+.ivu-layout-header {
+    width: 100%;
+    height: 72px;
+    line-height: 72px;
+    background: rgba(42, 57, 98, 1);
     padding: 0;
     background: $color-primary;
-  }
-  .ivu-layout {
+}
+
+.ivu-layout {
     background: #fff;
-  }
-  .ivu-menu-vertical .ivu-menu-item {
+}
+
+.ivu-menu-vertical .ivu-menu-item {
     &:hover {
         color: $color-actived;
     }
-  }
-  .ivu-menu-horizontal .ivu-menu-item, .ivu-menu-horizontal .ivu-menu-submenu {
+}
+
+.ivu-menu-horizontal .ivu-menu-item,
+.ivu-menu-horizontal .ivu-menu-submenu {
     padding: 0 14px;
-  }
-  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu {
+}
+
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item,
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu {
+    width: 104px;
+    height: 72px;
+    line-height: 72px;
+    text-align: center;
     color: #fff;
     font-size: 14px;
-    padding-top: 4px;
-  }
+    padding: 4px;
+}
 
-  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item-active, 
-  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item:hover, 
-  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu-active, 
-  .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu:hover {
-    color: #fff;
-    padding-top: 0;
-    background: rgba(57,111,255,0.2187);
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item-active,
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item:hover,
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu-active,
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu:hover {
+    padding: 0;
+    background: rgba(57, 111, 255, 0.2187);
     border-top: 4px solid #396FFF;
-  }
+}
+
+// 分页样式修改
+.ivu-page-item-jump-next,
+.ivu-page-item-jump-prev,
+.ivu-page-next,
+.ivu-page-prev {
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.ivu-page-item {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.ivu-page-options-elevator input {
+    width: 40px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 2px 0px 0px 2px;
+    border: 1px solid rgba(242, 242, 242, 1);
+}

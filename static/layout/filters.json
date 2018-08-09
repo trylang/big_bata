@@ -1,3 +1,133 @@
 {
-  "haha": 3456789
+  "data": [
+    {
+      "id": "index",
+      "list": [
+        {
+          "title": "时间:",
+          "type": "daterange",
+          "name": "dateTime"
+        },
+        {
+          "title": "节假日:",
+          "type": "select",
+          "name": "hahaId"
+        },
+        {
+          "title": "建筑物:",
+          "type": "select",
+          "name": "hahaId"
+        },
+        {
+          "title": "楼层:",
+          "type": "select",
+          "name": "floorId"
+        },
+        {
+          "title": "业态:",
+          "type": "select",
+          "name": "heiheiId"
+        },
+        {
+          "title": "店铺:",
+          "type": "select",
+          "name": "shopId"
+        }
+      ]
+    },
+    {
+      "id": "activity",
+      "list": [
+        {
+          "title": "时间:",
+          "type": "daterange",
+          "name": "dateTime"
+        },
+        {
+          "title": "建筑物:",
+          "type": "select",
+          "name": "hahaId"
+        },
+        {
+          "title": "楼层:",
+          "type": "select",
+          "name": "floorId"
+        },
+        {
+          "title": "业态:",
+          "type": "select",
+          "name": "heiheiId"
+        },
+        {
+          "title": "活动:",
+          "type": "select",
+          "name": "shopId"
+        }
+      ]
+    },
+    {
+      "id": "ticket",
+      "list": [
+        {
+          "title": "时间:",
+          "type": "daterange",
+          "name": "dateTime"
+        },
+        {
+          "title": "建筑物:",
+          "type": "select",
+          "name": "hahaId"
+        },
+        {
+          "title": "楼层:",
+          "type": "select",
+          "name": "floorId"
+        },
+        {
+          "title": "业态:",
+          "type": "select",
+          "name": "heiheiId"
+        },
+        {
+          "title": "店铺:",
+          "type": "select",
+          "name": "shopId"
+        }
+      ]
+    },
+    {
+      "id": "sales-member",
+      "list": [
+        {
+          "title": "时间:",
+          "type": "daterange",
+          "name": "dateTime"
+        },
+        {
+          "title": "建筑物:",
+          "type": "select",
+          "name": "hahaId"
+        },
+        {
+          "title": "楼层:",
+          "type": "select",
+          "name": "floorId"
+        },
+        {
+          "title": "业态:",
+          "type": "select",
+          "name": "heiheiId"
+        },
+        {
+          "title": "商户:",
+          "type": "select",
+          "name": "shopId"
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "list": []
+    }
+  ]
 }

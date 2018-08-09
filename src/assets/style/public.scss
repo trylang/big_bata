@@ -1,8 +1,14 @@
 // 主色
-$color-primary: #2A3962;
+$color-primary: #2a3962;
 
 // 激活色
-$color-actived: #396FFF;
+$color-actived: #396fff;
+
+// 灰色字体
+$color-gray: #999999;
+
+@import "~@/assets/iconfont/iconfont.css";
+@import "~@/assets/style/views/animate.scss";
 
 .ivu-icon-ios-calendar-outline {
   &::before {
@@ -10,10 +16,26 @@ $color-actived: #396FFF;
   }
 }
 
-.ivu-input{
+.ivu-input {
   border: 1px solid #fff;
+  color: $color-primary;
 }
 
 .ivu-select-selection {
   border: 1px solid #fff;
+}
+.ivu-select-input {
+  color: $color-primary;
+}
+
+.ivu-input-icon {
+  color: $color-gray;
+}
+
+.ivu-btn {
+  height: 1.8rem;
+  line-height: 0.8rem;
+  width: 3.6rem;
+  border-radius: 0.75rem;
+  color: $color-primary;
 }

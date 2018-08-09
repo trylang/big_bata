@@ -50,6 +50,7 @@ module.exports = {
       .end()
     // 重新设置 alias
     config.resolve.alias.set('@', resolve('src'))
+    config.resolve.alias.set('^', resolve('static'))
     // babel-polyfill 加入 entry
     const entry = config.entry('app')
     entry.add('babel-polyfill').end()

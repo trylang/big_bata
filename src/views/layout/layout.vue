@@ -5,31 +5,36 @@
               <Menu mode="horizontal" theme="dark" active-name="1">
                   <div class="layout-logo"></div>
                   <div class="layout-nav">
-                      <MenuItem :name="menu.id" v-for="menu in menus" :key="menu.id">
+                      <Menu-Item :name="menu.id" v-for="menu in menus" :key="menu.id">
                         {{menu.label}}
-                      </MenuItem>
+                      </Menu-Item>
                   </div>
               </Menu>
           </Header>
           <Layout>
               <Sider hide-trigger :style="{background: '#fff'}">
-                  <Menu active-name="数据概览" theme="light" width="auto" @on-select="toggleSideMenu">
+                  <Menu active-name="数据概览" theme="light" width="auto">
                     <router-link :to="{ name: item.name }" v-for="item in $router.options.routes[1].children" :key="item.name">
-                      <MenuItem :name="item.meta.title">
+                      <Menu-Item :name="item.meta.title">
+                        <Icon :custom="defaultIcon(item.meta.icon)" size="16"/>
                         {{item.meta.title}}
-                      </MenuItem>
+                      </Menu-Item>
                     </router-link>
                   </Menu>
               </Sider>
               <Layout :style="{padding: '0 1rem'}">
-                  <Breadcrumb :style="{margin: '1rem 0'}">
+                  <!-- <Breadcrumb :style="{margin: '1rem 0'}">
                       <BreadcrumbItem>Home</BreadcrumbItem>
                       <BreadcrumbItem>Components</BreadcrumbItem>
                       <BreadcrumbItem>Layout</BreadcrumbItem>
-                  </Breadcrumb>
-                  <FilterBox :title="currentSideMenu"></FilterBox>
+                  </Breadcrumb> -->
+                  <FilterBox :title="$route.meta.title"
+                    :filters="currentFilters"
+                    @searchParam="toggleSearchParam"></FilterBox>
                   <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+                    <transition name="fade-transverse">
                       <router-view/>
+                    </transition>
                   </Content>
               </Layout>
           </Layout>
@@ -38,13 +43,11 @@
 </template>
 <script>
 import FilterBox from '../../components/FilterBox'
-import data from '../../../static/layout/filters.json';
-console.log(data)
+import filterList from '^/layout/filters.json'
 
 export default {
   data () {
     return {
-      currentSideMenu: '',
       menus: [{
         id: '0',
         label: '销售数据'
@@ -69,20 +72,36 @@ export default {
       }]
     }
   },
+  computed: {
+    currentFilters () {
+      let _this = this
+      return filterList.data.find(item => {
+        return item.id === _this.$route.meta.path
+      }).list
+    }
+  },
   methods: {
-    toggleSideMenu (title) {
-      this.currentSideMenu = title
+    defaultIcon (icon) {
+      return `iconfont ${icon}`
+    },
+    toggleSearchParam (param) {
+      console.log(param)
+    },
+    fetchDate () {
     }
   },
   components: {
     FilterBox
   },
-  created() {
-    
+  watch: {
+    '$route': 'fetchDate'
+  },
+  created () {
+
   }
 }
 </script>
 
 <style lang="scss">
-@import '~@/assets/style/views/layout.scss';
+@import '@/assets/style/views/layout.scss';
 </style>
