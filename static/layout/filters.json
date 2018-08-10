@@ -1,35 +1,44 @@
 {
-  "data": [
+  "list": [
     {
       "id": "index",
       "list": [
         {
-          "title": "时间:",
+          "title": "时间：",
           "type": "daterange",
           "name": "dateTime"
         },
         {
-          "title": "节假日:",
+          "title": "节假日：",
+          "type": "btn",
+          "name": "hahaId"
+        },
+        {
+          "title": "动作：",
+          "type": "btn",
+          "name": "btnId"
+        },
+        {
+          "title": "建筑物：",
+          "label": "building",
           "type": "select",
           "name": "hahaId"
         },
         {
-          "title": "建筑物:",
-          "type": "select",
-          "name": "hahaId"
-        },
-        {
-          "title": "楼层:",
+          "title": "楼层：",
+          "label": "floor",
           "type": "select",
           "name": "floorId"
         },
         {
-          "title": "业态:",
+          "title": "业态：",
+          "label": "biacat",
           "type": "select",
           "name": "heiheiId"
         },
         {
-          "title": "店铺:",
+          "title": "店铺：",
+          "label": "shop",
           "type": "select",
           "name": "shopId"
         }
@@ -39,27 +48,31 @@
       "id": "activity",
       "list": [
         {
-          "title": "时间:",
+          "title": "时间：",
           "type": "daterange",
           "name": "dateTime"
         },
         {
-          "title": "建筑物:",
+          "title": "建筑物：",
+          "label": "building",
           "type": "select",
           "name": "hahaId"
         },
         {
-          "title": "楼层:",
+          "title": "楼层：",
+          "label": "floor",
           "type": "select",
           "name": "floorId"
         },
         {
-          "title": "业态:",
+          "title": "业态：",
+          "label": "biacat",
           "type": "select",
           "name": "heiheiId"
         },
         {
-          "title": "活动:",
+          "title": "活动：",
+          "label": "activity",
           "type": "select",
           "name": "shopId"
         }
@@ -69,27 +82,31 @@
       "id": "ticket",
       "list": [
         {
-          "title": "时间:",
+          "title": "时间：",
           "type": "daterange",
           "name": "dateTime"
         },
         {
-          "title": "建筑物:",
+          "title": "建筑物：",
+          "label": "building",
           "type": "select",
           "name": "hahaId"
         },
         {
-          "title": "楼层:",
+          "title": "楼层：",
+          "label": "floor",
           "type": "select",
           "name": "floorId"
         },
         {
-          "title": "业态:",
+          "title": "业态：",
+          "label": "biacat",
           "type": "select",
           "name": "heiheiId"
         },
         {
-          "title": "店铺:",
+          "title": "店铺：",
+          "label": "shop",
           "type": "select",
           "name": "shopId"
         }
@@ -99,27 +116,30 @@
       "id": "sales-member",
       "list": [
         {
-          "title": "时间:",
+          "title": "时间：",
           "type": "daterange",
           "name": "dateTime"
         },
         {
-          "title": "建筑物:",
+          "title": "建筑物：",
+          "label": "building",
           "type": "select",
           "name": "hahaId"
         },
         {
-          "title": "楼层:",
+          "title": "楼层：",
+          "label": "floor",
           "type": "select",
           "name": "floorId"
         },
         {
-          "title": "业态:",
+          "title": "业态：",
+          "label": "biacat",
           "type": "select",
           "name": "heiheiId"
         },
         {
-          "title": "商户:",
+          "title": "商户：",
           "type": "select",
           "name": "shopId"
         }

@@ -48,6 +48,7 @@ import filterList from '^/layout/filters.json'
 export default {
   data () {
     return {
+      filterOptions: {},
       menus: [{
         id: '0',
         label: '销售数据'
@@ -75,7 +76,7 @@ export default {
   computed: {
     currentFilters () {
       let _this = this
-      return filterList.data.find(item => {
+      return filterList.list.find(item => {
         return item.id === _this.$route.meta.path
       }).list
     }
@@ -87,8 +88,30 @@ export default {
     toggleSearchParam (param) {
       console.log(param)
     },
-    fetchDate () {
-    }
+    async fetchDate () {
+      let api = this.$api
+      let [floorList, holidayList, shopList] = await Promise.all([
+        api.getFloorList(), api.getHolidayList(), api.getShopList()
+      ]);
+      let objJson = {
+        'building' : holidayList.list,
+        'floor' : floorList.list,
+        'biacat' : floorList.list,
+        'shop' : shopList.list,
+        'activity' : holidayList.list
+      }
+
+      filterList.list.forEach(item => {
+        item.list.forEach(item2 => {
+          console.log(item2.label);
+          console.log(objJson[item2.label])
+          if (item2.label) {
+            item2.options = objJson[item2.label]
+          }
+        }) 
+      });
+      console.log(filterList);
+    },
   },
   components: {
     FilterBox
@@ -97,7 +120,7 @@ export default {
     '$route': 'fetchDate'
   },
   created () {
-
+    this.fetchDate()
   }
 }
 </script>

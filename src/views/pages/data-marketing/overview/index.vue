@@ -1,24 +1,13 @@
 <template>
-  <div id="activity_container">
-      <div class="activity_title"><span>数据详情</span></div>
-      <ve-line :data="chartData"></ve-line>
-      <div class="activity_line"></div>
+  <div id="table_container">
+      <div class="table_title"><span>数据详情</span></div>
+      <Icon class="export" type="md-download" />
       <!-- Table表格 -->
-      <Table  border :columns="columns" :data="data"></Table>
+      <i-Table border :columns="columns" :data="data"></i-Table>
       <!-- Table分页 -->
-      <div class="activity_page">
-          <div class="activity_page_l">
-              <p>共 <span>20</span> 条数据，每页显示</p>
-              <select>
-                  <option>10</option>
-                  <option>10</option>
-                  <option>10</option>
-                  <option>10</option>
-              </select>
-          </div>
-          <div class="activity_page_r">
-            <Page :total="100" show-elevator  />
-            <input type="button" value="确定"></div>
+      <div style="padding-right: 1rem; padding-top: 1rem;">
+        <div class="table_title"><span>数据展示</span></div>
+        <ve-line :data="chartData"></ve-line>
       </div>
   </div>
 </template>
@@ -41,50 +30,61 @@ export default {
       },
       columns: [
         {
-          title: "活动名称",
+          title: " ",
+          key: "title",
+          className: 'demo-table-info-column'
+        },
+        {
+          title: "视频客流量",
           key: "name"
         },
         {
-          title: "活动时间",
+          title: "WI-FI客流量",
           key: "time"
         },
         {
-          title: "历时天数",
+          title: "活动UV",
           key: "data"
         },
         {
-          title: "获取会员数",
+          title: "活动Pv",
           key: "quantity",
           sortable: true
         },
         {
-          title: "参与商户数",
+          title: "会员数",
           key: "contact",
           sortable: true
         },
         {
-          title: "活动总成本",
+          title: "新增会员数",
           key: "total",
           sortable: true
         },
         {
-          title: "日均拉新",
+          title: "领券量",
           key: "average",
           sortable: true
         },
         {
-          title: "日均销售",
+          title: "领取人数",
           key: "sales",
           sortable: true
         },
         {
-          title: "ROI",
+          title: "核销量",
+          key: "roi",
+          sortable: true
+        },
+        {
+          title: "核销人数",
           key: "roi",
           sortable: true
         }
       ],
       data: [
         {
+          title: '当天累计',
           name: "五一活动",
           time: "2018.05.01",
           data: 3,
@@ -96,6 +96,7 @@ export default {
           roi: 364586
         },
         {
+          title: '当周累计',
           name: "端午节",
           time: "2018.05.01",
           data: 2,
@@ -107,21 +108,11 @@ export default {
           roi: 364586
         },
         {
+          title: '当月累计',
           name: "周年庆",
           time: "2018.05.01",
           data: 7,
           quantity: 182385,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        },
-        {
-          name: "双11",
-          time: "2018.05.01",
-          data: 5,
-          quantity: 293495,
           contact: 1294,
           total: 192394,
           average: 12464,
@@ -138,85 +129,19 @@ export default {
   },
   created() {},
   methods: {
+    changePage() {},
     haha() {
       console.log(this.searchParam);
     }
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.ivu-table td.demo-table-info-column {
+  background: #f8f8f9;
+}
 .echarts {
   height: 300px;
 }
-#activity_container {
-  .activity_title {
-    width: 56px;
-    height: 14px;
-    line-height: 14px;
-    margin-left: 25px;
-    span {
-      font-size: 14px;
-      font-family: MicrosoftYaHei;
-    }
-  }
-  .activity_line {
-    width: 1175px;
-    height: 1px;
-    margin-top: 20px;
-    background: rgba(242, 242, 242, 1);
-  }
-  .ivu-table-wrapper {
-    margin-top: 10px;
-    border-left: 0;
-  }
-  .ivu-table-border td,
-  .ivu-table-border th {
-    border-right: 0;
-  }
-  .ivu-table:after {
-    background-color: #fff;
-  }
-  .activity_page {
-    margin-top: 20px;
-    overflow: hidden;
-    .activity_page_l {
-      float: left;
-      p {
-        float: left;
-        span {
-          font-weight: bold;
-        }
-      }
-      select {
-        float: left;
-        margin-left: 5px;
-        border-radius: 2px 0px 0px 2px;
-      }
-    }
-    .activity_page_r {
-      float: right;
-      .ivu-page {
-        float: left;
-        margin-right: 10px;
-      }
-      input {
-        width: 56px;
-        height: 24px;
-        border-radius: 2px;
-        border: 1px solid rgba(242, 242, 242, 1);
-      }
-      .ivu-page-item-active {
-        border-color: #fff;
-        background-color: #396fff;
-      }
-      .ivu-page-item {
-        border: 0;
-      }
-      .ivu-page-item-active a,
-      .ivu-page-item-active:hover a {
-        color: #fff;
-      }
-    }
-  }
-}
+
 </style>

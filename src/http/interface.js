@@ -16,14 +16,33 @@ switch (domain) {
   default:
     break
 }
-export const tryList = params => {
+
+export const getFloorList = params => {
   return axios({
-    url: '/string',
+    url: '/floor',
+    method: 'get',
+    params
+  })
+}
+
+export const getHolidayList = params => {
+  return axios({
+    url: '/holiday',
+    method: 'get',
+    params
+  })
+}
+
+export const getShopList = params => {
+  return axios({
+    url: '/shop',
     method: 'get',
     params
   })
 }
 
 export default {
-  tryList
+  getFloorList,
+  getHolidayList,
+  getShopList
 }

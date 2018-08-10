@@ -43,11 +43,6 @@ a {
     }
 }
 
-.ivu-menu-item {
-    width: 216px;
-    height: 56px;
-}
-
 .ivu-menu-light.ivu-menu-vertical .ivu-menu-item {
     &::after {
         content: '';
@@ -114,8 +109,55 @@ a {
     background: rgba(57, 111, 255, 0.2187);
     border-top: 4px solid #396FFF;
 }
+.ivu-layout-content{
+    padding:7px!important;
+}
+//表格样式
+#table_container {
+    position: relative;
+    .table_title {
+      width: 99.9%;
+      height: 35px;
+      line-height: 14px;
+      border-bottom: 1px solid #f2f2f2;
+      span {
+        font-size: 14px;
+        color: rgba(42, 57, 98, 1);
+        font-family: MicrosoftYaHei;
+      }
+    }
+    .export {
+    float: right;
+    margin:-1rem 0 0 0;
+    }
+    .ivu-table-cell span {
+      height: 12px;
+      font-size: 12px;
+      font-family: MicrosoftYaHei-Bold;
+      color: rgba(102, 102, 102, 1);
+      line-height: 12px;
+    }
+  }
+// 表格内部样式修改
+.ivu-table-wrapper {
+    margin-top: 10px;
+    border-left: 0;
+}
 
-// 分页样式修改
+.ivu-table-border td,
+.ivu-table-border th {
+    border-right: 0;
+}
+.ivu-table td, .ivu-table th{
+    border-bottom: 1px solid #F2F2F2;
+}
+.ivu-table:after {
+    background-color: #fff;
+}
+.ivu-table-row td{
+    height:40px;
+}
+// 分页器内部样式修改
 .ivu-page-item-jump-next,
 .ivu-page-item-jump-prev,
 .ivu-page-next,
@@ -125,6 +167,7 @@ a {
     line-height: 20px;
     border-radius: 2px;
     text-align: center;
+    margin-right: 0;
 }
 
 .ivu-page-item {
@@ -135,11 +178,84 @@ a {
     border-radius: 2px;
 }
 
+.ivu-page-options {
+    margin-left: 0;
+}
+
 .ivu-page-options-elevator input {
     width: 40px;
     height: 24px;
     line-height: 24px;
     text-align: center;
+    margin: 0;
     border-radius: 2px 0px 0px 2px;
     border: 1px solid rgba(242, 242, 242, 1);
+}
+.ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title{
+    padding: 18px 30px;
+}
+// 分页样式
+.table_page {
+    margin-top: 20px;
+    overflow: hidden;
+    padding-bottom:2rem;
+    .table_page_l {
+        float: left;
+        p {
+            float: left;
+            width: 130px;
+            height: 12px;
+            font-size: 12px;
+            font-family: MicrosoftYaHei;
+            color: rgba(153, 153, 153, 1);
+            line-height: 12px;
+            margin-top: 9px;
+            span {
+                font-weight: bold;
+            }
+        }
+        .drop_down {
+            float: left;
+            width: 40px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            margin-left: 8px;
+            margin-top: 4px;
+            border-radius: 2px 0px 0px 2px;
+            border: 1px solid rgba(242, 242, 242, 1);
+        }
+        .drop_arrows {
+            float: left;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            margin-top: 4px;
+            text-align: center;
+            border-radius: 0px 2px 2px 0px;
+            border: 1px solid rgba(242, 242, 242, 1);
+        }
+    }
+    .table_page_r {
+        float: right;
+        .ivu-page {
+            float: left;
+        }
+        .ivu-page-item-active {
+            border-color: #fff;
+            background-color: #396fff;
+        }
+        .ivu-page-item {
+            border: 0;
+        }
+        .ivu-page-item-active a,
+        .ivu-page-item-active:hover a {
+            color: #fff;
+        }
+    }
+}
+//搜索框
+.ivu-input{
+    height: 30px;
+    border-radius: 16px;
 }

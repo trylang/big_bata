@@ -91,8 +91,9 @@ export default {
         }
       }
       this.$store.commit('updateSearchParam', this.param)
+      console.log(this.$store.state.BI.searchParam)
     }
-  }
+  },
 }
 </script>
 
