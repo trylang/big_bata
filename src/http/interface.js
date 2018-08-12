@@ -41,8 +41,26 @@ export const getShopList = params => {
   })
 }
 
+export const getOverviewCur = params => {
+  return axios({
+    url: '/marketing/overview/current/query',
+    method: 'get',
+    params
+  })
+}
+
+export const getOverviewHistory = params => {
+  return axios({
+    url: '/marketing/overview/history/query',
+    method: 'get',
+    params
+  })
+}
+
 export default {
   getFloorList,
   getHolidayList,
-  getShopList
+  getShopList,
+  getOverviewCur,
+  getOverviewHistory
 }

@@ -93,6 +93,7 @@ export default {
       let [floorList, holidayList, shopList] = await Promise.all([
         api.getFloorList(), api.getHolidayList(), api.getShopList()
       ]);
+
       let objJson = {
         'building' : holidayList.list,
         'floor' : floorList.list,
@@ -101,16 +102,17 @@ export default {
         'activity' : holidayList.list
       }
 
-      filterList.list.forEach(item => {
-        item.list.forEach(item2 => {
-          console.log(item2.label);
-          console.log(objJson[item2.label])
-          if (item2.label) {
-            item2.options = objJson[item2.label]
+      function filter (arr) {
+        arr.forEach(item => {
+          if (item.label) {
+            item.options = objJson[item.label]
           }
         }) 
+      }
+
+      filterList.list.forEach(item => {
+        filter(item.list) 
       });
-      console.log(filterList);
     },
   },
   components: {

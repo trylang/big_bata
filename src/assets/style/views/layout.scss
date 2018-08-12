@@ -8,6 +8,13 @@ a {
     overflow: hidden;
 }
 
+.ivu-layout {
+    padding: 0px 0rem !important;
+}
+
+.ivu-menu {
+    height: 100%;
+}
 .layout-logo {
     float: left;
     img {
@@ -109,38 +116,40 @@ a {
     background: rgba(57, 111, 255, 0.2187);
     border-top: 4px solid #396FFF;
 }
-.ivu-layout-content{
-    padding:7px!important;
+
+.ivu-layout-content {
+    padding: 1rem !important;
 }
+
 //表格样式
 #table_container {
     position: relative;
     .table_title {
-      width: 99.9%;
-      height: 35px;
-      line-height: 14px;
-      border-bottom: 1px solid #f2f2f2;
-      span {
-        font-size: 14px;
-        color: rgba(42, 57, 98, 1);
-        font-family: MicrosoftYaHei;
-      }
+        width: 99.9%;
+        height: 35px;
+        line-height: 14px;
+        border-bottom: 1px solid #f2f2f2;
+        span {
+            font-size: 14px;
+            color: rgba(42, 57, 98, 1);
+            font-family: MicrosoftYaHei;
+        }
     }
-    .export {
-    float: right;
-    margin:-1rem 0 0 0;
+    .ivu-table-cell {
+        padding-left: 14px;
+        span {
+            height: 12px;
+            font-size: 12px;
+            font-family: MicrosoftYaHei-Bold;
+            color: rgba(102, 102, 102, 1);
+            line-height: 12px;
+        }
     }
-    .ivu-table-cell span {
-      height: 12px;
-      font-size: 12px;
-      font-family: MicrosoftYaHei-Bold;
-      color: rgba(102, 102, 102, 1);
-      line-height: 12px;
-    }
-  }
+}
+
 // 表格内部样式修改
 .ivu-table-wrapper {
-    margin-top: 10px;
+    margin-top: 1rem;
     border-left: 0;
 }
 
@@ -148,15 +157,20 @@ a {
 .ivu-table-border th {
     border-right: 0;
 }
-.ivu-table td, .ivu-table th{
+
+.ivu-table td,
+.ivu-table th {
     border-bottom: 1px solid #F2F2F2;
 }
+
 .ivu-table:after {
     background-color: #fff;
 }
-.ivu-table-row td{
-    height:40px;
+
+.ivu-table-row td {
+    height: 40px;
 }
+
 // 分页器内部样式修改
 .ivu-page-item-jump-next,
 .ivu-page-item-jump-prev,
@@ -191,14 +205,17 @@ a {
     border-radius: 2px 0px 0px 2px;
     border: 1px solid rgba(242, 242, 242, 1);
 }
-.ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title{
+
+.ivu-menu-vertical .ivu-menu-item,
+.ivu-menu-vertical .ivu-menu-submenu-title {
     padding: 18px 30px;
 }
+
 // 分页样式
 .table_page {
-    margin-top: 20px;
+    margin-top: 1rem;
     overflow: hidden;
-    padding-bottom:2rem;
+    padding-bottom: 2rem;
     .table_page_l {
         float: left;
         p {
@@ -254,8 +271,35 @@ a {
         }
     }
 }
+
 //搜索框
-.ivu-input{
+.ivu-input {
     height: 30px;
     border-radius: 16px;
+}
+
+//券进度条修改
+.ivu-progress-inner {
+    background-color: #fff;
+}
+
+.ivu-progress-bg {
+    background-color: #396FFF;
+}
+
+.ivu-progress-wrong .ivu-progress-bg {
+    background-color: #F2F2F2;
+}
+
+.ivu-progress {
+    width: 73%; // float: left;
+}
+
+.ivu-progress-outer {
+    width: 95%;
+}
+
+.content p span {
+    // display: inline-block;
+    float: left;
 }

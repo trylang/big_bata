@@ -4,14 +4,17 @@
     <div class="inline-content">
       <p class="inline-item" v-for="(filter, index) in filters" :key="index">
         <span>{{filter.title}}</span>
-        <DatePicker v-if="filter.type==='daterange'" format="yyyy.MM.dd" class="filter-input filter-date-picker" type="daterange"
+        <DatePicker v-show="filter.type==='daterange'" format="yyyy.MM.dd" class="filter-input filter-date-picker" type="daterange"
           :options="options2" v-model="param[filter.name]" placement="bottom-end">
         </DatePicker>
-        <Select v-if="filter.type==='select'" class="filter-input filter-select" v-model="param[filter.name]" filterable>
-          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        {{filter.options}}
+        <Select v-show="filter.type==='select'" class="filter-input filter-select" v-model="param[filter.name]">
+          <Option v-for="(item, index) in filter.options" :value="item[filter.filterValue]" :key="index">
+            {{ item[filter.filterName]}}
+          </Option>
         </Select>
       </p>
-      <Button v-if="filters.length>0" @click="handle">确定</Button>
+      <Button v-show="filters.length>0" @click="handle">确定</Button>
     </div>
   </div>
 </template>
@@ -44,32 +47,28 @@ export default {
               return [start, end]
             }
           }
-        ]
+        ],
+        // disabledDate (date) { 
+        //   return date && date.valueOf() < Date.now() - 86400000; }
       },
       cityList: [
         {
+          floor_name: '4343',
+          id: 234,
           value: 'New York',
           label: 'New York'
         },
         {
+          floor_name: '43423',
+          id: 2344,
           value: 'London',
           label: 'London'
         },
         {
+          floor_name: '431143',
+          id: 24434,
           value: 'Sydney',
           label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
         }
       ]
     }
@@ -94,6 +93,9 @@ export default {
       console.log(this.$store.state.BI.searchParam)
     }
   },
+  created() {
+    console.log(this.filters)
+  }
 }
 </script>
 

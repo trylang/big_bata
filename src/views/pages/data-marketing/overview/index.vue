@@ -1,125 +1,82 @@
 <template>
-  <div id="table_container">
-      <div class="table_title"><span>数据详情</span></div>
-      <Icon class="export" type="md-download" />
+    <div id="table_container">
+        <div class="table_title">
+          <span>数据详情</span>
+         <downloadBounced></downloadBounced>
+        </div>
+         
       <!-- Table表格 -->
-      <i-Table border :columns="columns" :data="data"></i-Table>
+      <i-Table border :columns="columns" :data="data" ></i-Table>
       <!-- Table分页 -->
-      <div style="padding-right: 1rem; padding-top: 1rem;">
+      <div style="padding-right: 1rem; padding-top: 3rem;">
         <div class="table_title"><span>数据展示</span></div>
-        <ve-line :data="chartData"></ve-line>
+        <!-- <ve-line :data="chartData"></ve-line> -->
+        <div id="overview_chart" :style="{width: '1100px', height: '500px'}"></div>
       </div>
+     
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import downloadBounced from "@/components/downloadBounced.vue";
+import { fmoney } from "@/utils/filter.js";
+import dayjs from "dayjs";
 
 export default {
+  components: {
+    downloadBounced
+  },
   data() {
     return {
-      chartData: {
-        columns: ["日期", "访问用户", "下单用户", "下单率"],
-        rows: [
-          { 日期: "1/1", 访问用户: 1393, 下单用户: 1093, 下单率: 0.32 },
-          { 日期: "1/2", 访问用户: 3530, 下单用户: 3230, 下单率: 0.26 },
-          { 日期: "1/3", 访问用户: 2923, 下单用户: 2623, 下单率: 0.76 },
-          { 日期: "1/4", 访问用户: 1723, 下单用户: 1423, 下单率: 0.49 },
-          { 日期: "1/5", 访问用户: 3792, 下单用户: 3492, 下单率: 0.323 },
-          { 日期: "1/6", 访问用户: 4593, 下单用户: 4293, 下单率: 0.78 }
-        ]
-      },
+      chartData: [],
       columns: [
         {
           title: " ",
           key: "title",
-          className: 'demo-table-info-column'
+          className: "demo-table-info-column"
         },
         {
           title: "视频客流量",
-          key: "name"
+          key: "video_cf"
         },
         {
           title: "WI-FI客流量",
-          key: "time"
+          key: "wifi_cf"
         },
         {
           title: "活动UV",
-          key: "data"
+          key: "act_uv"
         },
         {
           title: "活动Pv",
-          key: "quantity",
-          sortable: true
+          key: "act_pv"
         },
         {
           title: "会员数",
-          key: "contact",
-          sortable: true
+          key: "rtg_members"
         },
         {
           title: "新增会员数",
-          key: "total",
-          sortable: true
+          key: "sale_amout"
         },
         {
           title: "领券量",
-          key: "average",
-          sortable: true
+          key: "average"
         },
         {
           title: "领取人数",
-          key: "sales",
-          sortable: true
+          key: "sales"
         },
         {
           title: "核销量",
-          key: "roi",
-          sortable: true
+          key: "roi"
         },
         {
           title: "核销人数",
-          key: "roi",
-          sortable: true
+          key: "roi"
         }
       ],
-      data: [
-        {
-          title: '当天累计',
-          name: "五一活动",
-          time: "2018.05.01",
-          data: 3,
-          quantity: 45375,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        },
-        {
-          title: '当周累计',
-          name: "端午节",
-          time: "2018.05.01",
-          data: 2,
-          quantity: 83284,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        },
-        {
-          title: '当月累计',
-          name: "周年庆",
-          time: "2018.05.01",
-          data: 7,
-          quantity: 182385,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        }
-      ]
+      data: []
     };
   },
   computed: {
@@ -127,11 +84,221 @@ export default {
       searchParam: state => state.BI.searchParam
     })
   },
-  created() {},
+  created() {
+    this.init();
+  },
+  watch: {
+    chartData: "drawChart"
+  },
   methods: {
-    changePage() {},
-    haha() {
-      console.log(this.searchParam);
+    drawChart() {
+      let _this = this
+      let overviewChart = this.$echarts.init(
+        document.getElementById("overview_chart")
+      );
+
+      let colors = ["#396FFF", "#E4007F", "#90C31F", "#FABE00", "#CCCCCC"];
+      let itemColors = {
+        holiday: "#396FFF",
+        activity: "#F5A623",
+        zhoumo: "#ccc"
+      };
+      let json = {
+        视频客流量: "video_cf",
+        WIFI客流量: "wifi_cf",
+        活动UV: "act_uv",
+        活动Pv: "act_pv",
+        会员数: "rtg_members",
+        新增会员数: "rtg_members_new",
+        领取人数: "coupon_chk_persions"
+      };
+      let options = {
+        color: colors,
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross"
+          }
+        },
+        xAxis: [
+          {
+            type: "category",
+            axisTick: {
+              alignWithLabel: true
+            },
+            data: []
+          }
+        ],
+        legend: {
+          selectedMode: "multiple",
+          selected: {}
+        },
+        yAxis: {
+          type: "value",
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            textStyle: {
+              color: "#999"
+            }
+          }
+        },
+        // yAxis: [
+        //   {
+        //     type: 'value',
+        //     name: '蒸发量',
+        //     min: 0,
+        //     max: 250,
+        //     position: 'right',
+        //     axisLine: {
+        //         lineStyle: {
+        //             color: '#999'
+        //         }
+        //     },
+        //     axisLabel: {
+        //         formatter: '{value} ml'
+        //     }
+        // },
+        // {
+        //     type: 'value',
+        //     name: '温度',
+        //     min: 0,
+        //     max: 25,
+        //     position: 'left',
+        //     axisLine: {
+        //         lineStyle: {
+        //             color: '#999'
+        //         }
+        //     },
+        //     axisLabel: {
+        //         formatter: '{value} °C'
+        //     }
+        // }],
+        series: []
+      };
+
+      options.legend.data = Object.keys(json);
+      options.legend.data.map((item, index) => {
+        if (index < 4) {
+          options.legend.selected[item] = true;
+        } else {
+          options.legend.selected[item] = false;
+        }
+      });
+
+      options.xAxis[0].data = (() => {
+        let data = this.chartData.map(item => item.stat_ymd);
+        data.push(
+          dayjs(data[data.length - 1])
+            .add(1, "day")
+            .format("YYYY-MM-DD")
+        );
+        return data;
+      })();
+
+      var areaStyle = {
+        silent: false,
+        data: []
+      };
+
+      let holidayObjs = {};
+
+      this.chartData.forEach(item => {
+        let name = item.action_name || item.holiday_name || item.zhoumo;
+        if (!name) return;
+        if (!holidayObjs[name]) {
+          holidayObjs[name] = {};
+          holidayObjs[name].type = item.action_name
+            ? "activity"
+            : item.holiday_name ? "holiday" : "zhoumo";
+          holidayObjs[name].startTime = item.stat_ymd;
+        } else {
+          holidayObjs[name].endTime = dayjs(item.stat_ymd)
+            .add(1, "day")
+            .format("YYYY-MM-DD");
+        }
+      });
+
+      for (let key in holidayObjs) {
+        if (!holidayObjs[key].endTime) {
+          holidayObjs[key].endTime = dayjs(holidayObjs[key].startTime)
+            .add(1, "day")
+            .format("YYYY-MM-DD");
+        }
+        areaStyle.data.push([
+          {
+            name: key,
+            xAxis: holidayObjs[key].startTime,
+            itemStyle: {
+              color: itemColors[holidayObjs[key].type],
+              opacity: 0.16
+            },
+            label: {
+              offset: [0, 370],
+              color: itemColors[holidayObjs[key].type]
+            }
+          },
+          {
+            xAxis: holidayObjs[key].endTime
+          }
+        ]);
+      }
+
+      let chart_series = [];
+      options.legend.data.forEach(item => {
+        chart_series.push({
+          name: item,
+          type: "line",
+          smooth: true,
+          label: {
+            show: true,
+            position: "top",
+            color: "auto",
+            formatter: param => {
+              return fmoney(param.value);
+            }
+          },
+          markArea: areaStyle,
+          data: this.chartData.map(data => data[json[item]])
+        });
+      });
+
+      options.series = chart_series;
+      // console.log(JSON.stringify(options, null, 4));
+      // 绘制图表
+      overviewChart.setOption(options);
+      overviewChart.on("legendselectchanged", function(obj) {
+        var selected = obj.selected;
+        let selectedNum = 0
+        for( let key in selected) {
+          if (selected[key]) selectedNum++
+        }
+        if (selectedNum > 4) {
+          _this.$Message.warning('最多只能选择4个图例');
+          selected[obj.name] = false
+          options.legend.selected = selected; 
+          overviewChart.setOption(options);
+        }
+      });
+
+      setTimeout(function() {
+        window.onresize = function() {
+          overviewChart.resize();
+        };
+      }, 0);
+    },
+    async init() {
+      let _this = this;
+      await this.$api.getOverviewCur().then(res => {
+        _this.data = res.list;
+      });
+      await this.$api.getOverviewHistory().then(res => {
+        _this.chartData = res.list;
+      });
     }
   }
 };
@@ -143,5 +310,4 @@ export default {
 .echarts {
   height: 300px;
 }
-
 </style>

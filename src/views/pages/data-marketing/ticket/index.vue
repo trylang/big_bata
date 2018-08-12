@@ -1,8 +1,10 @@
 <template>
-  <div id="table_container">
-      <div class="table_title"><span>券数据详情</span></div>
-       <Input suffix="ios-search" placeholder="请输入券名称" style="width: auto" />
-      <Icon class="export" type="md-download" />
+    <div id="table_container">
+        <div class="table_title">
+            <span>券数据详情</span>
+             <downloadBounced></downloadBounced>
+        </div>
+        <Input suffix="ios-search" placeholder="请输入券名称" style="width: auto" />
       <!-- Table表格 -->
       <i-Table  border :columns="columns" :data="data"></i-Table>
       <!-- Table分页 -->
@@ -17,11 +19,15 @@
         </div>
       </div>
       <div>
-        <div class="table_title"><span>券核销记录</span></div>
-        <Icon class="export" type="md-download" />
+        <div class="table_title_m">
+            <span>券核销记录</span>
+        </div>
         <Tabs value="name1">
+            
           <TabPane label="全部" name="name1">
+             <downloadBounced></downloadBounced>
             <i-Table  border :columns="columns" :data="data"></i-Table>
+            
             <div class="table_page">
               <div class="table_page_l">
                   <p>共 <span>20</span> 条数据</p>
@@ -39,11 +45,9 @@
           <TabPane label="双11" name="name3">双11</TabPane>
         </Tabs>
       </div>
-      
       <div>
         <div class="table_title"><span>券排名</span></div>
-        <Row :gutter="16"> 
-          
+        <Row :gutter="16" style="margin-top:1rem;"> 
           <Col span="8"><ticketsTop :progressList="progressList"></ticketsTop></Col> 
           <Col span="8"><ticketsTop :progressList="progressList"></ticketsTop></Col> 
           <Col span="8"><ticketsTop :progressList="progressList"></ticketsTop></Col> 
@@ -53,10 +57,12 @@
   </div>
 </template>
 <script>
-import ticketsTop from './ticketsTop'
+import ticketsTop from "./ticketsTop";
+import downloadBounced from "@/components/downloadBounced.vue";
 export default {
   components: {
-    ticketsTop
+    ticketsTop,
+    downloadBounced
   },
   data() {
     this.chartSettings = {
@@ -68,25 +74,32 @@ export default {
       }
     };
     return {
-      progressList: [{
-        name: 'ZARA 100元代金券',
-        value: 12343
-      }, {
-        name: '优衣库 50元代金券',
-        value: 43294
-      }, {
-        name: 'H&M 5折折扣券',
-        value: 4361
-      }, {
-        name: '星巴克 抹茶星冰乐试吃券',
-        value: 9854
-      }, {
-        name: 'ADIDAS 8折折扣券',
-        value: 56783
-      }, {
-        name: '海底捞 满500元减100券',
-        value: 21456
-      }],
+      progressList: [
+        {
+          name: "ZARA 100元代金券",
+          value: 12343
+        },
+        {
+          name: "优衣库 50元代金券",
+          value: 43294
+        },
+        {
+          name: "H&M 5折折扣券",
+          value: 4361
+        },
+        {
+          name: "星巴克 抹茶星冰乐试吃券",
+          value: 9854
+        },
+        {
+          name: "ADIDAS 8折折扣券",
+          value: 56783
+        },
+        {
+          name: "海底捞 满500元减100券",
+          value: 21456
+        }
+      ],
       chartData: {
         columns: ["日期", "访问用户", "下单用户", "下单率"],
         rows: [
@@ -200,10 +213,17 @@ export default {
 <style lang="scss" scoped>
 .ivu-input-wrapper {
   height: 32px;
-  position: relative;
-  top: -40px;
-  left: 895px;
+  float: right;
   border: 1px solid #f2f2f2;
   border-radius: 16px;
+  margin: -2.5rem 2rem 0 0;
+}
+.table_title_m {
+  width: 99.9%;
+  height: 35px;
+  line-height: 14px;
+}
+.ivu-tabs-tabpane .export{
+    margin-top:-3rem;
 }
 </style>

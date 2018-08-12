@@ -9,36 +9,48 @@
           "name": "dateTime"
         },
         {
-          "title": "节假日：",
+          "title": "节假日",
           "type": "btn",
+          "position": "left",
+          "btnTitle": "节假日",
           "name": "hahaId"
         },
         {
-          "title": "动作：",
+          "title": "动作",
           "type": "btn",
+          "position": "right",
+          "btnTitle": "动作",
           "name": "btnId"
         },
         {
           "title": "建筑物：",
           "label": "building",
+          "filterName": "org_name",
+          "filterValue": "id",
           "type": "select",
           "name": "hahaId"
         },
         {
           "title": "楼层：",
           "label": "floor",
+          "filterName": "floor_name",
+          "filterValue": "id",
           "type": "select",
           "name": "floorId"
         },
         {
           "title": "业态：",
           "label": "biacat",
+          "filterName": "biacat_name",
+          "filterValue": "id",
           "type": "select",
           "name": "heiheiId"
         },
         {
           "title": "店铺：",
           "label": "shop",
+          "filterName": "shop_name",
+          "filterValue": "id",
           "type": "select",
           "name": "shopId"
         }
@@ -55,18 +67,24 @@
         {
           "title": "建筑物：",
           "label": "building",
+          "filterName": "org_name",
+          "filterValue": "org_id",
           "type": "select",
           "name": "hahaId"
         },
         {
           "title": "楼层：",
           "label": "floor",
+          "filterName": "floor_name",
+          "filterValue": "id",
           "type": "select",
           "name": "floorId"
         },
         {
           "title": "业态：",
           "label": "biacat",
+          "filterName": "biacat_name",
+          "filterValue": "id",
           "type": "select",
           "name": "heiheiId"
         },
@@ -89,24 +107,32 @@
         {
           "title": "建筑物：",
           "label": "building",
+          "filterName": "org_name",
+          "filterValue": "org_id",
           "type": "select",
           "name": "hahaId"
         },
         {
           "title": "楼层：",
           "label": "floor",
+          "filterName": "floor_name",
+          "filterValue": "id",
           "type": "select",
           "name": "floorId"
         },
         {
           "title": "业态：",
           "label": "biacat",
+          "filterName": "biacat_name",
+          "filterValue": "id",
           "type": "select",
           "name": "heiheiId"
         },
         {
           "title": "店铺：",
           "label": "shop",
+          "filterName": "shop_name",
+          "filterValue": "id",
           "type": "select",
           "name": "shopId"
         }
@@ -123,18 +149,24 @@
         {
           "title": "建筑物：",
           "label": "building",
+          "filterName": "org_name",
+          "filterValue": "org_id",
           "type": "select",
           "name": "hahaId"
         },
         {
           "title": "楼层：",
           "label": "floor",
+          "filterName": "floor_name",
+          "filterValue": "id",
           "type": "select",
           "name": "floorId"
         },
         {
           "title": "业态：",
           "label": "biacat",
+          "filterName": "biacat_name",
+          "filterValue": "id",
           "type": "select",
           "name": "heiheiId"
         },

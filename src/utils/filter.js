@@ -15,3 +15,19 @@ export let formatDate = (time, fmt) => { // author: meizz
   }
   return fmt
 }
+
+export function fmoney(s, n=2) { 
+  if (s === '' || s === undefined || s === null) return;
+  n = n > 0 && n <= 20 ? n : 2;
+  let tag = ''; 
+  s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+  if (s.indexOf('-') == 0) {
+    s = s.slice(1);
+    tag = '-';
+  }
+  var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1], t = "", i = 0;
+  for (i = 0; i < l.length; i++) { 
+  t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : ""); 
+  } 
+  return tag + t.split("").reverse().join("") + "." + r; 
+}
