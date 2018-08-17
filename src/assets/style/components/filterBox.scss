@@ -1,27 +1,31 @@
-@import "~@/assets/style/public.scss";
+@import '~@/assets/style/public.scss';
+
 .filterBox {
   margin: 1.2rem 0 0 0;
   padding-bottom: 1rem;
   width: 100%; //   box-shadow:0px 2px 4px 0px rgba(221,221,221,0.5);
   .inline-content {
-    padding-left: 1rem;
+    padding-left: 1.4rem;
     height: 45px;
     box-shadow: 0px 2px 4px 0px rgba(221, 221, 221, 0.5);
   }
-  h3 {
-    padding-left: 1rem;
+  .filter-title {
+    padding-left: 1.4rem;
+    font-size: 16px;
+    color: #2A3962;
     color: $color-primary;
   }
   .inline-content {
     display: flex;
-    padding-top: 0.5rem;
+    padding-top: .5rem;
     .inline-item {
       margin-right: 1rem;
       span {
         color: $color-gray;
+        width: 56px;
       }
       .filter-date-picker {
-        width: 10rem;
+        width: 104px;;
       }
       .filter-select {
         width: 5rem;
@@ -41,19 +45,23 @@ p {
   }
   .btn-left {
     color: $color-actived;
-    border: 1px solid $color-actived;
+    border: 1px solid $color-primary;
     border-top-left-radius: 0.8rem;
     border-bottom-left-radius: 0.8rem;
   }
-  .btn-right {
+  .btn-middle {
     color: $color-actived;
-    border: 1px solid $color-actived;
+    border: 1px solid $color-primary;
+  }
+  .btn-right {
+    color: $color-primary;
+    border: 1px solid $color-primary;
     border-top-right-radius: 0.8rem;
     border-bottom-right-radius: 0.8rem;
   }
   .actived {
-    background: $color-actived;
-    color: #fff;
+    background: $color-primary;
+    color: #fff !important;
   }
 }
 

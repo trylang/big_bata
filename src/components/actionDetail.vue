@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <!-- <Icon @click="modal1 = true" class="export iconfont icon-xiazai"  /> -->
+    <div class="download_container">
+        <Icon @click="modal1 = true" class="export iconfont icon-icon-xiazai"/>
         <Modal
                 v-model="modal1"
                 width="604px"
@@ -8,12 +8,9 @@
                 @on-ok="ok"
                 @on-cancel="cancel">
             <div class="accumulative_total">
-                <CheckboxGroup v-model="fruit">
-                    <span class="time_chance">时间选择</span>
-                    <Checkbox label="当日累计"></Checkbox>
-                    <Checkbox label="当周累计"></Checkbox>
-                    <Checkbox label="当月累计"></Checkbox>
-                </CheckboxGroup>
+                <span class="time_chance">时间选择</span>
+                <DatePicker type="daterange" placement="bottom-end" placeholder="请选择"
+                            style="width: 296px;margin-left: 2rem;"></DatePicker>
             </div>
             <div class="filtrate">
                 <span class="filtrate_s">条件筛选</span>
@@ -53,15 +50,13 @@
 </template>
 <script>
     export default {
-        name: "downloadBounced",
+        name: "actionDetail",
         data() {
             return {
                 indeterminate: true,
                 checkAll: false,
-                modal1: false,
                 checkAllGroup: ['客流1', '客流2'],
-                // modal1: false,
-                fruit: ['当日累计', '当周累计', '当月累计'],
+                modal1: false,
                 cityList: [
                     {
                         value: 'New York',
@@ -133,6 +128,4 @@
     };
 </script>
 <style lang="scss" scoped>
-    @import "@/assets/style/components/filterBox.scss";
 </style>
-

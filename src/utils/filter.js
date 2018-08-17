@@ -31,3 +31,13 @@ export function fmoney(s, n=2) {
   } 
   return tag + t.split("").reverse().join("") + "." + r; 
 }
+
+export function sort(arr, name, type) {
+  return arr.sort(function(a, b) {
+    if (type === 'asc') {
+      return b[name] - a[name] > 0 ? -1 : 1
+    } else {
+      return a[name] - b[name] > 0 ? -1 : 1
+    }
+  })
+}

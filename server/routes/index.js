@@ -107,7 +107,7 @@ router.get("/marketing/overview/current/query", async (ctx, next) => {
   ctx.body = res;
 });
 
-router.get("/marketing/overview/history/query", async (ctx, next) => {
+router.get("/marketing/overview/queryhistory", async (ctx, next) => {
   const produceNewsData = function() {
     let list = [];
     for (let i = 0; i < 1; i++) {

@@ -14,8 +14,11 @@ let domain = document.domain
 switch (domain) {
   case '127.0.0.1':
   case 'localhost':
-    // config.baseURL = 'http://localhost:3000/index';
     config.baseURL = '/api/'
+  case '192.168.14.98':
+    // config.baseURL = 'http://localhost:3000/index';
+    // config.baseURL = '/api/'
+    config.baseURL = 'http://123.59.0.194:8010/'
     break
   default:
     break

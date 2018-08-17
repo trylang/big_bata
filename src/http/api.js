@@ -1,7 +1,6 @@
 import axios from 'axios'
 import config from './config.js' // 引入默认配置
 // import { resolve } from 'url'
-
 export default function $axios (options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
@@ -55,11 +54,9 @@ export default function $axios (options) {
 
         // 需要重定向到错误页面
         const errorInfo = error.response
-        console.log(errorInfo)
-
         if (errorInfo) {
           // error = errorInfo.data //页面那边 catch 的时候就能拿到详细的错误信息，看最下边的 Promise.reject
-          const errorStatus = errorInfo.status // 404 500 403 ... 等
+          const errorStatus = errorInfo.code // 404 500 403 ... 等
           // router.push({ // router没有定义，倒是如果需要跳转到404等，可以再看router
           //   path: `/error/${errorStatus}`
           // })
@@ -82,18 +79,18 @@ export default function $axios (options) {
           data = response.data
         }
         // 根据返回的code值来做不同的处理（和后端约定）
-        switch (data.status) {
-          case 200:
+        switch (parseInt(data.code)) {
+          case 0:
             return data.data
           case 514:
-            return Promise.reject(data.message)
+            return Promise.reject(data.msg)
           default:
             // Message({
             //     message: data.message,
             //     type: 'warning'
             // });
-            alert(data.message)
-            return Promise.reject(data.message)
+            // alert(data.msg)
+            return Promise.reject(data.msg)
         }
         // 若不是正确的返回code，且已登录，就显示错误
         // const err = new Error(data.description);

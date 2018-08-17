@@ -14,6 +14,7 @@ import api from './http/index'
 Vue.config.productionTip = false
 
 Vue.prototype.$echarts = echarts 
+window.eventBus = new Vue()
 
 Vue.use(api)
 Vue.use(iView)

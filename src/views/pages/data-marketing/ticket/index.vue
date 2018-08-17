@@ -2,117 +2,80 @@
     <div id="table_container">
         <div class="table_title">
             <span>券数据详情</span>
-             <downloadBounced></downloadBounced>
         </div>
-        <Input suffix="ios-search" placeholder="请输入券名称" style="width: auto" />
-      <!-- Table表格 -->
-      <i-Table  border :columns="columns" :data="data"></i-Table>
-      <!-- Table分页 -->
-      <div class="table_page">
-        <div class="table_page_l">
-            <p>共 <span>20</span> 条数据</p>
-            <!-- <div class="drop_down">10</div> -->
-            <!-- <div class="drop_arrows">∨</div> -->
-        </div>
-        <div class="table_page_r">
-          <Page :total="100" show-elevator  @on-chang="changePage"/>
-        </div>
-      </div>
-      <div>
-        <div class="table_title_m">
-            <span>券核销记录</span>
-        </div>
-        <Tabs value="name1">
-            
-          <TabPane label="全部" name="name1">
-             <downloadBounced></downloadBounced>
-            <i-Table  border :columns="columns" :data="data"></i-Table>
-            
-            <div class="table_page">
-              <div class="table_page_l">
-                  <p>共 <span>20</span> 条数据</p>
-                  <!-- <div class="drop_down">10</div> -->
-                  <!-- <div class="drop_arrows">∨</div> -->
-              </div>
-              <div class="table_page_r">
-                <Page :total="100" show-elevator  @on-chang="changePage"/>
-              </div>
+        <Input suffix="ios-search" placeholder="请输入券名称" style="width: auto"/>
+        <!-- Table表格 -->
+        <i-Table border :columns="conponEffect.columns"  @on-sort-change="effectHandleSort" :data="conponEffect.pageList"></i-Table>
+        <div class="table_page">
+            <div class="table_page_l">
+                <p>共 <span>{{conponEffect.list.length}}</span> 条数据</p> 
             </div>
-          </TabPane>
-          <TabPane label="五一活动" name="name2">五一活动</TabPane>
-          <TabPane label="端午活动" name="name3">端午活动</TabPane>
-          <TabPane label="店庆活动" name="name3">店庆活动</TabPane>
-          <TabPane label="双11" name="name3">双11</TabPane>
-        </Tabs>
-      </div>
-      <div>
-        <div class="table_title"><span>券排名</span></div>
-        <Row :gutter="16" style="margin-top:1rem;"> 
-          <Col span="8"><ticketsTop :progressList="progressList"></ticketsTop></Col> 
-          <Col span="8"><ticketsTop :progressList="progressList"></ticketsTop></Col> 
-          <Col span="8"><ticketsTop :progressList="progressList"></ticketsTop></Col> 
-        </Row>
-      </div>
+            <div class="table_page_r">
+                <Page :total="conponEffect.list.length" :current.sync="conponEffect.curPage" :page-size="10" show-elevator @on-change="effectChangePage"/>
+            </div>
+        </div>
+        <div>
+            <div class="table_title_m">
+                <span class="table_sp">券核销记录</span>
+            </div>
+            <Tabs value="name1">
+                <TabPane v-for="(item, index) in bizcatList" :key="index" :label="item.shop_bizcat" :name="item.shop_bizcat">
+                  
+                </TabPane>
+                <!-- <TabPane label="全部" name="name1">
+                    <i-Table :columns="columns" :data="data"></i-Table>
+                    <div class="table_page">
+                        <div class="table_page_l">
+                            <p>共 <span>20</span> 条数据</p>                           
+                        </div>
+                        <div class="table_page_r">
+                            <Page :total="100" show-elevator @on-chang="changePage"/>
+                        </div>
+                    </div>
+                </TabPane>
+                <TabPane label="五一活动" name="name2">五一活动</TabPane>
+                <TabPane label="端午活动" name="name3">端午活动</TabPane>
+                <TabPane label="店庆活动" name="name3">店庆活动</TabPane>
+                <TabPane label="双11" name="name3">双11</TabPane> -->
+            </Tabs>
+        </div>
+        <div>
+            <div class="table_title_m"><span class="table_sp">券排名</span>
+                <p class="tiket_btn">
+                    <span class="tiket_btn1 active">当周</span>
+                    <span class="tiket_btn2">上周</span>
+                    <span class="tiket_btn3">当月</span>
+                    <span class="tiket_btn4">上月</span>
+                </p>
+            </div>
+            <Row :gutter="16" style="width:100%;margin-top:1rem;">
+                <Col span="8">
+                <ticketsTop :progressList="progressList"></ticketsTop>
+                </Col>
+                <Col span="8">
+                <ticketsTop :progressList="progressList"></ticketsTop>
+                </Col>
+                <Col span="8">
+                <ticketsTop :progressList="progressList"></ticketsTop>
+                </Col>
+            </Row>
+        </div>
 
-  </div>
+    </div>
 </template>
 <script>
 import ticketsTop from "./ticketsTop";
-import downloadBounced from "@/components/downloadBounced.vue";
+
 export default {
   components: {
-    ticketsTop,
-    downloadBounced
+    ticketsTop
   },
   data() {
-    this.chartSettings = {
-      showLine: ["下单用户"]
-    };
-    this.extend = {
-      series: {
-        label: { show: true, position: "top" }
-      }
-    };
     return {
-      progressList: [
-        {
-          name: "ZARA 100元代金券",
-          value: 12343
-        },
-        {
-          name: "优衣库 50元代金券",
-          value: 43294
-        },
-        {
-          name: "H&M 5折折扣券",
-          value: 4361
-        },
-        {
-          name: "星巴克 抹茶星冰乐试吃券",
-          value: 9854
-        },
-        {
-          name: "ADIDAS 8折折扣券",
-          value: 56783
-        },
-        {
-          name: "海底捞 满500元减100券",
-          value: 21456
-        }
-      ],
-      chartData: {
-        columns: ["日期", "访问用户", "下单用户", "下单率"],
-        rows: [
-          { 日期: "1/1", 访问用户: 1393, 下单用户: 1093, 下单率: 0.32 },
-          { 日期: "1/2", 访问用户: 3530, 下单用户: 3230, 下单率: 0.26 },
-          { 日期: "1/3", 访问用户: 2923, 下单用户: 2623, 下单率: 0.76 },
-          { 日期: "1/4", 访问用户: 1723, 下单用户: 1423, 下单率: 0.49 },
-          { 日期: "1/5", 访问用户: 3792, 下单用户: 3492, 下单率: 0.323 },
-          { 日期: "1/6", 访问用户: 4593, 下单用户: 4293, 下单率: 0.78 }
-        ]
-      },
-      columns: [
-        {
+      conponEffect: {
+        list: [],
+        pageList: [],
+        columns: [{
           title: "活动名称",
           key: "name"
         },
@@ -153,7 +116,38 @@ export default {
           title: "ROI",
           key: "roi",
           sortable: true
+        }],
+        curPage: 1
+      },
+      bizcatList: [],
+      progressList: [
+        {
+          name: "ZARA 100元代金券",
+          value: 12343
+        },
+        {
+          name: "优衣库 50元代金券",
+          value: 43294
+        },
+        {
+          name: "H&M 5折折扣券",
+          value: 4361
+        },
+        {
+          name: "星巴克 抹茶星冰乐试吃券",
+          value: 9854
+        },
+        {
+          name: "ADIDAS 8折折扣券",
+          value: 56783
+        },
+        {
+          name: "海底捞 满500元减100券",
+          value: 21456
         }
+      ],
+      columns: [
+        
       ],
       data: [
         {
@@ -204,9 +198,50 @@ export default {
     };
   },
   methods: {
+    effectHandleSort(column) {
+      this.conponEffect.list = sort(
+        this.conponEffect.list,
+        column.key,
+        column.order
+      );
+      this.conponEffect.pageList = this.conponEffect.list.slice(0, 10);
+      this.conponEffect.curPage = 1;
+    },
+    effectChangePage(page) {
+      this.conponEffect.pageList.splice(0, this.conponEffect.pageList.length);
+      this.conponEffect.pageList = this.conponEffect.list.slice(
+        (page - 1) * 10,
+        page * 10
+      );
+    },
     changePage(page) {
       console.log(page);
+    },
+    init(param) {
+      this.$api.getConponEffect(param).then(res => {
+        console.log(res);
+        this.conponEffect.list = res;
+      });
+      this.$api.getConponChk(param).then(res => {
+        console.log(res);
+        this.conponEffect.list = res;
+      });
     }
+  },
+  created() {
+    let columns = window.sessionStorage.getItem('conpon')
+    console.log(columns)
+    // this.conponEffect.columns = 
+    this.$api.getConponBizcat().then(res => {
+      console.log(res);
+      this.bizcatList = res;
+    });
+
+    this.$api.getConponTop10({current: Date.now(), target: 'cpn_get_count'}).then(res => {
+      console.log(res);
+      this.conponEffect.list = res;
+    });
+    this.init()
   }
 };
 </script>
@@ -216,14 +251,59 @@ export default {
   float: right;
   border: 1px solid #f2f2f2;
   border-radius: 16px;
-  margin: -2.5rem 2rem 0 0;
+  margin: -3.5rem 2rem 0 0;
 }
+
 .table_title_m {
-  width: 99.9%;
+  width: 100%;
   height: 35px;
-  line-height: 14px;
+  line-height: 35px;
+  .table_sp {
+    height: 19px;
+    line-height: 19px;
+    font-size: 14px;
+    color: #2a3962;
+    font-family: MicrosoftYaHei;
+  }
 }
-.ivu-tabs-tabpane .export{
-    margin-top:-3rem;
+
+.tiket_btn {
+  float: right;
+  width: 226px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(42, 57, 98, 1);
+  margin-top: 0.4rem;
+  .active {
+    background: #2a3962;
+    color: rgba(255, 255, 255, 1);
+  }
+  span {
+    display: inline-block;
+    width: 56px;
+    height: 23px;
+    line-height: 24px;
+    text-align: center;
+  }
+  .tiket_btn1 {
+    border-right: 1px solid rgba(42, 57, 98, 1);
+    // background: #2a3962;
+    border-radius: 12px 0px 0px 12px;
+    opacity: 0.8;
+    // color: rgba(255, 255, 255, 1);
+  }
+  .tiket_btn2,
+  .tiket_btn3 {
+    border-right: 1px solid rgba(42, 57, 98, 1);
+  }
+}
+
+.export_m {
+  cursor: pointer;
+  font-size: 24px;
+  color: #396fff;
+  float: right;
+  margin-top: -3rem;
 }
 </style>

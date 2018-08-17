@@ -1,0 +1,35 @@
+{
+  "code": "0",
+  "msg": "正常",
+  "data": [
+    {
+      "market_id": "12555",
+      "shop_bizcat": "零售",
+      "count": 12,
+      "sum": 7970,
+      "ratio": 0.0
+    },
+    {
+      "market_id": "12555",
+      "shop_bizcat": null,
+      "count": 7825,
+      "sum": 7970,
+      "ratio": 0.98
+    },
+    {
+      "market_id": "12555",
+      "shop_bizcat": "体验",
+      "count": 47,
+      "sum": 7970,
+      "ratio": 0.01
+    },
+    {
+      "market_id": "12555",
+      "shop_bizcat": "餐饮",
+      "count": 86,
+      "sum": 7970,
+      "ratio": 0.01
+    }
+  ],
+  "total": 4
+}
