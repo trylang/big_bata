@@ -1,51 +1,57 @@
 <template>
   <div class="ticketsTop">
     <header>
-      <h4>券PV</h4>
+      <h4>{{title}}</h4>
       <Icon class="icon-ticket" type="logo-octocat" size="40"/>
       <p><span class="btn-left" :class="[toggleName == 'sum' ? 'actived' : '']" @click="handleChange('sum')">总量</span>
         <span class="btn-right" :class="[toggleName == 'average' ? 'actived' : '']" @click="handleChange('average')">日均</span></p>
     </header>
     <div class="content">
-      <p v-for="(item, index) in calTicketList" :key="index">
+      <h2>{{list}}</h2>
+      <!-- <p v-for="(item, index) in calTicketList" :key="index">
         {{item.name}}
         <Progress v-if="index<3" :percent="item.percent" hide-info/>
         <Progress  v-else :percent="item.percent" status="wrong" hide-info/>{{item.value}}（{{item.percent}}%）
-        <!-- <span></span> -->
-      </p>
+      </p> -->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'ticketsTop',
-    data() {
-        return {
-            toggleName: 'sum'
-        }
+  name: "ticketsTop",
+  data() {
+    return {
+      toggleName: "sum"
+    };
+  },
+  props: {
+    title: {
+      type: String,
     },
-    props: {
-        progressList: {
-            type: Array,
-            required: true
-        }
-    },
-    computed: {
-        calTicketList: function () {
-            let sum = this.progressList.reduce((prev, cur) => cur.value + prev, 0);
-            this.progressList.forEach(item => {
-                item.percent = (item.value / sum).toFixed(1) * 100
-            })
-            return this.progressList
-        }
-    },
-    methods: {
-        handleChange(e) {
-            this.toggleName = e
-        }
+    progress: {
+      type: Object,
+      required: true
     }
-}
+  },
+  computed: {
+    list() {
+      return this.progress[this.toggleName]
+    },
+    calTicketList: function() {
+      let sum = this.progressList.reduce((prev, cur) => cur.value + prev, 0);
+      this.progressList.forEach(item => {
+        item.percent = (item.value / sum).toFixed(1) * 100;
+      });
+      return this.progressList;
+    }
+  },
+  methods: {
+    handleChange(e) {
+      this.toggleName = e;
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

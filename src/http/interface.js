@@ -176,8 +176,19 @@ export const getActivityCost = (data = {}) => {
   });
 };
 
+// 增加营销成本
+export const addActivityCost = (data = {}) => {
+  data = {market_id, ...data}
+  return axios({
+    url: "bi/marketing/insetactivitycost",
+    method: "post",
+    data
+  });
+};
+
 // 修改营销成本
 export const updataActivityCost = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/updataactivitycost",
     method: "post",
@@ -262,4 +273,8 @@ export default {
   getConponBizcat,
   getConponChk,
   getConponTop10,
+  getActivityCost,
+  addActivityCost,
+  updataActivityCost,
+  delActivitycost,
 };
