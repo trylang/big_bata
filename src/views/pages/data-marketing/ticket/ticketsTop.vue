@@ -7,17 +7,27 @@
         <span class="btn-right" :class="[toggleName == 'average' ? 'actived' : '']" @click="handleChange('average')">日均</span></p>
     </header>
     <div class="content">
-      <h2>{{list}}</h2>
-      <!-- <p v-for="(item, index) in calTicketList" :key="index">
-        {{item.name}}
-        <Progress v-if="index<3" :percent="item.percent" hide-info/>
-        <Progress  v-else :percent="item.percent" status="wrong" hide-info/>{{item.value}}（{{item.percent}}%）
-      </p> -->
+      <div v-if="toggleName == 'sum'">
+        <p v-for="(item, index) in list" :key="index">
+          <strong>{{item.shop_name}}</strong> <span>{{item.main_info}}</span>
+          <Progress v-if="index<3" :percent="item.r_sum | percent" hide-info/>
+          <Progress  v-else :percent="item.r_sum | percent" status="wrong" hide-info/>{{item.v_sum}}（{{item.r_sum | percent}}%）
+        </p>
+      </div>
+
+      <div v-if="toggleName == 'average'">
+        <p v-for="(item, index) in list" :key="index">
+          <strong>{{item.shop_name}}</strong> <span>{{item.main_info}}</span>
+          <Progress v-if="index<3" :percent="item.r_avg | percent" hide-info/>
+          <Progress  v-else :percent="item.r_avg | percent" status="wrong" hide-info/>{{item.v_avg}}（{{item.r_avg | percent}}%）
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { sort } from "@/utils/filter.js";
 export default {
   name: "ticketsTop",
   data() {
@@ -27,23 +37,22 @@ export default {
   },
   props: {
     title: {
-      type: String,
+      type: String
     },
     progress: {
-      type: Object,
+      type: Array,
       required: true
     }
   },
   computed: {
     list() {
-      return this.progress[this.toggleName]
-    },
-    calTicketList: function() {
-      let sum = this.progressList.reduce((prev, cur) => cur.value + prev, 0);
-      this.progressList.forEach(item => {
-        item.percent = (item.value / sum).toFixed(1) * 100;
-      });
-      return this.progressList;
+      return sort(this.progress, "seq", "asc");
+    }
+  },
+  filters: {
+    percent: function(value) {
+      if (!value) return;
+      return Number((value * 100).toFixed(3));
     }
   },
   methods: {

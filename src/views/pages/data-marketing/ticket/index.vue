@@ -47,14 +47,8 @@
             </div>
             <Row :gutter="16" style="width:100%;margin-top:1rem;">
                 <Col span="8" v-for="(top, index) in top2Tail10" :key="index">
-                  <ticketsTop :title="top.title" :progress="top.lastMonth"></ticketsTop>
+                  <ticketsTop :title="top.title" :progress="top.list"></ticketsTop>
                 </Col>
-                <!-- <Col span="8">
-                <ticketsTop :progressList="progressList"></ticketsTop>
-                </Col>
-                <Col span="8">
-                <ticketsTop :progressList="progressList"></ticketsTop>
-                </Col> -->
             </Row>
         </div>
 
@@ -69,20 +63,25 @@ export default {
   },
   data() {
     return {
-      toggleName: 'this_week',
-      btnList: [{
-        title: '当周',
-        type: 'this_week'
-      }, {
-        title: '上周',
-        type: 'last_week'
-      }, {
-        title: '当月',
-        type: 'this_month'
-      }, {
-        title: '上月',
-        type: 'last_month'
-      }],
+      toggleName: "this_week",
+      btnList: [
+        {
+          title: "当周",
+          type: "this_week"
+        },
+        {
+          title: "上周",
+          type: "last_week"
+        },
+        {
+          title: "当月",
+          type: "this_month"
+        },
+        {
+          title: "上月",
+          type: "last_month"
+        }
+      ],
       conponEffect: {
         list: [],
         pageList: [],
@@ -105,31 +104,40 @@ export default {
       bizcatList: [],
       couponList: [],
       couponObj: {
-        'cpn_get_count': {}
+        cpn_get_count: {}
       },
-      top2Tail10: [{
-        title: '券PV123',
-        type: 'top10',
-        lastMonth: {
-          sum: ['上月券PVtop10总量'],
-          average: ['上月券PVtop10日均']
+      top2Tail10: [
+        {
+          title: "券PV",
+          type: "top10_pv",
+          list: []
         },
-        lastWeek: {
-          sum: [],
-          average: []
-        }
-      }, {
-        title: '券PV',
-        type: 'tail10',
-        lastMonth: {
-          sum: [],
-          average: []
+        {
+          title: "券领取",
+          type: "top10_get",
+          list: []
         },
-        lastWeek: {
-          sum: [],
-          average: []
+        {
+          title: "券核销",
+          type: "top10_chk",
+          list: []
+        },
+        {
+          title: "券PV",
+          type: "tail10_pv",
+          list: []
+        },
+        {
+          title: "券领取",
+          type: "tail10_get",
+          list: []
+        },
+        {
+          title: "券核销",
+          type: "tail10_chk",
+          list: []
         }
-      }],
+      ],
       progressList: [
         {
           name: "ZARA 100元代金券",
@@ -207,20 +215,14 @@ export default {
   },
   methods: {
     handleChange(type) {
+      let _this = this;
       this.toggleName = type; //last_month
-      let top10 = [];
-      let tail10 = [];
-      
-      this.couponList.forEach(item => {
-        if (item.stat_date === type) { // 当周
-          if (item.stat_order == 'a->z') {
-            top10.push(item)
-          } else {
-            tail10.push(item)
-          }
-        } 
-      })
-
+      this.top2Tail10.forEach(item => {
+        item.list = _this.couponObj[item.type].filter(item => {
+          return item.stat_date === type
+        });
+      });
+      console.log(this.top2Tail10)
     },
     effectHandleSort(column) {
       this.conponEffect.list = sort(
@@ -244,10 +246,10 @@ export default {
     init(param) {
       this.$api.getConponEffect(param).then(res => {
         res.forEach((item, index) => {
-          if (!item.pv && item.explain == '合计') {
-            item.pv = item.explain
+          if (!item.pv && item.explain == "合计") {
+            item.pv = item.explain;
           }
-        })
+        });
         this.conponEffect.list = res;
         this.conponEffect.pageList = res.slice(0, 10);
       });
@@ -260,34 +262,35 @@ export default {
     this.$api.getConponBizcat().then(res => {
       this.bizcatList = res;
     });
-    let $api = this.$api
-    let current_date = '2018-08-17'
-    let [pvList, getList, chkList ] = await Promise.all([
-      $api.getConponTop10({current_date, target: 'pv'}), 
-      $api.getConponTop10({current_date, target: 'cpn_get_count'}), 
-      $api.getConponTop10({current_date, target: 'cpn_chk_count'})
-     ]);
-    console.log(pvList)
-    console.log(getList)
-    console.log(chkList)
+    let $api = this.$api;
+    let current_date = "2018-08-17";
+    let [pvList, getList, chkList] = await Promise.all([
+      $api.getConponTop10({ current_date, target: "pv" }),
+      $api.getConponTop10({ current_date, target: "cpn_get_count" }),
+      $api.getConponTop10({ current_date, target: "cpn_chk_count" })
+    ]);
 
-    this.top2Tail10 = [{
-      title: '券PV',
-      type: 'top10',
-      this_week: pvList.dataList.filter( item => {
-        return item.stat_date === 'this_week' && item.stat_order === 'a->z';
+    this.couponObj = {
+      top10_pv: pvList.dataList.filter(item => {
+        return item.stat_order === "z->a";
       }),
-      last_week: pvList.dataList.filter( item => {
-        return item.stat_date === 'last_week' && item.stat_order === 'a->z';
+      tail10_pv: pvList.dataList.filter(item => {
+        return item.stat_order === "a->z";
       }),
-      this_month: pvList.dataList.filter( item => {
-        return item.stat_date === 'this_month' && item.stat_order === 'a->z';
+      top10_get: getList.dataList.filter(item => {
+        return item.stat_order === "z->a";
       }),
-      last_month: pvList.dataList.filter( item => {
-        return item.stat_date === 'last_month' && item.stat_order === 'a->z';
+      tail10_get: getList.dataList.filter(item => {
+        return item.stat_order === "a->z";
       }),
-    }];
-
+      top10_chk: chkList.dataList.filter(item => {
+        return item.stat_order === "z->a";
+      }),
+      tail10_chk: chkList.dataList.filter(item => {
+        return item.stat_order === "a->z";
+      })
+    };
+    this.handleChange(this.toggleName);
     this.init();
   }
 };
