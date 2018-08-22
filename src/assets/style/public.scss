@@ -49,7 +49,7 @@ $color-border: #f2f2f2;
         line-height: 35px;
         border-bottom: 1px solid $color-border;
         margin-bottom: 1rem;
-        span {
+        .table_title_s {
             height: 19px;
             line-height: 19px;
             font-size: 14px;
@@ -59,7 +59,6 @@ $color-border: #f2f2f2;
     }
     .ivu-table-cell {
         padding-left: 10px;
-        text-align: left;
         span {
             height: 12px;
             font-size: 12px;
@@ -107,6 +106,7 @@ tr.ivu-table-row-hover td {
 
 .ivu-table-row td {
     height: 40px;
+    text-align: left;
 }
 
 // 分页器内部样式修改
@@ -170,27 +170,6 @@ tr.ivu-table-row-hover td {
                 font-weight: bold;
             }
         }
-        .drop_down {
-            float: left;
-            width: 40px;
-            height: 24px;
-            line-height: 24px;
-            text-align: center;
-            margin-left: 8px;
-            margin-top: 4px;
-            border-radius: 2px 0px 0px 2px;
-            border: 1px solid rgba(242, 242, 242, 1);
-        }
-        .drop_arrows {
-            float: left;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            margin-top: 4px;
-            text-align: center;
-            border-radius: 0px 2px 2px 0px;
-            border: 1px solid rgba(242, 242, 242, 1);
-        }
     }
     .table_page_r {
         float: right;
@@ -224,6 +203,7 @@ tr.ivu-table-row-hover td {
 
 .ivu-progress-bg {
     background-color: $color-actived;
+    opacity: 0.4;
 }
 
 .ivu-progress-wrong .ivu-progress-bg {
@@ -231,7 +211,7 @@ tr.ivu-table-row-hover td {
 }
 
 .ivu-progress {
-    width: 73%;
+    width: 76%;
 }
 
 .ivu-progress-outer {
@@ -362,6 +342,9 @@ tr.ivu-table-row-hover td {
 
 .action {
     margin-bottom: 1.5rem;
+    .ivu-input-number {
+        width: 247px;
+    }
     .action_name {
         width: 48px;
         height: 16px;
@@ -397,7 +380,6 @@ tr.ivu-table-row-hover td {
 }
 
 .ivu-table-cell {
-    text-align: left;
     padding-left: 14px;
     padding-right: 0px;
 }
@@ -458,6 +440,7 @@ tr.ivu-table-row-hover td {
     right: -70px;
 }
 
+//表格对齐
 .ivu-table td.demo-table-info-column {
     background: #fafafa;
     .ivu-table-cell {
@@ -465,6 +448,18 @@ tr.ivu-table-row-hover td {
     }
 }
 
-// .ivu-select-dropdown {
-//     width: 248px !important;
-// }
+.ivu-table td.overview-table-right {
+    .ivu-table-cell {
+        text-align: right !important;
+    }
+}
+
+.ivu-table th.activity-table-right {
+    text-align: right !important;
+    padding-right: 15px;
+}
+
+.ivu-table td.activity-table-right .ivu-table-cell {
+    text-align: right !important;
+    padding-right: 15px;
+}

@@ -1,9 +1,9 @@
 <template>
     <div id="table_container">
         <div class="table_title">
-            <span>券数据详情</span>
+            <span class="table_title_s">券数据详情</span>
         </div>
-        <Input suffix="ios-search" placeholder="请输入券名称" style="width: auto"/>
+        <Input suffix="ios-search" placeholder="请输入券名称" style="width: auto" v-model="conponEffect.coupon_name" @on-enter="getConponEffect(conponEffect.coupon_name)"/>
         <!-- Table表格 -->
         <i-Table border :columns="conponEffect.columns"  @on-sort-change="effectHandleSort" :data="conponEffect.pageList"></i-Table>
         <div class="table_page">
@@ -18,25 +18,18 @@
             <div class="table_title_m">
                 <span class="table_sp">券核销记录</span>
             </div>
-            <Tabs value="name1">
-                <TabPane v-for="(item, index) in bizcatList" :key="index" :label="item.shop_bizcat" :name="item.shop_bizcat">
-                  
+            <Tabs v-model="searchParam.shop_bizcat" @on-click="toggleTab">
+                <TabPane v-for="(item, index) in bizcatList" :key="index" :label="item.title" :name="item.shop_bizcat">
+                  <i-Table :columns="conponChk.columns" :data="conponChk.list"></i-Table>
+                  <div class="table_page">
+                      <div class="table_page_l">
+                          <p>共 <span>{{conponChk.list.total}}</span> 条数据</p>                           
+                      </div>
+                      <div class="table_page_r">
+                          <Page :total="conponChk.list.total" :current.sync="conponChk.curPage" :page-size="10" show-elevator @on-change="conponChkChangePage"/>
+                      </div>
+                  </div>
                 </TabPane>
-                <!-- <TabPane label="全部" name="name1">
-                    <i-Table :columns="columns" :data="data"></i-Table>
-                    <div class="table_page">
-                        <div class="table_page_l">
-                            <p>共 <span>20</span> 条数据</p>                           
-                        </div>
-                        <div class="table_page_r">
-                            <Page :total="100" show-elevator @on-chang="changePage"/>
-                        </div>
-                    </div>
-                </TabPane>
-                <TabPane label="五一活动" name="name2">五一活动</TabPane>
-                <TabPane label="端午活动" name="name3">端午活动</TabPane>
-                <TabPane label="店庆活动" name="name3">店庆活动</TabPane>
-                <TabPane label="双11" name="name3">双11</TabPane> -->
             </Tabs>
         </div>
         <div>
@@ -45,7 +38,7 @@
                     <span v-for="(item, index) in btnList" :key="index" :class="[`tiket_btn${index+1}`, toggleName == item.type ? 'active' : '']" @click="handleChange(item.type)">{{item.title}}</span>
                 </p>
             </div>
-            <Row :gutter="16" style="width:100%;margin-top:1rem;">
+            <Row :gutter="16" style="width:102%;margin-top:16px;">
                 <Col span="8" v-for="(top, index) in top2Tail10" :key="index">
                   <ticketsTop :title="top.title" :progress="top.list"></ticketsTop>
                 </Col>
@@ -83,12 +76,18 @@ export default {
         }
       ],
       conponEffect: {
+        coupon_name: null,
         list: [],
         pageList: [],
         columns: (() => {
           let res = JSON.parse(window.sessionStorage.getItem("coupon"));
+          console.log(res)
+          if (!res) return [];
+          let data = res.filter(item => {
+            return item.default_val === 'T'
+          })
           let columns = [];
-          res.forEach((item, index) => {
+          data.forEach((item, index) => {
             columns.push({
               title: item.dim_name,
               key: item.dim_id,
@@ -97,12 +96,58 @@ export default {
               sortable: index > 7 ? "custom" : ""
             });
           });
+          console.log(columns)
           return columns;
         })(),
         curPage: 1
       },
+      conponChk: {
+        list: [],
+        pageList: [],
+        columns: [
+          {
+            title: "券名称",
+            key: "coupon_name"
+          },
+          {
+            title: "券ID",
+            key: "coupon_id"
+          },
+          {
+            title: "券类型",
+            key: "category_name"
+          },
+          {
+            title: "发券主体",
+            key: "rectangle"
+          },
+          {
+            title: "商户名",
+            key: "shop_name"
+          },
+          {
+            title: "楼层",
+            key: "shop_floor"
+          },
+          {
+            title: "发券时间",
+            key: "put_date"
+          },
+          {
+            title: "领取时间",
+            key: "get_time"
+          }
+        ],
+        curPage: 1
+      },
+      searchParam: {
+        start_date: this.dayjs(new Date())
+          .subtract(1, "month")
+          .format("YYYY-MM-DD"),
+        end_date: this.dayjs(new Date()).format("YYYY-MM-DD"),
+        shop_bizcat: null
+      },
       bizcatList: [],
-      couponList: [],
       couponObj: {
         cpn_get_count: {}
       },
@@ -137,92 +182,22 @@ export default {
           type: "tail10_chk",
           list: []
         }
-      ],
-      progressList: [
-        {
-          name: "ZARA 100元代金券",
-          value: 12343
-        },
-        {
-          name: "优衣库 50元代金券",
-          value: 43294
-        },
-        {
-          name: "H&M 5折折扣券",
-          value: 4361
-        },
-        {
-          name: "星巴克 抹茶星冰乐试吃券",
-          value: 9854
-        },
-        {
-          name: "ADIDAS 8折折扣券",
-          value: 56783
-        },
-        {
-          name: "海底捞 满500元减100券",
-          value: 21456
-        }
-      ],
-      columns: [],
-      data: [
-        {
-          name: "五一活动",
-          time: "2018.05.01",
-          data: 3,
-          quantity: 45375,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        },
-        {
-          name: "端午节",
-          time: "2018.05.01",
-          data: 2,
-          quantity: 83284,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        },
-        {
-          name: "周年庆",
-          time: "2018.05.01",
-          data: 7,
-          quantity: 182385,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        },
-        {
-          name: "双11",
-          time: "2018.05.01",
-          data: 5,
-          quantity: 293495,
-          contact: 1294,
-          total: 192394,
-          average: 12464,
-          sales: 364586,
-          roi: 364586
-        }
       ]
     };
   },
   methods: {
+    toggleTab(biacat) {
+      this.biacat = biacat
+      this.getConponChk();
+    },
     handleChange(type) {
       let _this = this;
       this.toggleName = type; //last_month
       this.top2Tail10.forEach(item => {
         item.list = _this.couponObj[item.type].filter(item => {
-          return item.stat_date === type
+          return item.stat_date === type;
         });
       });
-      console.log(this.top2Tail10)
     },
     effectHandleSort(column) {
       this.conponEffect.list = sort(
@@ -240,11 +215,28 @@ export default {
         page * 10
       );
     },
-    changePage(page) {
-      console.log(page);
+    conponChkChangePage(page) {
+      this.conponChk.curPage = page
+      this.getConponChk();
     },
-    init(param) {
-      this.$api.getConponEffect(param).then(res => {
+    getConponChk(biacat) {
+      this.searchParam.shop_bizcat = biacat || this.searchParam.shop_bizcat || null;
+      let param = Object.assign({}, this.searchParam);
+      param.pageSize = 10;
+      param.pageIndex = this.conponChk.curPage;
+      this.$api.getConponChk(param).then(res => {
+        res.map(item => {
+          for (let key in item) {
+            if (!item[key]) item[key] = '--'
+          }
+          return item
+        })
+        this.conponChk.list = res;
+      });
+    },
+    getConponEffect(name) {
+      this.searchParam.coupon_name = name || null
+      this.$api.getConponEffect(this.searchParam).then(res => {
         res.forEach((item, index) => {
           if (!item.pv && item.explain == "合计") {
             item.pv = item.explain;
@@ -253,17 +245,33 @@ export default {
         this.conponEffect.list = res;
         this.conponEffect.pageList = res.slice(0, 10);
       });
-      this.$api.getConponChk(param).then(res => {
-        // console.log(res);
-      });
+    },
+    init(param) {
+      this.getConponEffect();
+      this.getConponChk();
     }
   },
   async created() {
+    let _this = this
+
+    eventBus.$on("updateSearchParam_ticket", data => {
+      
+      _this.searchParam = data
+      _this.searchParam.shop_bizcat = data.bizcat
+      console.log(1111111111, _this.searchParam);
+      this.init(data);
+    });
+    this.init();
     this.$api.getConponBizcat().then(res => {
+      res.forEach(item => {
+        item.title = `${item.shop_bizcat}（${item.ratio * 100}%）`;
+      });
       this.bizcatList = res;
     });
     let $api = this.$api;
-    let current_date = "2018-08-17";
+    let current_date = this.dayjs()
+      .subtract(1, "day")
+      .format("YYYY-MM-DD");
     let [pvList, getList, chkList] = await Promise.all([
       $api.getConponTop10({ current_date, target: "pv" }),
       $api.getConponTop10({ current_date, target: "cpn_get_count" }),
@@ -291,7 +299,9 @@ export default {
       })
     };
     this.handleChange(this.toggleName);
-    this.init();
+  },
+  beforeDestroy() {
+    eventBus.$off("updateSearchParam_ticket");
   }
 };
 </script>

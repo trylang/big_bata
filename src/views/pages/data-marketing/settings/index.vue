@@ -132,7 +132,7 @@
                         </Checkbox>
                     </div>
                     <CheckboxGroup v-model="level.coupon.checkAllGroup" @on-change="couponCheckAllGroupChange">
-                        <Checkbox v-for="(item, index) in level.coupon.list" :key="index" :label="item.dim_id">{{item.dim_name}}</Checkbox>
+                        <Checkbox v-for="(item, index) in level.coupon.list" :key="index" :disabled="item.editable==='F'" :label="item.dim_id">{{item.dim_name}}</Checkbox>
                     </CheckboxGroup>
                     <input class="apply" type="button" @click="handleApply('coupon', level.coupon.checkAllGroup)" value="应用">
                 </div>
@@ -169,12 +169,13 @@
 						@on-cancel="cancel"
             >
 				<div class="action"><span class="action_name">关联活动</span>
-						<Select v-model="cost.param.activity_id" style="width:296px">
-								<Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{ item.activity_name }}</Option>
+						<Select v-model="cost.param.activity_id" style="width:296px" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
+							<Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{ item.activity_name }}</Option>
 						</Select>
 				</div>
 				<div class="action"><span class="action_name">活动时间</span>
-						<DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" style="width: 296px"></DatePicker>
+            <Input v-model="cost.param.time" disabled />
+						<!-- <DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" style="width: 296px"></DatePicker> -->
 				</div>
         <div class="action"><span class="action_name">线下物料成本</span>
 						<InputNumber v-model="cost.param.offline_mat_cost"  placeholder="请输入金额"></InputNumber>元
@@ -193,7 +194,7 @@
 </template>
 <script>
 import newAction from "@/components/newAction.vue";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 export default {
   components: {
@@ -255,37 +256,34 @@ export default {
                     }
                   }
                 }),
-                h(
-                  "Icon",
-                  {
-                    props: {
-                      size: "small"
-                    },
-                    class: {
-                      iconfont: true,
-                      "icon-shanchu": true
-                    },
-                    style: {
-                      color: "#E4007F"
-                    },
-                    on: {
-                      click: () => {
-                        this.$Modal.confirm({
-                          title: "确认要删除此动作？",
-                          onOk: () => {
-                            this.$api
-                              .deleteMarketAction({ id: params.row.id })
-                              .then(res => {
-                                this.$Message.success("删除成功！");
-                                this.toggleTabpan("action");
-                              });
-                          },
-                          onCancel: () => {}
-                        });
-                      }
+                h("Icon", {
+                  props: {
+                    size: "small"
+                  },
+                  class: {
+                    iconfont: true,
+                    "icon-shanchu": true
+                  },
+                  style: {
+                    color: "#E4007F"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: "确认要删除此动作？",
+                        onOk: () => {
+                          this.$api
+                            .deleteMarketAction({ id: params.row.id })
+                            .then(res => {
+                              this.$Message.success("删除成功！");
+                              this.toggleTabpan("action");
+                            });
+                        },
+                        onCancel: () => {}
+                      });
                     }
                   }
-                )
+                })
               ]);
             }
           }
@@ -295,7 +293,12 @@ export default {
         list: [],
         pageList: [],
         curPage: 1,
-        param: {},
+        param: {
+          offline_mat_cost: 1,
+          online_ad_cost: 1,
+          coupon_cost: 1,
+          other_cost: 1
+        },
         model: false,
         loading: true,
         action_name: "",
@@ -352,45 +355,40 @@ export default {
                   on: {
                     click: () => {
                       let row = params.row;
-                      this.action.param.id = row.id;
-                      this.action.param.action_name = row.action_name;
-                      this.action.param.act_id = row.act_id;
-                      this.action.param.time = [row.val_begin, row.val_end];
+                      this.cost.param = Object.assign({}, row);
+                      this.cost.param.edit = true;
                       this.cost.model = true;
                     }
                   }
                 }),
-                h(
-                  "Icon",
-                  {
-                    props: {
-                      size: "small"
-                    },
-                    class: {
-                      iconfont: true,
-                      "icon-shanchu": true
-                    },
-                    style: {
-                      color: "#E4007F"
-                    },
-                    on: {
-                      click: () => {
-                        this.$Modal.confirm({
-                          title: "确认要删除此营销成本？",
-                          onOk: () => {
-                            this.$api
-                              .delActivitycost({ id: params.row.id })
-                              .then(res => {
-                                this.$Message.success("删除成功！");
-                                this.toggleTabpan("action");
-                              });
-                          },
-                          onCancel: () => {}
-                        });
-                      }
+                h("Icon", {
+                  props: {
+                    size: "small"
+                  },
+                  class: {
+                    iconfont: true,
+                    "icon-shanchu": true
+                  },
+                  style: {
+                    color: "#E4007F"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: "确认要删除此营销成本？",
+                        onOk: () => {
+                          this.$api
+                            .delActivitycost({ activity_id: params.row.activity_id })
+                            .then(res => {
+                              this.$Message.success("删除成功！");
+                              this.toggleTabpan("cost");
+                            });
+                        },
+                        onCancel: () => {}
+                      });
                     }
                   }
-                )
+                })
               ]);
             }
           }
@@ -428,17 +426,31 @@ export default {
     };
   },
   methods: {
+    changeCostTime(acticityId) {
+      let time = this.activityObj[acticityId];
+      if (!time) return;
+      time.period_end_time = time.period_end_time || '至今';
+      this.cost.param.time = `${time.period_start_time}~${time.period_end_time}`;
+    },
     addModel(name) {
       this[name].model = true;
       this[name].param = {};
+      if (name === "cost") {
+        this.cost.param = {
+          offline_mat_cost: 1,
+          online_ad_cost: 1,
+          coupon_cost: 1,
+          other_cost: 1
+        };
+      }
     },
     formatActionDate(time) {
       this.action.param.val_begin = time[0];
       this.action.param.val_end = time[1];
     },
     formatCostDate(time) {
-      this.cost.param.val_begin = time[0];
-      this.cost.param.val_end = time[1];
+      this.cost.param.period_start_time = time[0];
+      this.cost.param.period_end_time = time[1];
     },
     changeLoading(param) {
       param.loading = false;
@@ -448,20 +460,20 @@ export default {
     },
     submitAction() {
       if (!this.action.param.action_name) {
-        this.$Message.info('请填写动作名称！')
+        this.$Message.info("请填写动作名称！");
         return this.changeLoading(this.action);
       }
       if (!this.action.param.act_id) {
-        this.$Message.info('请选择活动！')
+        this.$Message.info("请选择活动！");
         return this.changeLoading(this.action);
       }
-      if (this.action.param.time.length>0) {
-        let time = this.action.param.time
-        this.action.param.val_begin = dayjs(time[0]).format('YYYY-MM-DD')
-        this.action.param.val_end = dayjs(time[1]).format('YYYY-MM-DD')
+      if (this.action.param.time.length > 0) {
+        let time = this.action.param.time;
+        this.action.param.val_begin = dayjs(time[0]).format("YYYY-MM-DD");
+        this.action.param.val_end = dayjs(time[1]).format("YYYY-MM-DD");
       }
       if (!this.action.param.val_begin) {
-        this.$Message.info('请选择生效时间！')
+        this.$Message.info("请选择生效时间！");
         return this.changeLoading(this.action);
       }
       if (this.action.param.id) {
@@ -471,8 +483,8 @@ export default {
         });
       } else {
         this.$api.addMarketAction(this.action.param).then(res => {
-          this.$Message.success("动作添加成功"); 
-          this.toggleTabpan("action");         
+          this.$Message.success("动作添加成功");
+          this.toggleTabpan("action");
         });
       }
       this.action.loading = false;
@@ -480,29 +492,33 @@ export default {
     },
     submitCost() {
       if (!this.cost.param.activity_id) {
-        this.$Message.info('请选择活动！')
+        this.$Message.info("请选择活动！");
         return this.changeLoading(this.cost);
       }
-      
-      if (this.cost.param.time.length>0) {
-        let time = this.cost.param.time
-        this.cost.param.val_begin = dayjs(time[0]).format('YYYY-MM-DD')
-        this.cost.param.val_end = dayjs(time[1]).format('YYYY-MM-DD')
+
+      debugger
+      if (this.cost.param.time) {
+        let time = this.cost.param.time.split('~');
+        this.cost.param.period_start_time = dayjs(time[0]).format("YYYY-MM-DD");
+        this.cost.param.period_end_time = (time[1] === '至今' ? null : time[1]);
       }
-      if (!this.cost.param.val_begin) {
-        this.$Message.info('请选择生效时间！')
+      if (!this.cost.param.period_start_time) {
+        this.$Message.info("请选择生效时间！");
         return this.changeLoading(this.cost);
       }
-      this.cost.param.activity_name = this.activityObj[this.cost.param.activity_id].activity_name
-      if (this.cost.param.id) {
+      this.cost.param.activity_name = this.activityObj[
+        this.cost.param.activity_id
+      ].activity_name;
+      delete this.cost.param.time;
+      if (this.cost.param.edit) {
         this.$api.updataActivityCost(this.cost.param).then(res => {
           this.$Message.success("营销成本修改成功");
           this.toggleTabpan("cost");
         });
       } else {
         this.$api.addActivityCost(this.cost.param).then(res => {
-          this.$Message.success("营销成本添加成功"); 
-          this.toggleTabpan("cost");         
+          this.$Message.success("营销成本添加成功");
+          this.toggleTabpan("cost");
         });
       }
       this.cost.loading = false;
@@ -514,11 +530,19 @@ export default {
       this.toggleTabpan("action");
     },
     searchCost(time) {
-      this.cost.val_begin = time[0];
-      this.cost.val_end = time[1];
+      this.cost.period_start_time = time[0];
+      this.cost.period_end_time = time[1];
       this.toggleTabpan("cost");
     },
-    cancel() {this.action.param = {}; this.cost.param = {};},
+    cancel() {
+      this.action.param = {};
+      this.cost.param = {
+        offline_mat_cost: 1,
+        online_ad_cost: 1,
+        coupon_cost: 1,
+        other_cost: 1
+      };
+    },
     changePageAction(page) {
       this.action.pageList.splice(0, this.action.pageList.length);
       this.action.pageList = this.action.list.slice((page - 1) * 10, page * 10);
@@ -576,21 +600,24 @@ export default {
       );
     },
     handleApply(name, data) {
-      if (!data.length) {
-        sessionStorage.setItem(name, JSON.stringify(data));
-      } else {
-        sessionStorage.setItem(name, data);
-      }
-      this.$Message.success("指标维度设置成功！");
+      this.level[name].list.forEach(item => {
+        item.market_id = 12555;
+        let ifShow = data.some(d => d === item.dim_id)
+        item.default_val = ifShow ? 'T' : 'F'
+      })
+      this.$api.insertSysLevels(this.level[name].list).then(res => {
+        sessionStorage.setItem(name, JSON.stringify(this.level[name].list));
+        this.$Message.success("指标维度设置成功！");
+      });
     },
     getActivityList(param, cb) {
-      let _this = this
+      let _this = this;
       this.$api.getActivityList(param).then(res => {
         this.activityList = res;
         res.forEach(item => {
           _this.activityObj[item.activity_id] = item;
-        })
-        if(cb) cb();
+        });
+        if (cb) cb();
       });
     },
     async toggleTabpan(name) {
@@ -604,61 +631,73 @@ export default {
           })
           .then(res => {
             res.forEach(item => {
-              if (item.act_id) item.activity_name = _this.activityObj[item.act_id].activity_name
+              if (item.act_id)
+                item.activity_name = _this.activityObj[item.act_id]
+                  ? _this.activityObj[item.act_id].activity_name
+                  : "--";
               if (!item.val_begin) {
-                item.date = '--';
+                item.date = "--";
               } else {
-                item.date = `${item.val_begin} ~ ${item.val_end}`
+                item.val_end = item.val_end || '至今'
+                item.date = `${item.val_begin}~${item.val_end}`;
               }
-            })
+            });
             this.action.list = res;
             this.action.pageList = res.slice(0, 10);
           });
-      }else if (name === "cost") {
-        await this.$api.getActivityCost({
+      } else if (name === "cost") {
+        await this.$api
+          .getActivityCost({
             action_name: this.cost.action_name,
             period_start_time: this.cost.period_start_time,
             period_end_time: this.cost.period_end_time
           })
           .then(res => {
             res.forEach(item => {
-              if (item.act_id) item.activity_name = _this.activityObj[item.act_id].activity_name
+              if (item.act_id)
+                item.activity_name =
+                  _this.activityObj[item.act_id].activity_name;
               if (!item.period_start_time) {
-                item.date = '--';
+                item.time = "--";
               } else {
-                item.date = `${item.period_start_time} ~ ${item.period_end_time}`
+                item.period_end_time = item.period_end_time || '至今'
+                item.time = `${item.period_start_time}~${
+                  item.period_end_time
+                }`;
               }
-            })
+            });
             this.cost.list = res;
             this.cost.pageList = res.slice(0, 10);
           });
       } else if (name === "level") {
-        let $api = this.$api;
-        let [overview, coupon, activityL1, activityL2] = await Promise.all([
-          $api.getSysLevels({ dim_grp: "sale.overview" }),
-          $api.getSysLevels({ dim_grp: "sale.coupon" }),
-          $api.getSysLevels({ dim_grp: "sale.activity.1" }),
-          $api.getSysLevels({ dim_grp: "sale.activity.2" })
-        ]);
-        this.level.overview.list = overview;
-        this.level.coupon.list = coupon;
-        this.level.activityL1.list = activityL1;
-        this.level.activityL2.list = activityL2;
-        this.level.overview.checkAllGroup = overview.map(item => item.dim_id);
-        this.level.coupon.checkAllGroup = coupon.map(item => item.dim_id);
-        this.level.activityL1.checkAllGroup = activityL1.map(
-          item => item.dim_id
-        );
-        this.level.activityL2.checkAllGroup = activityL2.map(
-          item => item.dim_id
-        );
-        sessionStorage.setItem('coupon', JSON.stringify(coupon));
+        this.$api.getSysLevels({}).then(res => {
+          let [overview, coupon, activityL1, activityL2] = [
+            res.filter(item => item.dim_grp === 'sale.overview'),
+            res.filter(item => item.dim_grp === 'sale.coupon'),
+            res.filter(item => item.dim_grp === 'sale.activity.1'),
+            res.filter(item => item.dim_grp === 'sale.activity.2'),
+          ];
+          this.level.overview.list = overview;
+          this.level.coupon.list = coupon;
+          this.level.activityL1.list = activityL1;
+          this.level.activityL2.list = activityL2;
+          this.level.overview.checkAllGroup = overview.map(item => item.dim_id);
+          this.level.coupon.checkAllGroup = coupon.map(item => item.dim_id);
+          this.level.activityL1.checkAllGroup = activityL1.map(
+            item => item.dim_id
+          );
+          this.level.activityL2.checkAllGroup = activityL2.map(
+            item => item.dim_id
+          );
+          sessionStorage.setItem("coupon", JSON.stringify(coupon));
+        });
       }
     }
   },
   async created() {
-    await this.getActivityList({ status: 1 }, () => { this.toggleTabpan("action"); });
-    
+    await this.getActivityList({ status: 1 }, () => {
+      this.toggleTabpan("action");
+    });
   }
 };
 </script>

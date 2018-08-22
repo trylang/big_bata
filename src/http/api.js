@@ -81,7 +81,12 @@ export default function $axios (options) {
         // 根据返回的code值来做不同的处理（和后端约定）
         switch (parseInt(data.code)) {
           case 0:
+            if(data.total && Array.isArray(data.data)) {
+              data.data.total = data.total 
+            }
             return data.data
+          case -3:
+            return []
           case 514:
             return Promise.reject(data.msg)
           default:

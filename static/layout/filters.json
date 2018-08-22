@@ -1,160 +1,144 @@
 {
-  "list": [
-    {
-      "id": "index",
-      "list": [
-        {
-          "title": "时间：",
-          "type": "daterange",
-          "name": "dateTime",
-          "data": [{
-            "name": "start_date"
-          }, {
-            "name": "end_date"
-          }]
-        },
-        {
-          "title": " ",
-          "type": "btn",
-          "data": [{
-            "position": "left",
-            "btnTitle": "节假日",
-            "name": "holiday"
-          }, {
-            "position": "right",
-            "btnTitle": "动作",
-            "name": "action_name"
-          }]
-        },
-        {
-          "title": "建筑物：",
-          "label": "building",
-          "filterName": "org_name",
-          "filterValue": "org_id",
-          "type": "select",
-          "name": "org_id"
-        },
-        {
-          "title": "楼层：",
-          "label": "floor",
-          "filterName": "shop_floor",
-          "filterValue": "shop_floor",
-          "type": "select",
-          "name": "floor"
-        },
-        {
-          "title": "业态：",
-          "label": "biacat",
-          "filterName": "shop_bizcat",
-          "filterValue": "shop_bizcat",
-          "type": "select",
-          "name": "bizcat"
-        },
-        {
-          "title": "店铺：",
-          "label": "shop",
-          "filterName": "shop_name",
-          "filterValue": "shop_id",
-          "type": "select",
-          "name": "shop_id"
-        }
-      ]
-    },
-    {
-      "id": "activity",
-      "list": [
-        {
-          "title": "时间：",
-          "type": "daterange",
-          "name": "dateTime",
-          "data": [{
-            "name": "start_date"
-          }, {
-            "name": "end_date"
-          }]
-        },
-        {
-          "title": "建筑物：",
-          "label": "building",
-          "filterName": "org_name",
-          "filterValue": "org_id",
-          "type": "select",
-          "name": "org_id"
-        },
-        {
-          "title": "楼层：",
-          "label": "floor",
-          "filterName": "shop_floor",
-          "filterValue": "shop_floor",
-          "type": "select",
-          "name": "floor"
-        },
-        {
-          "title": "业态：",
-          "label": "biacat",
-          "filterName": "shop_bizcat",
-          "filterValue": "shop_bizcat",
-          "type": "select",
-          "name": "bizcat"
-        },
-        {
-          "title": "活动：",
-          "label": "activity",
-          "type": "select",
-          "filterName": "activity_name",
-          "filterValue": "activity_id",
-          "name": "activity_id"
-        }
-      ]
-    },
-    {
-      "id": "ticket",
+    "list": [{
+            "id": "index",
             "list": [{
-          "title": "时间：",
-          "type": "daterange",
-          "name": "dateTime",
-          "data": [{
-            "name": "start_date"
-          }, {
-            "name": "end_date"
-          }]
+                    "title": "时间：",
+                    "type": "daterange",
+                    "name": "dateTime",
+                    "data": [{
+                        "name": "start_date"
+                    }, {
+                        "name": "end_date"
+                    }]
+                },
+                {
+                    "title": "建筑物：",
+                    "label": "building",
+                    "filterName": "org_name",
+                    "filterValue": "org_id",
+                    "type": "select",
+                    "name": "org_id"
+                },
+                {
+                    "title": "楼层：",
+                    "label": "floor",
+                    "filterName": "shop_floor",
+                    "filterValue": "shop_floor",
+                    "type": "select",
+                    "name": "floor"
+                },
+                {
+                    "title": "业态：",
+                    "label": "biacat",
+                    "filterName": "shop_bizcat",
+                    "filterValue": "shop_bizcat",
+                    "type": "select",
+                    "name": "bizcat"
+                },
+                {
+                    "title": "店铺：",
+                    "label": "shop",
+                    "filterName": "shop_name",
+                    "filterValue": "shop_id",
+                    "type": "select",
+                    "name": "shop_id"
+                }
+            ]
         },
         {
-          "title": "建筑物：",
-          "label": "building",
-          "filterName": "org_name",
-          "filterValue": "org_id",
-          "type": "select",
-          "name": "org_id"
+            "id": "activity",
+            "list": [{
+                    "title": "时间：",
+                    "type": "daterange",
+                    "name": "dateTime",
+                    "data": [{
+                        "name": "start_date"
+                    }, {
+                        "name": "end_date"
+                    }]
+                },
+                {
+                    "title": "建筑物：",
+                    "label": "building",
+                    "filterName": "org_name",
+                    "filterValue": "org_id",
+                    "type": "select",
+                    "name": "org_id"
+                },
+                {
+                    "title": "楼层：",
+                    "label": "floor",
+                    "filterName": "shop_floor",
+                    "filterValue": "shop_floor",
+                    "type": "select",
+                    "name": "floor"
+                },
+                {
+                    "title": "业态：",
+                    "label": "biacat",
+                    "filterName": "shop_bizcat",
+                    "filterValue": "shop_bizcat",
+                    "type": "select",
+                    "name": "bizcat"
+                },
+                {
+                    "title": "活动：",
+                    "label": "activity",
+                    "type": "select",
+                    "filterName": "activity_name",
+                    "filterValue": "activity_id",
+                    "name": "activity_id"
+                }
+            ]
         },
         {
-          "title": "楼层：",
-          "label": "floor",
-          "filterName": "shop_floor",
-          "filterValue": "shop_floor",
-          "type": "select",
-          "name": "floor"
+            "id": "ticket",
+            "list": [{
+                    "title": "时间：",
+                    "type": "daterange",
+                    "name": "dateTime",
+                    "data": [{
+                        "name": "start_date"
+                    }, {
+                        "name": "end_date"
+                    }]
+                },
+                {
+                    "title": "建筑物：",
+                    "label": "building",
+                    "filterName": "org_name",
+                    "filterValue": "org_id",
+                    "type": "select",
+                    "name": "org_id"
+                },
+                {
+                    "title": "楼层：",
+                    "label": "floor",
+                    "filterName": "shop_floor",
+                    "filterValue": "shop_floor",
+                    "type": "select",
+                    "name": "floor"
+                },
+                {
+                    "title": "业态：",
+                    "label": "biacat",
+                    "filterName": "shop_bizcat",
+                    "filterValue": "shop_bizcat",
+                    "type": "select",
+                    "name": "bizcat"
+                },
+                {
+                    "title": "店铺：",
+                    "label": "shop",
+                    "filterName": "shop_name",
+                    "filterValue": "shop_id",
+                    "type": "select",
+                    "name": "shop_id"
+                }
+            ]
         },
         {
-          "title": "业态：",
-          "label": "biacat",
-          "filterName": "shop_bizcat",
-          "filterValue": "shop_bizcat",
-          "type": "select",
-          "name": "bizcat"
-        },
-        {
-          "title": "店铺：",
-          "label": "shop",
-          "filterName": "shop_name",
-          "filterValue": "shop_id",
-          "type": "select",
-          "name": "shop_id"
-        }
-      ]
-    },
-    {
-      "id": "sales-member",
+            "id": "sales-member",
             "list": [{
                     "title": " ",
                     "type": "btn",
@@ -197,9 +181,12 @@
                     "name": "bizcat"
                 },
                 {
-                    "title": "商户：",
-                    "type": "select",
-                    "name": "shop_id"
+                  "title": "店铺：",
+                  "label": "shop",
+                  "filterName": "shop_name",
+                  "filterValue": "shop_id",
+                  "type": "select",
+                  "name": "shop_id"
                 }
             ]
         },

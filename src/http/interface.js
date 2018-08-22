@@ -169,6 +169,7 @@ export const deleteMarketAction = (data = {}) => {
 
 // 获取营销成本
 export const getActivityCost = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getactivitycost",
     method: "post",
@@ -198,6 +199,7 @@ export const updataActivityCost = (data = {}) => {
 
 // 删除营销成本
 export const delActivitycost = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/delactivitycost",
     method: "post",
@@ -210,6 +212,15 @@ export const delActivitycost = (data = {}) => {
 export const getSysLevels = (data = {}) => {
   return axios({
     url: "bi/marketing/sys",
+    method: "post",
+    data
+  });
+};
+
+// 系统配置 应用指标维度
+export const insertSysLevels = (data = {}) => {
+  return axios({
+    url: "bi/marketing/insertsys",
     method: "post",
     data
   });
@@ -252,6 +263,58 @@ export const getConponTop10 = (data = {}) => {
   });
 };
 
+
+// ====================   会员分析   =========================
+
+export const getMemberNumber = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/number/query",
+    method: "post",
+    data
+  });
+};
+
+export const getMemberActivity = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/activity/query",
+    method: "post",
+    data
+  });
+};
+
+export const getMemberQrcord = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/qrcord/query",
+    method: "post",
+    data
+  });
+};
+
+export const getMemberSourcesAct = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/sourcesAct/query",
+    method: "post",
+    data
+  });
+};
+
+export const getMemberSourcesChnnl = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/sourcesChnnl/query",
+    method: "post",
+    data
+  });
+};
+
+export const getMemberDist = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/dist/query",
+    method: "post",
+    data
+  });
+};
+
+
 export default {
   getFloorList,
   getHolidayList,
@@ -277,4 +340,12 @@ export default {
   addActivityCost,
   updataActivityCost,
   delActivitycost,
+  insertSysLevels,
+  getMemberNumber,
+  getMemberActivity,
+  getMemberQrcord,
+  getMemberSourcesAct,
+  getMemberSourcesChnnl,
+  getMemberDist,
+  
 };

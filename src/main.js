@@ -2,6 +2,7 @@ import Vue from 'vue'
 import iView from 'iview'
 import VCharts from 'v-charts'
 import echarts from 'echarts'
+import dayjs from 'dayjs'
 
 import 'iview/dist/styles/iview.css'
 
@@ -14,6 +15,8 @@ import api from './http/index'
 Vue.config.productionTip = false
 
 Vue.prototype.$echarts = echarts 
+Vue.prototype.dayjs = dayjs
+
 window.eventBus = new Vue()
 
 Vue.use(api)

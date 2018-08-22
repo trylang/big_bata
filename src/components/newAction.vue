@@ -25,58 +25,58 @@
     </div>
 </template>
 <script>
-export default {
-    name: "newAction",
-    data() {
-        return {
-            modal11: false,
-            cityList: [
-                {
-                    value: 'New York',
-                    label: 'New York'
-                },
-                {
-                    value: 'London',
-                    label: 'London'
-                },
-                {
-                    value: 'Sydney',
-                    label: 'Sydney'
-                },
-                {
-                    value: 'Ottawa',
-                    label: 'Ottawa'
-                },
-                {
-                    value: 'Paris',
-                    label: 'Paris'
-                },
-                {
-                    value: 'Canberra',
-                    label: 'Canberra'
-                }
-            ],
-            model1: ''
-        }
-    },
-    methods: {
-        ok() {
-            this.$Message.info("Clicked ok");
+    export default {
+        name: "newAction",
+        data() {
+            return {
+                modal11: false,
+                cityList: [
+                    {
+                        value: 'New York',
+                        label: 'New York'
+                    },
+                    {
+                        value: 'London',
+                        label: 'London'
+                    },
+                    {
+                        value: 'Sydney',
+                        label: 'Sydney'
+                    },
+                    {
+                        value: 'Ottawa',
+                        label: 'Ottawa'
+                    },
+                    {
+                        value: 'Paris',
+                        label: 'Paris'
+                    },
+                    {
+                        value: 'Canberra',
+                        label: 'Canberra'
+                    }
+                ],
+                model1: ''
+            }
         },
-        cancel() {
-            this.$Message.info("Clicked cancel");
+        methods: {
+            ok() {
+                this.$Message.info("Clicked ok");
+            },
+            cancel() {
+                this.$Message.info("Clicked cancel");
+            }
         }
-    }
-};
+    };
 </script>
 <style lang="scss" scoped>
-@import "@/assets/style/components/filterBox.scss";
+    @import "@/assets/style/components/filterBox.scss";
 </style>
 <style>
-.action .ivu-select {
-  border: 1px solid #f2f2f2;
-  border-radius: 4px;
-}
+    .action .ivu-select {
+        border: 1px solid #f2f2f2;
+        border-radius: 4px;
+    }
 </style>
 
 
