@@ -221,7 +221,8 @@ export default {
             pageT1List: [],
             dataT1: [],
             pageT2List: [],
-            dataT2: []
+            dataT2: [],
+            totalT2: {}
         };
     },
     computed: {
@@ -253,14 +254,14 @@ export default {
             this.curPageT1 = 1;
         },
         changePageT2(page) {
-            this.pageT2List.splice(0, this.pageT2List.length);
+            this.pageT2List.splice(0, this.pageT2List.length-1);
             this.pageT2List = this.dataT2.slice((page - 1) * 10, page * 10);
+            this.pageT2List.push(this.totalT2);
         },
         handleSortT2(column) {
-            let total = this.dataT2.pop();
             this.dataT2 = sort(this.dataT2, column.key, column.order)
-            this.dataT2.push(total)
             this.pageT2List = this.dataT2.slice(0, 10);
+            this.pageT2List.push(this.totalT2);
             this.curPageT2 = 1;
         },
         async init(param) {
@@ -276,7 +277,9 @@ export default {
                     }
                 })
                 _this.dataT2 = res
+                this.totalT2 = this.dataT2.pop();
                 _this.pageT2List = this.dataT2.slice(0, 10);
+                _this.pageT2List.push(this.totalT2);
             });
             this.$api.getActivityChart(param).then(res => {
                 _this.chartData = res
@@ -463,7 +466,7 @@ export default {
                         position: "top",
                         color: "auto",
                         formatter: param => {
-                            return fmoney(param.value);
+                            return fmoney(param.value, 0);
                         }
                     },
                     markArea: areaStyle,
@@ -498,7 +501,6 @@ export default {
     created() {
         this.init(this.searchParam)
         eventBus.$on('updateSearchParam_activity', data => {
-            console.log(2)
             this.init(data)
         })
     },

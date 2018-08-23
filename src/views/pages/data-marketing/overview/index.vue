@@ -10,8 +10,6 @@
             <div style="padding-right: 1rem; padding-top: 3rem;overflow:hidden;">
                 <div class="table_title"><span class="table_title_s">数据展示</span>
                     <div class="et_button">
-                        <!-- <input class="et_button_l" value="节假日">
-                        <input class="et_button_r" value="动作"> -->
                         <span v-for="(item, index) in btnList" :key="index"
                               :class="[`et_button${index+1}`, toggleName == item.type ? 'active' : '']"
                               @click="handleChange(item.type)">{{item.title}}</span>
@@ -155,19 +153,19 @@ export default {
       let itemColors = {
         holiday: "#396FFF",
         activity: "#F5A623",
-        zhoumo: "#ccc"
+      	zhoumo: "#E4007F"
       };
       let json = {
-        视频客流量: "video_cf",
-        WIFI客流量: "wifi_cf",
-        活动UV: "activity_uv",
-        活动PV: "activity_pv",
-        会员数: "mbr_reg_count",
-        新增会员数: "mbr_reg_count_acc",
-        领取人数: "cpn_get_persons",
-        领券量: "cpn_get_count",
-        核销量: "cpn_chk_count",
-        核销人数: "cpn_chk_persons"
+                '视频客流量': "video_cf",
+                'WIFI客流量': "wifi_cf",
+                '活动UV': "activity_uv",
+                '活动PV': "activity_pv",
+                '会员数': "mbr_reg_count",
+                '新增会员数': "mbr_reg_count_acc",
+                '领券量': "cpn_get_count",
+                '领取人数': "cpn_get_persons",
+                '核销量': "cpn_chk_count",
+                '核销人数': "cpn_chk_persons",
       };
       let options = {
         color: colors,
@@ -259,6 +257,7 @@ export default {
             .add(1, "day")
             .format("YYYY-MM-DD")
         );
+        
         return data;
       })();
 
@@ -325,7 +324,7 @@ export default {
             position: "top",
             color: "auto",
             formatter: param => {
-              return fmoney(param.value);
+              return fmoney(param.value, 0);
             }
           },
           markArea: areaStyle,

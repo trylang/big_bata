@@ -1,0 +1,607 @@
+{
+  "code": "0",
+  "msg": "正常",
+  "data": [
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-01",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-02",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-03",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-04",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-05",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-06",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-07",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-08",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-09",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-10",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-11",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-12",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-13",
+      "act_chnl_id": "带参二维码",
+      "act_chnl_name": "带参二维码",
+      "add_members": 17,
+      "reg_members": 18,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-13",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-13",
+      "act_chnl_id": "线上H5",
+      "act_chnl_name": "线上H5",
+      "add_members": 41,
+      "reg_members": 47,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-13",
+      "act_chnl_id": "服务号",
+      "act_chnl_name": "服务号",
+      "add_members": 32,
+      "reg_members": 35,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-13",
+      "act_chnl_id": "小程序",
+      "act_chnl_name": "小程序",
+      "add_members": 34,
+      "reg_members": 38,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-14",
+      "act_chnl_id": "小程序",
+      "act_chnl_name": "小程序",
+      "add_members": 27,
+      "reg_members": 17,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-14",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-14",
+      "act_chnl_id": "带参二维码",
+      "act_chnl_name": "带参二维码",
+      "add_members": 13,
+      "reg_members": 15,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-14",
+      "act_chnl_id": "服务号",
+      "act_chnl_name": "服务号",
+      "add_members": 14,
+      "reg_members": 10,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-14",
+      "act_chnl_id": "线上H5",
+      "act_chnl_name": "线上H5",
+      "add_members": 43,
+      "reg_members": 37,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-15",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-15",
+      "act_chnl_id": "小程序",
+      "act_chnl_name": "小程序",
+      "add_members": 22,
+      "reg_members": 35,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-15",
+      "act_chnl_id": "线上H5",
+      "act_chnl_name": "线上H5",
+      "add_members": 35,
+      "reg_members": 23,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-15",
+      "act_chnl_id": "服务号",
+      "act_chnl_name": "服务号",
+      "add_members": 15,
+      "reg_members": 14,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-15",
+      "act_chnl_id": "带参二维码",
+      "act_chnl_name": "带参二维码",
+      "add_members": 19,
+      "reg_members": 17,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-16",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-16",
+      "act_chnl_id": "带参二维码",
+      "act_chnl_name": "带参二维码",
+      "add_members": 24,
+      "reg_members": 24,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-16",
+      "act_chnl_id": "线上H5",
+      "act_chnl_name": "线上H5",
+      "add_members": 34,
+      "reg_members": 30,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-16",
+      "act_chnl_id": "小程序",
+      "act_chnl_name": "小程序",
+      "add_members": 87,
+      "reg_members": 64,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-16",
+      "act_chnl_id": "服务号",
+      "act_chnl_name": "服务号",
+      "add_members": 32,
+      "reg_members": 36,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-17",
+      "act_chnl_id": "小程序",
+      "act_chnl_name": "小程序",
+      "add_members": 100,
+      "reg_members": 110,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-17",
+      "act_chnl_id": "带参二维码",
+      "act_chnl_name": "带参二维码",
+      "add_members": 57,
+      "reg_members": 62,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-17",
+      "act_chnl_id": "服务号",
+      "act_chnl_name": "服务号",
+      "add_members": 14,
+      "reg_members": 12,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-17",
+      "act_chnl_id": "线上H5",
+      "act_chnl_name": "线上H5",
+      "add_members": 29,
+      "reg_members": 12,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "chnl-day",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-17",
+      "act_chnl_id": "N/A",
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天活动"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-01",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-02",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-03",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-04",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-05",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-06",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-07",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-08",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-09",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-10",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-11",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-12",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-13",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": 124,
+      "reg_members": 138,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-14",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": 97,
+      "reg_members": 79,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-15",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": 91,
+      "reg_members": 89,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-16",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": 177,
+      "reg_members": 154,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "day-sum",
+      "market_id": 12555,
+      "stat_ymd": "2018-08-17",
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": 200,
+      "reg_members": 196,
+      "illustrate": "每天合计"
+    },
+    {
+      "cat": "chnl-sum",
+      "market_id": 12555,
+      "stat_ymd": null,
+      "act_chnl_id": null,
+      "act_chnl_name": "带参二维码",
+      "add_members": 130,
+      "reg_members": 136,
+      "illustrate": "活动合计"
+    },
+    {
+      "cat": "chnl-sum",
+      "market_id": 12555,
+      "stat_ymd": null,
+      "act_chnl_id": null,
+      "act_chnl_name": "小程序",
+      "add_members": 270,
+      "reg_members": 264,
+      "illustrate": "活动合计"
+    },
+    {
+      "cat": "chnl-sum",
+      "market_id": 12555,
+      "stat_ymd": null,
+      "act_chnl_id": null,
+      "act_chnl_name": "N/A",
+      "add_members": null,
+      "reg_members": 0,
+      "illustrate": "活动合计"
+    },
+    {
+      "cat": "chnl-sum",
+      "market_id": 12555,
+      "stat_ymd": null,
+      "act_chnl_id": null,
+      "act_chnl_name": "服务号",
+      "add_members": 107,
+      "reg_members": 107,
+      "illustrate": "活动合计"
+    },
+    {
+      "cat": "chnl-sum",
+      "market_id": 12555,
+      "stat_ymd": null,
+      "act_chnl_id": null,
+      "act_chnl_name": "线上H5",
+      "add_members": 182,
+      "reg_members": 149,
+      "illustrate": "活动合计"
+    },
+    {
+      "cat": "day-sum2",
+      "market_id": 12555,
+      "stat_ymd": null,
+      "act_chnl_id": null,
+      "act_chnl_name": null,
+      "add_members": 689,
+      "reg_members": 656,
+      "illustrate": "合计合计"
+    }
+  ],
+  "total": 60
+}

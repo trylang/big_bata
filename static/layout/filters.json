@@ -25,15 +25,15 @@
                     "filterName": "shop_floor",
                     "filterValue": "shop_floor",
                     "type": "select",
-                    "name": "floor"
+                    "name": "shop_floor"
                 },
                 {
                     "title": "业态：",
-                    "label": "biacat",
+                    "label": "bizcat",
                     "filterName": "shop_bizcat",
                     "filterValue": "shop_bizcat",
                     "type": "select",
-                    "name": "bizcat"
+                    "name": "shop_bizcat"
                 },
                 {
                     "title": "店铺：",
@@ -71,15 +71,15 @@
                     "filterName": "shop_floor",
                     "filterValue": "shop_floor",
                     "type": "select",
-                    "name": "floor"
+                    "name": "shop_floor"
                 },
                 {
                     "title": "业态：",
-                    "label": "biacat",
+                    "label": "bizcat",
                     "filterName": "shop_bizcat",
                     "filterValue": "shop_bizcat",
                     "type": "select",
-                    "name": "bizcat"
+                    "name": "shop_bizcat"
                 },
                 {
                     "title": "活动：",
@@ -117,15 +117,15 @@
                     "filterName": "shop_floor",
                     "filterValue": "shop_floor",
                     "type": "select",
-                    "name": "floor"
+                    "name": "shop_floor"
                 },
                 {
                     "title": "业态：",
-                    "label": "biacat",
+                    "label": "bizcat",
                     "filterName": "shop_bizcat",
                     "filterValue": "shop_bizcat",
                     "type": "select",
-                    "name": "bizcat"
+                    "name": "shop_bizcat"
                 },
                 {
                     "title": "店铺：",
@@ -144,15 +144,19 @@
                     "type": "btn",
                     "data": [{
                         "position": "left",
-                        "btnTitle": "近一周",
+                        "btnTitle": "当周",
                         "name": "week"
                     }, {
                         "position": "middle",
-                        "btnTitle": "近一月",
+                        "btnTitle": "上月",
                         "name": "month"
                     }, {
+                        "position": "middle",
+                        "btnTitle": "当月",
+                        "name": "three_month"
+                    }, {
                         "position": "right",
-                        "btnTitle": "近三月",
+                        "btnTitle": "上月",
                         "name": "three_month"
                     }]
                 },
@@ -170,15 +174,15 @@
                     "filterName": "shop_floor",
                     "filterValue": "shop_floor",
                     "type": "select",
-                    "name": "floor"
+                    "name": "shop_floor"
                 },
                 {
                     "title": "业态：",
-                    "label": "biacat",
+                    "label": "bizcat",
                     "filterName": "shop_bizcat",
                     "filterValue": "shop_bizcat",
                     "type": "select",
-                    "name": "bizcat"
+                    "name": "shop_bizcat"
                 },
                 {
                   "title": "店铺：",

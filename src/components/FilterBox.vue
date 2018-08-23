@@ -4,23 +4,22 @@
     <div class="inline-content">
       <div class="inline-item" v-for="(filter, index) in filters" :key="index">
         <span :style="dateStyle(filter)">{{filter.title}}</span>
-        <p v-if="filter.type==='daterange'" style="margin-top: -1.8rem; padding-left: 2rem;">
-          <DatePicker v-for="(date, dataIndex) in filter.data" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" 
+        <p v-show="filter.type==='daterange'" style="margin-top: -1.8rem; padding-left: 2rem;">
+          <DatePicker v-for="(date, dataIndex) in filter.data" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" 
           v-model="param[date.name]" 
           class="filter-input filter-date-picker"></DatePicker>
         </p>
 
-        <Select v-if="filter.type==='select' && options" clearable class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
+        <Select v-show="filter.type==='select' && options" clearable class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
           <Option v-for="(item, index) in options[filter.label]" :value="item[filter.filterValue]" :key="index">
             {{item[filter.filterName]}}
           </Option>
         </Select>
-
-        <p v-if="filter.type === 'btn'">
-          <span v-for="btn in filter.data" :class="[ 'btn-' + btn.position, toggleName === btn.position ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
-        </p>
+        <p v-show="filter.type === 'btn'">
+          <span v-for="(btn,index) in filter.data" :key="index" :class="[ 'btn-' + btn.position, toggleName === btn.position ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
+        </p> 
       </div>
-      <Button v-if="filters.length>0" @click="handle">确定</Button>
+      <Button v-show="filters.length>0" @click="handle"><span class="query">查询</span></Button>
     </div>
   </div>
 </template>
@@ -76,39 +75,42 @@ export default {
       ],
       event: {
         building: (value, item) => {
-          this.param.floor = "";
-          this.param.biacat = "";
-          this.param.shop_id = "";
-          this.param.activity_id = "";
-          this.$api.getFloorList({ org_id: value }).then(res => {
-            this.options.floor = res;
+          _this.param.shop_floor = "";
+          _this.param.shop_bizcat = "";
+					_this.param.shop_id = "";
+					_this.param.activity_id = "";
+					
+          _this.$api.getFloorList({ org_id: value }).then(res => {
+						_this.options.floor = res;
           });
-          this.$api.getBizcatList({ org_id: value }).then(res => {
-            this.options.biacat = res;
+          _this.$api.getBizcatList({ org_id: value }).then(res => {
+            _this.options.bizcat = res;
           });
-          this.$api.getShopList({ org_id: value }).then(res => {
-            this.options.shop = res;
+          _this.$api.getShopList({ org_id: value }).then(res => {
+            _this.options.shop = res;
           });
-          this.$api.getActivityList({ org_id: value }).then(res => {
-            this.options.activity = res;
+          _this.$api.getActivityList({ org_id: value }).then(res => {
+            _this.options.activity = res;
           });
         },
         floor: (value, item) => {
-          this.$api
-            .getShopList({ org_id: this.param.org_id, floor: value })
+					_this.param.shop_id = "";
+          _this.$api
+            .getShopList({ org_id: _this.param.org_id, shop_floor: value })
             .then(res => {
-              this.options.shop = res;
+              _this.options.shop = res;
             });
         },
-        biacat: (value, item) => {
-          this.$api
+        bizcat: (value, item) => {
+					_this.param.shop_id = "";
+          _this.$api
             .getShopList({
-              org_id: this.param.org_id,
-              floor: this.param.floor,
-              biacat: value
+              org_id: _this.param.org_id,
+              shop_floor: _this.param.shop_floor,
+              shop_bizcat: value
             })
             .then(res => {
-              this.options.shop = res;
+              _this.options.shop = res;
             });
         },
         shop: () => {},
@@ -195,17 +197,29 @@ export default {
 .inline-content {
   :nth-child(5) {
     .ivu-select-single {
-      width: 190px !important;
+      width: 128px !important;
       .ivu-select-selection {
-        width: 190px !important;
+        width: 128px !important;
       }
       .ivu-select-dropdown {
-        width: 190px !important;
+        width: 128px !important;
       }
     }
   }
   button {
-    border: 1px solid #2a3962;
+    width: 64px;
+    height: 24px;
+    border-radius: 12px;
+    border: 1px solid rgba(42, 57, 98, 0.4);
+    .query {
+      display: block;
+      height: 12px;
+      font-size: 12px;
+      text-align: center;
+      font-family: MicrosoftYaHei;
+      color: $color-primary;
+      line-height: 12px;
+    }
   }
 }
 </style>

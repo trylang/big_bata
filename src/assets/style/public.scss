@@ -90,7 +90,6 @@ tr.ivu-table-row-hover td {
 }
 
 .ivu-table th {
-    text-align: left;
     border-bottom: 1px solid $color-border;
     background-color: #fafafa;
 }
@@ -106,6 +105,10 @@ tr.ivu-table-row-hover td {
 
 .ivu-table-row td {
     height: 40px;
+    text-align: left;
+}
+
+.ivu-table th {
     text-align: left;
 }
 
@@ -218,10 +221,6 @@ tr.ivu-table-row-hover td {
     width: 95%;
 }
 
-.content p span {
-    float: left;
-}
-
 .ivu-modal-footer>button {
     border: 1px solid rgba(57, 111, 255, 1);
     width: 96px;
@@ -235,7 +234,7 @@ tr.ivu-table-row-hover td {
 }
 
 .ivu-btn-primary:hover {
-    background-color: #396FFF;
+    background-color: $color-actived;
 }
 
 .ivu-btn-text:hover {
@@ -454,6 +453,11 @@ tr.ivu-table-row-hover td {
     }
 }
 
+.overview-table-right {
+    text-align: right !important;
+    padding-right: 15px;
+}
+
 .ivu-table th.activity-table-right {
     text-align: right !important;
     padding-right: 15px;
@@ -462,4 +466,9 @@ tr.ivu-table-row-hover td {
 .ivu-table td.activity-table-right .ivu-table-cell {
     text-align: right !important;
     padding-right: 15px;
+}
+
+// 时间选择kuang
+.allocation_container .ivu-tabs {
+    overflow: visible !important;
 }

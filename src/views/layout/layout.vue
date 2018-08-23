@@ -63,60 +63,69 @@ import FilterBox from "../../components/FilterBox";
 import filterList from "^/layout/filters.json";
 
 export default {
-    data() {
-        return {
-            filterOptions: {},
-            menus: [
-                // {
-                //     id: "0",
-                //     label: "销售数据"
-                // },
-                {
-                    id: "1",
-                    label: "营销数据"
-                },
-                // {
-                //     id: 2,
-                //     label: "客流数据"
-                // },
-                // {
-                //     id: 3,
-                //     label: "会员数据"
-                // },
-                // {
-                //     id: 4,
-                //     label: "租金数据"
-                // },
-                // {
-                //     id: 5,
-                //     label: "品牌价值分析"
-                // },
-                // {
-                //     id: 6,
-                //     label: "BI驾驶舱"
-                // }
-            ]
-        };
-    },
-    computed: {
-        currentFilters() {
-            let _this = this;
-            return filterList.list.find(item => {
-                return item.id === _this.$route.meta.path;
-            }).list;
+  data() {
+    return {
+      filterOptions: {},
+      menus: [
+        // {
+        //     id: "0",
+        //     label: "销售数据"
+        // },
+        {
+          id: "1",
+          label: "营销数据"
         }
-    },
-    methods: {
-        defaultIcon(icon) {
-            return `iconfont ${icon}`;
-        },
-        toggleSearchParam(param) {
-            console.log(param);
-        }
-    },
-    components: {
-        FilterBox
+        // {
+        //     id: 2,
+        //     label: "客流数据"
+        // },
+        // {
+        //     id: 3,
+        //     label: "会员数据"
+        // },
+        // {
+        //     id: 4,
+        //     label: "租金数据"
+        // },
+        // {
+        //     id: 5,
+        //     label: "品牌价值分析"
+        // },
+        // {
+        //     id: 6,
+        //     label: "BI驾驶舱"
+        // }
+      ]
+    };
+  },
+  computed: {
+    currentFilters() {
+      let _this = this;
+      return filterList.list.find(item => {
+        return item.id === _this.$route.meta.path;
+      }).list;
     }
+  },
+  methods: {
+    defaultIcon(icon) {
+      return `iconfont ${icon}`;
+    },
+    toggleSearchParam(param) {
+      console.log(param);
+    },
+    async fetchDate() {
+			let _this = this
+      await this.$store.dispatch("getLevels").then(() => {
+				_this.levels = _this.$store.state.BI.levels;
+      });
+    }
+  },
+  components: {
+    FilterBox
+	},
+	created() {
+		this.fetchDate()
+	}
 };
 </script>
 

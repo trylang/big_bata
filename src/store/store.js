@@ -23,6 +23,9 @@ export default {
     },
     updateOptions(state, options) {
       state.options = options;
+    },
+    updateLevels(state, levels) {
+      state.levels = levels;
     }
   },
   actions: {
@@ -38,13 +41,13 @@ export default {
         $api.getOrgList(),
         $api.getShopList(),
         $api.getActivityList(),
-        $api.getBizcatList()
+        $api.getBizcatList({org_id: '01'})
       ]);
 
       let options = {
         building: buildingList,
         floor: floorList,
-        biacat: bizcatList,
+        bizcat: bizcatList,
         shop: shopList,
         activity: activityList
       };
@@ -52,6 +55,20 @@ export default {
       return new Promise((resolve, reject) => {
         this.commit("updateOptions", options);
         resolve();
+      });
+    },
+    async getLevels({commit}, param) {
+      await $api.getSysLevels({}).then(res => {
+        let [overview, coupon, activityL1, activityL2] = [
+          res.filter(item => item.dim_grp === "sale.overview"),
+          res.filter(item => item.dim_grp === "sale.coupon"),
+          res.filter(item => item.dim_grp === "sale.activity.1"),
+          res.filter(item => item.dim_grp === "sale.activity.2")
+        ];
+        return new Promise((resolve, reject) => {
+          this.commit("updateLevels", {overview, coupon, activityL1, activityL2});
+          resolve();
+        });
       });
     }
   }

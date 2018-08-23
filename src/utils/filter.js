@@ -27,7 +27,7 @@ export let formatDate = (time, fmt) => {
 
 export function fmoney(s, n = 2) {
   if (s === "" || s === undefined || s === null) return;
-  n = n > 0 && n <= 20 ? n : 2;
+  n = n >= 0 && n <= 20 ? n : 2;
   let tag = "";
   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
   if (s.indexOf("-") == 0) {
@@ -49,9 +49,8 @@ export function fmoney(s, n = 2) {
     t
       .split("")
       .reverse()
-      .join("") +
-    "." +
-    r
+      .join("") + (n == 0 ? '': "." +
+      r)
   );
 }
 
@@ -75,6 +74,25 @@ export const createProxy = data => {
       }
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
 function defineObjectReactive(obj, key, value) {

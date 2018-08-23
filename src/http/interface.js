@@ -20,6 +20,7 @@ switch (domain) {
 
 // 获取场馆
 export const getMarketList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/init/mark/query",
     method: "post",
@@ -28,7 +29,8 @@ export const getMarketList = (data = {}) => {
 };
 
 // 获取商场建筑物
-export const getOrgList = (data = { market_id, ...data}) => {
+export const getOrgList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshoporg",
     method: "post",
@@ -37,7 +39,8 @@ export const getOrgList = (data = { market_id, ...data}) => {
 };
 
 // 获取楼层
-export const getFloorList = (data = {market_id, ...data}) => {
+export const getFloorList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshopfloor",
     method: "post",
@@ -47,6 +50,7 @@ export const getFloorList = (data = {market_id, ...data}) => {
 
 // 获取节假日
 export const getHolidayList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getholiday",
     method: "post",
@@ -55,7 +59,8 @@ export const getHolidayList = (data = {}) => {
 };
 
 // 获取活动
-export const getActivityList = (data = {market_id, ...data}) => {
+export const getActivityList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getactivity",
     method: "post",
@@ -64,7 +69,8 @@ export const getActivityList = (data = {market_id, ...data}) => {
 };
 
 // 获取店铺
-export const getShopList = (data = {market_id, ...data}) => {
+export const getShopList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshopname",
     method: "post",
@@ -73,7 +79,8 @@ export const getShopList = (data = {market_id, ...data}) => {
 };
 
 // 获取业态
-export const getBizcatList = (data = {market_id, ...data}) => {
+export const getBizcatList = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshopbizcat",
     method: "post",
@@ -83,6 +90,7 @@ export const getBizcatList = (data = {market_id, ...data}) => {
 
 // 获取概览表格
 export const getOverviewCur = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/overview/query",
     method: "post",
@@ -92,6 +100,7 @@ export const getOverviewCur = (data = {}) => {
 
 // 获取概览历史图表
 export const getOverviewHistory = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/overview/queryhistory",
     method: "post",
@@ -210,6 +219,7 @@ export const delActivitycost = (data = {}) => {
 
 // 系统配置 指标维度
 export const getSysLevels = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/sys",
     method: "post",
@@ -225,9 +235,6 @@ export const insertSysLevels = (data = {}) => {
     data
   });
 };
-
-
-
 
 //=================    券效果分析   ===========================
 
