@@ -158,13 +158,13 @@
         <Modal
                 v-model="action.model"
                 width="416px"
-                title="新建动作"
+                :title="action.param.edit ? '编辑动作': '新建动作' "
                 :loading="action.loading"
                 @on-ok="submitAction"
                 @on-cancel="cancel"
         >
             <div class="action"><span class="action_name">动作名称</span>
-                <input v-model="action.param.action_name" placeholder="请输入动作名称"/>
+                <input v-model="action.param.action_name" oninput="if(value.length>11);value=value.slice(0,9)"  placeholder="请输入动作名称"/>
             </div>
             <div class="action"><span class="action_name">关联活动</span>
                 <Select v-model="action.param.act_id" style="width:296px" @on-change="changeActionTime(action.param.act_id)">
@@ -183,7 +183,7 @@
         <Modal
                 v-model="cost.model"
                 width="416px"
-                title="新建营销成本"
+                :title="cost.param.edit ? '编辑营销成本': '新建营销成本' "
                 :loading="cost.loading"
                 @on-ok="submitCost"
                 @on-cancel="cancel"
@@ -198,19 +198,19 @@
                 <!-- <DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" ></DatePicker> -->
             </div>
             <div class="action"><span class="action_name">线下物料成本</span>
-                <InputNumber v-model="cost.param.offline_mat_cost" placeholder="请输入金额" ></InputNumber>
+                <InputNumber v-model="cost.param.offline_mat_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
                 元
             </div>
             <div class="action"><span class="action_name">线上推广成本</span>
-                <InputNumber v-model="cost.param.online_ad_cost" placeholder="请输入金额" ></InputNumber>
+                <InputNumber v-model="cost.param.online_ad_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
                 元
             </div>
             <div class="action"><span class="action_name" style="padding-right:68px;">券成本</span>
-                <InputNumber v-model="cost.param.coupon_cost" placeholder="请输入金额" ></InputNumber>
+                <InputNumber v-model="cost.param.coupon_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
                 元
             </div>
-            <div class="action"><span class="action_name" style="padding-right:56px;">其他成本</span>
-                <InputNumber v-model="cost.param.other_cost" placeholder="请输入金额" ></InputNumber>
+            <div class="action"><span class="action_name"  style="padding-right:56px;">其他成本</span>
+                <InputNumber v-model="cost.param.other_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
                 元
             </div>
         </Modal>
@@ -275,6 +275,7 @@ export default {
                   on: {
                     click: () => {
                       let row = params.row;
+                      this.action.param.edit = true;
                       this.action.param.id = row.id;
                       this.action.param.action_name = row.action_name;
                       this.action.param.act_id = row.act_id;

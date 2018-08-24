@@ -75,24 +75,6 @@ export const createProxy = data => {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 };
 
 function defineObjectReactive(obj, key, value) {

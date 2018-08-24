@@ -1,18 +1,17 @@
 import Vue from "vue";
 // console.log(Vue.prototype) //undefined
 import $api from "@/http/interface.js";
+import dayjs from 'dayjs'
 
 export default {
   state: {
     // 筛选框参数
     searchParam: {
-      // start_date: '',
-      // end_date: '',
-      // org_id: '',
-      // floor:'',
-      // bizcat: '',
-      // shop_id: '',
-      // activity_id: ''
+      start_date: dayjs(new Date())
+      .subtract(1, "month")
+      .format("YYYY-MM-DD"),
+      end_date: dayjs(new Date()).format("YYYY-MM-DD"),
+      org_id: '01',
     }
   },
   getters: {},
@@ -37,10 +36,10 @@ export default {
         activityList,
         bizcatList
       ] = await Promise.all([
-        $api.getFloorList(),
-        $api.getOrgList(),
-        $api.getShopList(),
-        $api.getActivityList(),
+        $api.getFloorList({org_id: '01'}),
+        $api.getOrgList({org_id: '01'}),
+        $api.getShopList({org_id: '01'}),
+        $api.getActivityList({org_id: '01'}),
         $api.getBizcatList({org_id: '01'})
       ]);
 

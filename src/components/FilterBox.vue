@@ -38,7 +38,11 @@ export default {
           .subtract(1, "month")
           .format("YYYY-MM-DD"),
         end_date: dayjs(new Date()).format("YYYY-MM-DD"),
-        org_id: "01"
+				org_id: "01",
+				shop_floor: null,
+				shop_bizcat: null,
+				shop_id: null,
+				activity_id: null
       },
       toggleName: "",
       option: [
@@ -75,13 +79,22 @@ export default {
       ],
       event: {
         building: (value, item) => {
-          _this.param.shop_floor = "";
-          _this.param.shop_bizcat = "";
-					_this.param.shop_id = "";
-					_this.param.activity_id = "";
-					
+					_this.param = Object.assign(_this.param, {
+						shop_floor: null,
+						shop_bizcat: null,
+						shop_id: null,
+						activity_id: null
+					});
+					_this.$set(_this.param,'shop_id',null);
+					if (!value) {
+						_this.options.floor = [];
+						_this.options.bizcat = [];
+						_this.options.shop = [];
+						_this.options.activity = [];
+						return;
+					}
           _this.$api.getFloorList({ org_id: value }).then(res => {
-						_this.options.floor = res;
+            _this.options.floor = res;
           });
           _this.$api.getBizcatList({ org_id: value }).then(res => {
             _this.options.bizcat = res;
@@ -94,7 +107,8 @@ export default {
           });
         },
         floor: (value, item) => {
-					_this.param.shop_id = "";
+         _this.$set(_this.param,'shop_id',null);
+         _this.$set(_this.param,'shop_bizcat',null);
           _this.$api
             .getShopList({ org_id: _this.param.org_id, shop_floor: value })
             .then(res => {
@@ -102,7 +116,7 @@ export default {
             });
         },
         bizcat: (value, item) => {
-					_this.param.shop_id = "";
+          _this.$set(_this.param,'shop_id',null);
           _this.$api
             .getShopList({
               org_id: _this.param.org_id,
@@ -147,7 +161,7 @@ export default {
         if (this.param[key] instanceof Date) {
           this.param[key] = dayjs(this.param[key]).format("YYYY-MM-DD");
         }
-      }
+			}
       eventBus.$emit(`updateSearchParam_${this.$route.meta.path}`, this.param);
       // this.$store.commit("updateSearchParam", this.param);
     },
@@ -169,25 +183,37 @@ export default {
       });
     }
   },
-  watch: {
-    $route: function() {
-      let param = {
-        start_date: dayjs(new Date())
-          .subtract(1, "month")
-          .format("YYYY-MM-DD"),
-        end_date: dayjs(new Date()).format("YYYY-MM-DD"),
-        org_id: "01"
-      };
+  // watch: {
+  //   $route: function() {
+  //     let param = {
+  //       start_date: dayjs(new Date())
+  //         .subtract(1, "month")
+  //         .format("YYYY-MM-DD"),
+  //       end_date: dayjs(new Date()).format("YYYY-MM-DD"),
+  //       org_id: "01"
+  //     };
 
-      this.param = param;
-      console.log(`updateSearchParam_${this.$route.meta.path}`, this.param);
-      // this.$store.commit("updateSearchParam", param);
-      eventBus.$emit(`updateSearchParam_${this.$route.meta.path}`, this.param);
-    }
-  },
+  //     this.param = param;
+  //     console.log(`9999999updateSearchParam_${this.$route.meta.path}`, this.param);
+	// 		// this.$store.commit("updateSearchParam", param);
+  //     eventBus.$emit(`updateSearchParam_${this.$route.meta.path}`, this.param);
+  //   }
+  // },
   created() {
     this.fetchDate();
-  }
+  },
+  // mounted() {
+  //   eventBus.$emit(
+  //     `updateSearchParam_${this.$route.meta.path}`,
+  //     (this.param = {
+  //       start_date: dayjs(new Date())
+  //         .subtract(1, "month")
+  //         .format("YYYY-MM-DD"),
+  //       end_date: dayjs(new Date()).format("YYYY-MM-DD"),
+  //       org_id: "01"
+  //     })
+  //   );
+	// }
 };
 </script>
 

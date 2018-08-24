@@ -39,8 +39,9 @@
 <script>
 import actionDetail from "@/components/actionDetail.vue";
 import { mapState } from "vuex";
+import { setOptions } from "@/utils/chart.js";
 import dayjs from 'dayjs';
-import { sort, fmoney } from '@/utils/filter.js';
+import { sort } from '@/utils/filter.js';
 
 export default {
     components: {
@@ -291,190 +292,7 @@ export default {
             let overviewChart = this.$echarts.init(
                 document.getElementById("activity_chart")
             );
-
-            let colors = ["#396FFF", "#E4007F", "#90C31F", "#FABE00", "#CCCCCC"];
-            let itemColors = {
-                holiday: "#396FFF",
-                activity: "#F5A623",
-                zhoumo: "#ccc"
-            };
-            let json = {
-                '视频客流量': "video_cf",
-                'WIFI客流量': "wifi_cf",
-                '活动UV': "activity_uv",
-                '活动PV': "activity_pv",
-                '会员数': "mbr_reg_count",
-                '新增会员数': "mbr_reg_count_acc",
-                '领取人数': "cpn_get_persons",
-                '领券量': "cpn_get_count",
-                '核销量': "cpn_chk_count",
-                '核销人数': "cpn_chk_persons",
-            };
-            let options = {
-                color: colors,
-                tooltip: {
-                    trigger: "axis",
-                    axisPointer: {
-                        type: "cross"
-                    }
-                },
-                xAxis: [
-                    {
-                        type: "category",
-                        axisTick: {
-                            alignWithLabel: true
-                        },
-                        axisLabel: {
-                            formatter: (value) => {
-                                return dayjs(value).format('MM.DD')
-                            }
-                        },
-                        data: []
-                    }
-                ],
-                legend: {
-                    selectedMode: "multiple",
-                    selected: {}
-                },
-                yAxis: {
-                    type: "value",
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        textStyle: {
-                            color: "#999"
-                        }
-                    }
-                },
-                // yAxis: [
-                //   {
-                //     type: 'value',
-                //     name: '数量',
-                //     min: 1000,
-                //     // max: 250,
-                //     position: 'right',
-                //     axisLine: {
-                //         lineStyle: {
-                //             color: '#999'
-                //         }
-                //     },
-                //     // axisLabel: {
-                //     //     formatter: '{value} ml'
-                //     // }
-                // },
-                // {
-                //     type: 'value',
-                //     name: '数量',
-                //     min: 0,
-                //     max: 1000,
-                //     position: 'left',
-                //     axisLine: {
-                //         lineStyle: {
-                //             color: '#999'
-                //         }
-                //     },
-                //     // axisLabel: {
-                //     //     formatter: '{value} °C'
-                //     // }
-                // }],
-                series: []
-            };
-
-            options.legend.data = Object.keys(json);
-            options.legend.data.map((item, index) => {
-                if (index < 4) {
-                    options.legend.selected[item] = true;
-                } else {
-                    options.legend.selected[item] = false;
-                }
-            });
-
-            options.xAxis[0].data = (() => {
-                let data = _this.chartData.map(item => item.stat_ymd);
-                data.push(
-                    dayjs(data[data.length - 1])
-                        .add(1, "day")
-                        .format("YYYY-MM-DD")
-                );
-                return data;
-            })();
-
-            options.xAxis[0].data.sort(function (a, b) {
-                return new Date(a) - new Date(b)
-            })
-
-            var areaStyle = {
-                silent: false,
-                data: []
-            };
-
-            let holidayObjs = {};
-
-            this.chartData.forEach(item => {
-                let name = item.action_name || item.holiday_name || item.zhoumo;
-                if (!name) return;
-                if (!holidayObjs[name]) {
-                    holidayObjs[name] = {};
-                    holidayObjs[name].type = item.action_name
-                        ? "activity"
-                        : item.holiday_name ? "holiday" : "zhoumo";
-                    holidayObjs[name].startTime = item.stat_ymd;
-                } else {
-                    holidayObjs[name].endTime = dayjs(item.stat_ymd)
-                        .add(1, "day")
-                        .format("YYYY-MM-DD");
-                }
-            });
-
-            for (let key in holidayObjs) {
-                if (!holidayObjs[key].endTime) {
-                    holidayObjs[key].endTime = dayjs(holidayObjs[key].startTime)
-                        .add(1, "day")
-                        .format("YYYY-MM-DD");
-                }
-                areaStyle.data.push([
-                    {
-                        name: key,
-                        xAxis: holidayObjs[key].startTime,
-                        itemStyle: {
-                            color: itemColors[holidayObjs[key].type],
-                            opacity: 0.16
-                        },
-                        label: {
-                            offset: [0, 370],
-                            color: itemColors[holidayObjs[key].type]
-                        }
-                    },
-                    {
-                        xAxis: holidayObjs[key].endTime
-                    }
-                ]);
-            }
-
-            let chart_series = [];
-            options.legend.data.forEach(item => {
-                chart_series.push({
-                    name: item,
-                    type: "line",
-                    smooth: true,
-                    label: {
-                        show: true,
-                        position: "top",
-                        color: "auto",
-                        formatter: param => {
-                            return fmoney(param.value, 0);
-                        }
-                    },
-                    markArea: areaStyle,
-                    data: this.chartData.map(data => data[json[item]])
-                });
-            });
-
-            options.series = chart_series;
+            let options = setOptions(_this.chartData);
             // 绘制图表
             overviewChart.setOption(options);
             overviewChart.on("legendselectchanged", function (obj) {
@@ -487,7 +305,7 @@ export default {
                     _this.$Message.warning('最多只能选择4个图例');
                     selected[obj.name] = false
                     options.legend.selected = selected;
-                    overviewChart.setOption(options);
+                    _this.drawChart();
                 }
             });
 
@@ -499,7 +317,7 @@ export default {
         },
     },
     created() {
-        this.init(this.searchParam)
+        this.init(this.$store.state.BI.searchParam);
         eventBus.$on('updateSearchParam_activity', data => {
             this.init(data)
         })

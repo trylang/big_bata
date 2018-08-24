@@ -258,15 +258,13 @@ export default {
     },
     async created() {
         let _this = this
-
+        this.init(this.$store.state.BI.searchParam);
         eventBus.$on("updateSearchParam_ticket", data => {
-
             _this.searchParam = data
             _this.searchParam.shop_bizcat = data.bizcat
-            console.log(1111111111, _this.searchParam);
             this.init(data);
         });
-        this.init();
+        
         this.$api.getConponBizcat().then(res => {
             res.forEach(item => {
                 item.title = `${item.shop_bizcat}（${item.ratio * 100}%）`;

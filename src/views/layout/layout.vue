@@ -14,13 +14,11 @@
 
                     <Dropdown>
                         <a href="javascript:void(0)">
-                            Hi,lixiaojuan
+                            管理员
                             <Icon type="ios-arrow-down"></Icon>
                         </a>
                         <DropdownMenu slot="list">
-                            <DropdownItem> Hi,lixiaojuan</DropdownItem>
-                            <DropdownItem> Hi,lixiaojuan</DropdownItem>
-                            <DropdownItem disabled>豆汁儿</DropdownItem>
+                            <DropdownItem> 请退出登录</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <div class="yayout_bbg">步步高梅溪新天地</div>
@@ -49,7 +47,7 @@
                                @searchParam="toggleSearchParam"></FilterBox>
                     <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
                         <transition name="fade-transverse">
-                            <router-view/>
+                            <router-view :key="key"/>
                         </transition>
                     </Content>
                 </Layout>
@@ -104,6 +102,11 @@ export default {
       return filterList.list.find(item => {
         return item.id === _this.$route.meta.path;
       }).list;
+    },
+    key() {
+      return this.$route.name !== undefined
+        ? this.$route.name + new Date()
+        : this.$route + new Date();
     }
   },
   methods: {
@@ -114,18 +117,18 @@ export default {
       console.log(param);
     },
     async fetchDate() {
-			let _this = this
+      let _this = this;
       await this.$store.dispatch("getLevels").then(() => {
-				_this.levels = _this.$store.state.BI.levels;
+        _this.levels = _this.$store.state.BI.levels;
       });
     }
   },
   components: {
     FilterBox
-	},
-	created() {
-		this.fetchDate()
-	}
+  },
+  created() {
+    this.fetchDate();
+  }
 };
 </script>
 
