@@ -15,10 +15,16 @@ switch (domain) {
   case '127.0.0.1':
   case 'localhost':
     config.baseURL = '/api/'
+    break
   case '192.168.14.98':
     // config.baseURL = 'http://localhost:3000/index';
     // config.baseURL = '/api/'
     config.baseURL = 'http://123.59.0.194:8010/'
+    break
+  case '123.59.0.194':
+    // config.baseURL = 'http://localhost:3000/index';
+    // config.baseURL = '/api/'
+    config.baseURL = 'http://192.168.14.98:8030/'
     break
   default:
     break

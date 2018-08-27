@@ -73,8 +73,10 @@
 				<span class="number_title">参与会员来源详情</span>
 			</div>
 			<div class="number_content">
+        
         <Tabs class="allocation_tabs" value="activity">
           <TabPane label="活  动" name="activity">
+            <download title="参与会员来源详情_活动" :meta="$route.meta" name="memberact"></download>
             <Table width="100%" v-if="tableData.activity.columns.length>1" :columns="tableData.activity.columns" :data="tableData.activity.pageList" @on-sort-change="handleActivitySort"></Table>
             <div class="table_page">
               <div class="table_page_l">
@@ -87,6 +89,7 @@
             </div>
           </TabPane>
           <TabPane label="渠  道" name="channel">
+            <download title="参与会员来源详情_渠道" :meta="$route.meta" name="memberchnl"></download>
             <Table v-if="tableData.channel.columns.length>1" :columns="tableData.channel.columns" :data="tableData.channel.pageList" @on-sort-change="handleChannelSort"></Table>
             <div class="table_page">
               <div class="table_page_l">
@@ -177,7 +180,12 @@
 </template>
 <script>
 import { sort, createProxy } from "@/utils/filter.js";
+import download from "@/components/download.vue";
+
 export default {
+  components: {
+    download
+  },
   data() {
     return {
       chartData: {
@@ -351,6 +359,11 @@ export default {
           trigger: "item"
           // formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
+        grid: {
+          left: "60%",
+          right: "10%",
+          bottom: "30%",
+        },
         color,
         legend: {
           top: "30",
@@ -387,6 +400,9 @@ export default {
       }
 
       (function(_this, options) {
+        if (_this.chartData.number.length ==  0) {
+          _this.chartData.number.list = [];
+        }
         let activitylist = _this.chartData.number.list.filter(
           item => item.cat === "activity"
         );
@@ -405,8 +421,7 @@ export default {
             options.legend.data = activitylist.map(item => item.target_name);
             options.legend.data.forEach((item, index) => {
               series.push({
-                value: 10 + index,
-                // value: activitylist.find(act => act.target_name === item).
+                value: activitylist.find(act => act.target_name === item).reg_members,
                 name: item
               });
             });
@@ -420,8 +435,7 @@ export default {
             options.legend.data = channelList.map(item => item.target_name);
             options.legend.data.forEach((item, index) => {
               series.push({
-                value: 10 + index,
-                // value: channelList.find(act => act.target_name === item).
+                value: channelList.find(act => act.target_name === item).reg_members,
                 name: item
               });
             });
@@ -435,8 +449,7 @@ export default {
             options.legend.data = activitylist.map(item => item.target_name);
             options.legend.data.forEach((item, index) => {
               series.push({
-                value: 10 + index,
-                // value: activitylist.find(act => act.target_name === item).
+                value: activitylist.find(act => act.target_name === item).add_members,
                 name: item
               });
             });
@@ -450,8 +463,7 @@ export default {
             options.legend.data = channelList.map(item => item.target_name);
             options.legend.data.forEach((item, index) => {
               series.push({
-                value: 10 + index,
-                // value: channelList.find(act => act.target_name === item).
+                value: channelList.find(act => act.target_name === item).add_members,
                 name: item
               });
             });
@@ -575,9 +587,15 @@ export default {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
+        grid: {
+          left: "60%",
+          right: "10%",
+          bottom: "30%",
+        },
         legend: {
           orient: "vertical",
           x: "left",
+          left: '5%',
           data: []
         },
         color,
@@ -649,44 +667,44 @@ export default {
       let bizcat = this.chartData.dist.tag_bizcat_dist;
       let bizcatArr = Object.keys(bizcat);
 
-      let series = []
+      let series = [];
       bizcatArr.forEach(item => {
         series.push({
-            name: item,
-            data: bizcat[item],
-            type: "scatter",
-            silent: true,
-            symbolSize: function(data) {
-              return bizcat[item]/2;
-            },
-            label: {
-              normal: {
-                show: true,
-                fontSize: '12px',
-                color: '#fff',
-                formatter: function(data) {
-                  return `${data.seriesName}: ${data.value}`
-                }
-              },
-            },
-            itemStyle: {
-              normal: {
-                shadowBlur: 10,
-                shadowColor: "rgba(120, 36, 50, 0.5)",
-                shadowOffsetY: 5,
-                color: new this.$echarts.graphic.RadialGradient(0.4, 0.3, 1, [
-                  {
-                    offset: 0,
-                    color: "rgb(251, 118, 123)"
-                  },
-                  {
-                    offset: 1,
-                    color: "rgb(204, 46, 72)"
-                  }
-                ])
+          name: item,
+          data: bizcat[item],
+          type: "scatter",
+          silent: true,
+          symbolSize: function(data) {
+            return bizcat[item] / 2;
+          },
+          label: {
+            normal: {
+              show: true,
+              fontSize: "12px",
+              color: "#fff",
+              formatter: function(data) {
+                return `${data.seriesName}: ${data.value}`;
               }
             }
-          })
+          },
+          itemStyle: {
+            normal: {
+              shadowBlur: 10,
+              shadowColor: "rgba(120, 36, 50, 0.5)",
+              shadowOffsetY: 5,
+              color: new this.$echarts.graphic.RadialGradient(0.4, 0.3, 1, [
+                {
+                  offset: 0,
+                  color: "rgb(251, 118, 123)"
+                },
+                {
+                  offset: 1,
+                  color: "rgb(204, 46, 72)"
+                }
+              ])
+            }
+          }
+        });
       });
 
       options.series = series;
@@ -823,7 +841,6 @@ export default {
     },
     setMultipleProportion(type) {
       if (!this.chartData.dist[type]) return;
-
       var titlename = Object.keys(this.chartData.dist[type]);
       var valdata = Object.values(this.chartData.dist[type]);
       var xMax = Math.max.apply(null, valdata);
@@ -929,6 +946,11 @@ export default {
       return options;
     },
     formatTable(type, data) {
+      if (data.length == 0) {
+        this.tableData[type].list = [];
+        this.tableData[type].pageList = [];
+        return;
+      };
       let activityOnlyList = [];
       let activityList = [];
       let activitySum = [];
@@ -952,14 +974,14 @@ export default {
 
       let activityObjs = {};
       activityList.forEach(item => {
-        if (!activityObjs[`${item.act_chnl_name}-reg_members`]) {
-          activityObjs[`${item.act_chnl_name}-reg_members`] = [];
+        if (!activityObjs[`${item.act_chnl_name}♚reg_members`]) {
+          activityObjs[`${item.act_chnl_name}♚reg_members`] = [];
         }
-        if (!activityObjs[`${item.act_chnl_name}-add_members`]) {
-          activityObjs[`${item.act_chnl_name}-add_members`] = [];
+        if (!activityObjs[`${item.act_chnl_name}♚add_members`]) {
+          activityObjs[`${item.act_chnl_name}♚add_members`] = [];
         }
-        activityObjs[`${item.act_chnl_name}-reg_members`].push(item);
-        activityObjs[`${item.act_chnl_name}-add_members`].push(item);
+        activityObjs[`${item.act_chnl_name}♚reg_members`].push(item);
+        activityObjs[`${item.act_chnl_name}♚add_members`].push(item);
       });
 
       let activityColumnKeys = Object.keys(activityObjs);
@@ -967,13 +989,14 @@ export default {
         let itemObjs = {};
         for (let i = 0; i < activityColumnKeys.length; i++) {
           let item = activityColumnKeys[i];
-          let keys = item.split("-");
-          if (!activityObjs[item].find(act => act.stat_ymd === data.stat_ymd))
-            break;
-          itemObjs[item] = activityObjs[item].find(
-            act => act.stat_ymd === data.stat_ymd
-          )[keys[1]];
-          itemObjs[item] = itemObjs[item] == null ? "--" : itemObjs[item];
+          let keys = item.split("♚");
+
+          if (activityObjs[item].find(act => act.stat_ymd === data.stat_ymd)) {
+            itemObjs[item] = activityObjs[item].find(
+              act => act.stat_ymd === data.stat_ymd
+            )[keys[1]];
+            itemObjs[item] = itemObjs[item] == null ? "--" : itemObjs[item];
+          }
         }
         return itemObjs;
       }
@@ -982,9 +1005,9 @@ export default {
       let activitySumObj = {};
       activitySum.forEach(sum => {
         activitySumObj.stat_ymd = "合计";
-        activitySumObj[`${sum.act_chnl_name}-reg_members`] =
+        activitySumObj[`${sum.act_chnl_name}♚reg_members`] =
           sum.reg_members == null ? "--" : sum.reg_members;
-        activitySumObj[`${sum.act_chnl_name}-add_members`] =
+        activitySumObj[`${sum.act_chnl_name}♚add_members`] =
           sum.add_members == null ? "--" : sum.add_members;
         activitySumObj.reg_members = total2.reg_members;
         activitySumObj.add_members = total2.add_members;
@@ -1004,13 +1027,13 @@ export default {
               title: "累计",
               sortable: true,
               width: 100,
-              key: `${item.act_chnl_name}-reg_members`
+              key: `${item.act_chnl_name}♚reg_members`
             },
             {
               title: "新增",
               sortable: true,
               width: 100,
-              key: `${item.act_chnl_name}-add_members`
+              key: `${item.act_chnl_name}♚add_members`
             }
           ]
         });
@@ -1068,6 +1091,7 @@ export default {
       });
 
       var format = function(data) {
+        if (!data) return {};
         let obj = {};
         data.split(",").forEach(item => {
           let v = item.split(":");
@@ -1084,7 +1108,7 @@ export default {
       });
 
       this.tableData.qrcord.list = qrcord;
-      this.tableData.qrcord.pageList = qrcord.slice(0, 10);
+      this.tableData.qrcord.pageList = qrcord.length > 0 ? qrcord.slice(0, 10) : [];
 
       this.formatTable("activity", sourcesAct);
       this.formatTable("channel", sourcesChnnl);
@@ -1130,13 +1154,24 @@ export default {
       deep: true
     }
   },
+  computed: {
+    searchParam() {
+      return this.$store.state.BI.searchParam;
+    }
+  },
   created() {
     let param = {
       start_date: "2018-08-01",
       end_date: "2018-08-21"
     };
-    this.getData(param);
-  }
+    this.getData(this.$store.state.BI.searchParam);
+    eventBus.$on("updateSearchParam_sales-member", data => {
+      this.getData(data);
+    });
+  },
+  beforeDestroy() {
+    eventBus.$off("updateSearchParam_sales-member");
+  },
 };
 </script>
 <style lang="scss" scoped>

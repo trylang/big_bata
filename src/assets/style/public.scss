@@ -9,107 +9,107 @@ $color-border: #f2f2f2;
 @import "~@/assets/iconfont/iconfont.css";
 @import "~@/assets/style/views/animate.scss";
 .ivu-icon-ios-calendar-outline {
-    &::before {
-        content: "\F116";
-    }
+  &::before {
+    content: "\F116";
+  }
 }
 
 .ivu-input {
-    border: 1px solid #fff;
-    color: $color-primary;
+  border: 1px solid #fff;
+  color: $color-primary;
 }
 
 .ivu-select-selection {
-    border: 1px solid #fff;
+  border: 1px solid #fff;
 }
 
 .ivu-select-input {
-    color: $color-primary;
+  color: $color-primary;
 }
 
 .ivu-input-icon {
-    color: $color-gray;
+  color: $color-gray;
 }
 
 .ivu-btn {
-    height: 1.8rem;
-    line-height: 0.8rem;
-    width: 3.6rem;
-    border-radius: 16px;
-    color: $color-primary;
-    border: 1px solid $color-actived;
+  height: 1.8rem;
+  line-height: 0.8rem;
+  width: 3.6rem;
+  border-radius: 16px;
+  color: $color-primary;
+  border: 1px solid $color-actived;
 }
 
 //表格样式
 #table_container {
-    position: relative;
-    .table_title {
-        width: 100%;
-        height: 40px;
-        line-height: 35px;
-        border-bottom: 1px solid $color-border;
-        margin-bottom: 1rem;
-        .table_title_s {
-            height: 19px;
-            line-height: 19px;
-            font-size: 14px;
-            color: $color-primary;
-            font-family: MicrosoftYaHei;
-        }
+  position: relative;
+  .table_title {
+    width: 100%;
+    height: 40px;
+    line-height: 35px;
+    border-bottom: 1px solid $color-border;
+    margin-bottom: 1rem;
+    .table_title_s {
+      height: 19px;
+      line-height: 19px;
+      font-size: 14px;
+      color: $color-primary;
+      font-family: MicrosoftYaHei;
     }
-    .ivu-table-cell {
-        padding-left: 10px;
-        span {
-            height: 12px;
-            font-size: 12px;
-            font-family: MicrosoftYaHei-Bold;
-            color: rgba(102, 102, 102, 1);
-            line-height: 12px;
-        }
+  }
+  .ivu-table-cell {
+    padding-left: 10px;
+    span {
+      height: 12px;
+      font-size: 12px;
+      font-family: MicrosoftYaHei-Bold;
+      color: rgba(102, 102, 102, 1);
+      line-height: 12px;
     }
+  }
 }
 
 tr.ivu-table-row-hover td {
-    background-color: #F2F6FF; // filter: Alpha(opacity=10);
-    // opacity: 0.1;
+  background-color: #F2F6FF; // filter: Alpha(opacity=10);
+  // opacity: 0.1;
 }
 
 // 表格内部样式修改
 .ivu-table-wrapper {
-    border-left: 0;
-    border-top: 1px solid $color-border;
+  border-left: 0;
+  border-top: 1px solid $color-border;
 }
 
 .ivu-table-border td,
 .ivu-table-border th {
-    border-right: 0;
+  border-right: 0;
 }
 
 .ivu-table td {
-    border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
 }
 
 .ivu-table th {
-    border-bottom: 1px solid $color-border;
-    background-color: #fafafa;
+  border-bottom: 1px solid $color-border;
+  background-color: #fafafa;
 }
 
 .ivu-table {
-    &::before {
-        background-color: $color-border;
-    }
-    &::after {
-        background-color: #fff;
-    }
+  &::before {
+    background-color: $color-border;
+  }
+  &::after {
+    background-color: #fff;
+  }
 }
 
 .ivu-table-row td {
-    height: 40px;
-    text-align: left;
+  height: 40px;
+  text-align: left;
 }
 
 .ivu-table th {
-    text-align: left;
+  text-align: left;
 }
 
 // 分页器内部样式修改
@@ -117,358 +117,396 @@ tr.ivu-table-row-hover td {
 .ivu-page-item-jump-prev,
 .ivu-page-next,
 .ivu-page-prev {
-    min-width: 24px;
-    height: 24px;
-    line-height: 20px;
-    border-radius: 2px;
-    text-align: center;
-    margin-right: 1px;
+  min-width: 24px;
+  height: 24px;
+  line-height: 20px;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 1px;
 }
 
 .ivu-page-item {
-    min-width: 24px;
-    height: 24px;
-    margin-right: 0;
-    line-height: 24px;
-    text-align: center;
-    border-radius: 2px;
+  min-width: 24px;
+  height: 24px;
+  margin-right: 0;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 2px;
 }
 
 .ivu-page-options {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .ivu-page-options-elevator input {
-    width: 40px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    margin: 0;
-    border-radius: 2px 0px 0px 2px;
-    border: 1px solid rgba(242, 242, 242, 1);
+  width: 40px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  margin: 0;
+  border-radius: 2px 0px 0px 2px;
+  border: 1px solid rgba(242, 242, 242, 1);
 }
 
 .ivu-menu-vertical .ivu-menu-item,
 .ivu-menu-vertical .ivu-menu-submenu-title {
-    padding: 18px 30px;
+  padding: 18px 30px;
 }
 
 // 分页样式
 .table_page {
-    margin-top: 1rem;
-    overflow: hidden;
-    padding-bottom: 3rem;
-    .table_page_l {
-        float: left;
-        p {
-            float: left;
-            width: 130px;
-            height: 12px;
-            font-size: 12px;
-            font-family: MicrosoftYaHei;
-            color: rgba(153, 153, 153, 1);
-            line-height: 12px;
-            margin-top: 9px;
-            span {
-                font-weight: bold;
-            }
-        }
+  margin-top: 1rem;
+  overflow: hidden;
+  padding-bottom: 3rem;
+  .table_page_l {
+    float: left;
+    p {
+      float: left;
+      width: 130px;
+      height: 12px;
+      font-size: 12px;
+      font-family: MicrosoftYaHei;
+      color: rgba(153, 153, 153, 1);
+      line-height: 12px;
+      margin-top: 9px;
+      span {
+        font-weight: bold;
+      }
     }
-    .table_page_r {
-        float: right;
-        .ivu-page {
-            float: left;
-        }
-        .ivu-page-item-active {
-            border-color: #fff;
-            background-color: $color-actived;
-        }
-        .ivu-page-item {
-            border: 0;
-        }
-        .ivu-page-item-active a,
-        .ivu-page-item-active:hover a {
-            color: #fff;
-        }
+  }
+  .table_page_r {
+    float: right;
+    .ivu-page {
+      float: left;
     }
+    .ivu-page-item-active {
+      border-color: #fff;
+      background-color: $color-actived;
+    }
+    .ivu-page-item {
+      border: 0;
+    }
+    .ivu-page-item-active a,
+    .ivu-page-item-active:hover a {
+      color: #fff;
+    }
+  }
 }
 
 //搜索框
 .ivu-input {
-    height: 30px;
-    border-radius: 16px;
+  height: 30px;
+  border-radius: 16px;
 }
 
 //券进度条修改
 .ivu-progress-inner {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .ivu-progress-bg {
-    background-color: $color-actived;
-    opacity: 0.4;
+  background-color: $color-actived;
+  opacity: 0.4;
 }
 
 .ivu-progress-wrong .ivu-progress-bg {
-    background-color: $color-border;
+  background-color: $color-border;
 }
 
 .ivu-progress {
-    width: 76%;
+  width: 76%;
 }
 
 .ivu-progress-outer {
-    width: 95%;
+  width: 95%;
 }
 
 .ivu-modal-footer>button {
-    border: 1px solid rgba(57, 111, 255, 1);
-    width: 96px;
-    height: 32px;
-    margin-right: 1rem;
+  border: 1px solid rgba(57, 111, 255, 1);
+  width: 96px;
+  height: 32px;
+  margin-right: 1rem;
 }
 
 .ivu-btn-primary {
-    background-color: $color-actived;
-    color: #fff;
+  background-color: $color-actived;
+  color: #fff;
 }
 
 .ivu-btn-primary:hover {
-    background-color: $color-actived;
+  background-color: $color-actived;
 }
 
 .ivu-btn-text:hover {
-    border: 1px solid $color-actived;
+  border: 1px solid $color-actived;
 }
 
 .ivu-btn-text span {
-    color: $color-actived;
+  color: $color-actived;
 }
 
 .ve-histogram {
-    top: 0 !important;
+  top: 0 !important;
 }
 
 //下载按钮
 .export {
-    cursor: pointer;
-    font-size: 24px;
-    color: $color-actived;
-    float: right;
+  cursor: pointer;
+  font-size: 24px;
+  color: $color-actived;
+  float: right;
 }
 
 //弹框样式修改
 .filtrate {
-    margin-bottom: 1rem;
-    .filtrate_s {
-        width: 48px;
-        height: 16px;
-        font-size: 12px;
-        font-family: MicrosoftYaHei;
-        color: rgba(42, 57, 98, 1);
-        line-height: 16px;
-        padding-right: 2rem;
-        vertical-align: top;
-    }
-    .filtrate_m {
-        width: 294px;
-        display: inline-block;
-        margin-top: -0.4rem;
-    }
-}
-
-.ivu-checkbox-group {
-    margin-bottom: 1rem;
-}
-
-.vertical-center-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ivu-modal-header p,
-.ivu-modal-header-inner {
-    width: 112px;
-    height: 14px;
-    font-size: 14px;
-    font-family: MicrosoftYaHei;
-    color: rgba(42, 57, 98, 1);
-    line-height: 14px;
-}
-
-.time_chance {
-    display: inline-block;
+  margin-bottom: 6rem;
+  .filtrate_s {
     width: 48px;
     height: 16px;
     font-size: 12px;
     font-family: MicrosoftYaHei;
     color: rgba(42, 57, 98, 1);
     line-height: 16px;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    padding-right: 2rem;
+    vertical-align: top;
+  }
+  .inline-content {
+    position: relative;
+    top: -1.45rem;
+    left: 5rem;
+    .ivu-col-span-12 {
+      width: 40%;
+      margin-bottom: .5rem;
+      .ivu-select {
+        width: 50%;
+      }
+    }
+  }
+}
+
+.accumulative_total {
+  margin-bottom: 1.5rem;
+}
+
+.ivu-checkbox-group {
+  margin-bottom: 2rem;
+}
+
+.vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ivu-modal-header p,
+.ivu-modal-header-inner {
+  width: 112px;
+  height: 14px;
+  font-size: 14px;
+  font-family: MicrosoftYaHei;
+  color: rgba(42, 57, 98, 1);
+  line-height: 14px;
+}
+
+.time_chance {
+  display: inline-block;
+  width: 48px;
+  height: 16px;
+  font-size: 12px;
+  font-family: MicrosoftYaHei;
+  color: rgba(42, 57, 98, 1);
+  line-height: 16px;
 }
 
 .ivu-modal-header {
-    padding: 18px 16px;
-    margin-bottom: 1rem;
+  padding: 18px 20px;
+  margin-bottom: 1rem;
+}
+
+.ivu-modal-body {
+  padding: 20px 20px 10px 20px;
+}
+
+.ivu-checkbox-group .ivu-checkbox-wrapper {
+  margin-right: 90px;
 }
 
 .ivu-checkbox-checked .ivu-checkbox-inner {
-    border-color: $color-actived;
-    background-color: $color-actived;
+  border-color: $color-actived;
+  background-color: $color-actived;
 }
 
 //新建按钮样式
 .action_container {
-    .new_action {
-        margin-bottom: 1rem;
-        width: 72px;
-        height: 24px;
-        background: rgba(57, 111, 255, 1);
-        border-radius: 12px;
-        border: 0;
-        outline: 0;
-        color: #ffffff;
-        cursor: pointer;
-        .ivu-icon {
-            width: 16px;
-            height: 14px;
-            font-weight: 600;
-        }
+  .new_action {
+    margin-bottom: 1rem;
+    width: 72px;
+    height: 24px;
+    background: rgba(57, 111, 255, 1);
+    border-radius: 12px;
+    border: 0;
+    outline: 0;
+    color: #ffffff;
+    cursor: pointer;
+    .ivu-icon {
+      width: 16px;
+      height: 14px;
+      font-weight: 600;
     }
+  }
 }
 
 .action {
-    margin-bottom: 1.5rem;
-    .ivu-input-number {
-        width: 247px;
+  margin-bottom: 1rem;
+  .ivu-input-number {
+    width: 247px;
+  }
+  .action_name {
+    width: 48px;
+    height: 16px;
+    font-size: 12px;
+    font-family: MicrosoftYaHei;
+    color: rgba(42, 57, 98, 1);
+    line-height: 16px;
+    padding-right: 1.5rem;
+  }
+  input {
+    width: 296px;
+    height: 32px;
+    border-radius: 4px;
+    padding-left: 0.5rem;
+    border: 1px solid rgba(242, 242, 242, 1);
+    &::placeholder {
+      color: #c5c8ce;
     }
-    .action_name {
-        width: 48px;
-        height: 16px;
-        font-size: 12px;
-        font-family: MicrosoftYaHei;
-        color: rgba(42, 57, 98, 1);
-        line-height: 16px;
-        padding-right: 2rem;
-    }
-    input {
-        width: 296px;
-        height: 32px;
-        border-radius: 4px;
-        padding-left: 0.5rem;
-        border: 1px solid rgba(242, 242, 242, 1);
-        &::placeholder {
-            color: #c5c8ce;
-        }
-    }
-    .ivu-date-picker-rel {
-        width: 296px;
-    }
+  }
+  .remark_column {
+    display: block;
+    margin: .2rem 0 .2rem 5.5rem;
+    color: #E4007F;
+  }
+  .ivu-date-picker-rel {
+    width: 296px;
+  }
 }
 
 .ivu-select-selection-focused,
 .ivu-select-selection:hover {
-    border-color: #fff;
+  border-color: #fff;
 }
 
 .ivu-modal-footer {
-    border-top: 0;
-    padding: 0px 24px 32px 0;
+  border-top: 0;
+  padding: 0px 24px 32px 0;
 }
 
 .ivu-table-cell {
-    padding-left: 14px;
-    padding-right: 0px;
+  padding-left: 14px;
+  padding-right: 0px;
 }
 
 .indicators_dimension {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .allocation_tabs .ivu-tabs-ink-bar {
-    width: 56px !important;
-    background-color: $color-actived;
+  width: 56px !important;
+  background-color: $color-actived;
 }
 
 .ivu-tabs-nav-scroll {
-    height: 41px;
+  height: 41px;
 }
 
 .ivu-tabs-nav .ivu-tabs-tab {
-    padding: 10px 1px;
+  padding: 10px 1px;
 }
 
 .ivu-tabs-nav .ivu-tabs-tab-active {
-    color: $color-actived;
-    font-weight: bold;
+  color: $color-actived;
+  font-weight: bold;
 }
 
 .ivu-checkbox-checked .ivu-checkbox-inner {
-    border-color: $color-actived;
-    background-color: $color-actived;
+  border-color: $color-actived;
+  background-color: $color-actived;
 }
 
 .ivu-tabs-bar {
-    border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
 }
 
 .ivu-tabs-nav .ivu-tabs-tab:hover {
-    border-color: $color-actived;
+  border-color: $color-actived;
 }
 
 .ivu-row {
-    float: left;
+  float: left;
 }
 
 .allocation-time {
-    float: right;
-    margin-top: -3.5rem;
-    .ivu-input {
-        color: #1E2538;
-        font-size: 12px;
-    }
+  float: right;
+  margin-top: -3.5rem;
+  .ivu-input {
+    color: #1E2538;
+    font-size: 12px;
+  }
 }
 
 .allocation_tabs .ivu-date-picker-rel input {
-    width: 180px;
+  width: 180px;
 }
 
 .allocation_tabs .ivu-date-picker-rel .ivu-input-icon {
-    right: -70px;
+  right: -70px;
 }
 
 //表格对齐
 .ivu-table td.demo-table-info-column {
-    background: #fafafa;
-    .ivu-table-cell {
-        text-align: center !important;
-    }
+  background: #fafafa;
+  .ivu-table-cell {
+    text-align: center !important;
+  }
 }
 
 .ivu-table td.overview-table-right {
-    .ivu-table-cell {
-        text-align: right !important;
-    }
+  .ivu-table-cell {
+    text-align: right !important;
+  }
 }
 
 .overview-table-right {
-    text-align: right !important;
-    padding-right: 15px;
+  text-align: right !important;
+  padding-right: 15px;
 }
 
 .ivu-table th.activity-table-right {
-    text-align: right !important;
-    padding-right: 15px;
+  text-align: right !important;
+  padding-right: 15px;
 }
 
 .ivu-table td.activity-table-right .ivu-table-cell {
-    text-align: right !important;
-    padding-right: 15px;
+  text-align: right !important;
+  padding-right: 15px;
 }
 
 // 时间选择kuang
 .allocation_container .ivu-tabs {
-    overflow: visible !important;
+  overflow: visible !important;
+}
+
+textarea.ivu-input {
+  max-width: 79%;
+  border: 1px solid $color-border;
+  vertical-align: 0;
+  font-size: 12px;
+  border-radius: 4px;
+  resize: none;
+  position: relative;
+  top: -1rem;
+  left: 4.5rem;
+}
+
+.ivu-input:hover {
+  border-color: $color-border !important;
 }

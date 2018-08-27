@@ -1,6 +1,7 @@
 <template>
   <div class="filterBox">
     <span class="filter-title">{{title}}</span>
+    <span class="filter-mark">?</span>
     <div class="inline-content">
       <div class="inline-item" v-for="(filter, index) in filters" :key="index">
         <span :style="dateStyle(filter)">{{filter.title}}</span>
@@ -9,14 +10,16 @@
           v-model="param[date.name]" 
           class="filter-input filter-date-picker"></DatePicker>
         </p>
-
-        <Select v-show="filter.type==='select' && options" clearable class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
+        
+        <Checkbox v-show="filter.type==='checkbox'" v-model="market_id" @on-change="event[filter.label](market_id)"></Checkbox>
+       
+        <Select v-show="filter.type==='select' && options" :disabled="disabledObj[filter.label]"  clearable class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
           <Option v-for="(item, index) in options[filter.label]" :value="item[filter.filterValue]" :key="index">
             {{item[filter.filterName]}}
           </Option>
         </Select>
         <p v-show="filter.type === 'btn'">
-          <span v-for="(btn,index) in filter.data" :key="index" :class="[ 'btn-' + btn.position, toggleName === btn.position ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
+          <span v-for="(btn,index) in filter.data" :key="index" :class="[ 'btn-' + btn.position, toggleName === btn.btnTitle ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
         </p> 
       </div>
       <Button v-show="filters.length>0" @click="handle"><span class="query">查询</span></Button>
@@ -33,6 +36,7 @@ export default {
   data() {
     let _this = this;
     return {
+      market_id: false,
       param: {
         start_date: dayjs(new Date())
           .subtract(1, "month")
@@ -42,9 +46,17 @@ export default {
 				shop_floor: null,
 				shop_bizcat: null,
 				shop_id: null,
-				activity_id: null
+        activity_id: null,
+        stat_type: null,
       },
-      toggleName: "",
+      disabledObj: {
+        building: false,
+        floor: false,
+        bizcat: false,
+        shop: false,
+        activity: false
+      },
+      toggleName: "当周",
       option: [
         {
           disabledDate(date) {
@@ -78,6 +90,23 @@ export default {
         }
       ],
       event: {
+        market: (value) => {
+          if (value) {
+            _this.param = Object.assign(_this.param, {
+              shop_floor: null,
+              shop_bizcat: null,
+              shop_id: -1,
+              activity_id: null,
+            });
+            for (let key in _this.disabledObj) {
+              _this.disabledObj[key] = true
+            }
+          } else {
+            for (let key in _this.disabledObj) {
+              _this.disabledObj[key] = false
+            }
+          }
+        },
         building: (value, item) => {
 					_this.param = Object.assign(_this.param, {
 						shop_floor: null,
@@ -142,7 +171,7 @@ export default {
   },
   methods: {
     dateStyle: function(filter) {
-      return filter.type === "daterange" ? "line-height: 28px;" : "";
+      return filter.type === "daterange" || filter.type === "checkbox" ? "line-height: 28px;" : "";
     },
     handle() {
       if (!this.param.start_date) {
@@ -166,16 +195,12 @@ export default {
       // this.$store.commit("updateSearchParam", this.param);
     },
     handleChange(e, data) {
-      this.toggleName = e.position;
-      data.forEach(item => {
-        if (item.position === e.position) {
-          this.param[item.name] = 1;
-        } else {
-          this.param[item.name] = 0;
-        }
-      });
-      // eventBus.$emit("updateSearchParam", this.param);
-      // this.$store.commit("updateSearchParam", this.param);
+      this.toggleName = e.btnTitle;      
+      this.param[e.name] = e.btnTitle;
+      this.param.current_date =  this.dayjs()
+            .subtract(1, "day")
+            .format("YYYY-MM-DD");
+      eventBus.$emit(`updateSearchParam_${this.$route.meta.path}`, this.param);
     },
     async fetchDate() {
       await this.$store.dispatch("getOptions").then(() => {
@@ -221,7 +246,7 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/style/components/filterBox.scss";
 .inline-content {
-  :nth-child(5) {
+  :nth-child(6) {
     .ivu-select-single {
       width: 128px !important;
       .ivu-select-selection {

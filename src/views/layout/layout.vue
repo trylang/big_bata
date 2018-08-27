@@ -18,7 +18,7 @@
                             <Icon type="ios-arrow-down"></Icon>
                         </a>
                         <DropdownMenu slot="list">
-                            <DropdownItem> 请退出登录</DropdownItem>
+                            <DropdownItem> 退出</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <div class="yayout_bbg">步步高梅溪新天地</div>
@@ -120,14 +120,23 @@ export default {
       let _this = this;
       await this.$store.dispatch("getLevels").then(() => {
         _this.levels = _this.$store.state.BI.levels;
+        for(let key in _this.levels) {
+          sessionStorage.setItem(key, JSON.stringify(_this.levels[key]));
+        }
       });
     }
   },
+  watch: {
+		'$route': function(from, to) {
+			this.$store.commit("updateSearchOptions", this.currentFilters);
+		}
+	},
   components: {
     FilterBox
   },
   created() {
     this.fetchDate();
+    this.$store.commit("updateSearchOptions", this.currentFilters);
   }
 };
 </script>

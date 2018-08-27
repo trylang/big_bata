@@ -1,8 +1,8 @@
 <template>
-    <div v-if="$route.path == '/data-marketing/index'" id="table_container">
+    <div id="table_container">
         <div class="table_title">
             <span class="table_title_s">数据详情</span>
-            <downloadBounced></downloadBounced>
+            <download :meta="$route.meta" title="数据概览" name="overview"></download>
         </div>
         <!-- Table表格 -->
         <div class="table_format">
@@ -22,13 +22,14 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import downloadBounced from "@/components/downloadBounced.vue";
+import download from "@/components/download.vue";
 import { setOptions } from "@/utils/chart.js";
+import { sort } from "@/utils/filter.js";
 import dayjs from "dayjs";
 
 export default {
   components: {
-    downloadBounced
+    download
   },
   data() {
     return {
@@ -44,63 +45,86 @@ export default {
         }
       ],
       chartData: [],
-      columns: [
-        {
+      columns: (() => {
+        let res = JSON.parse(window.sessionStorage.getItem("overview"));
+        if (!res) return [];
+        let data = res.filter(item => {
+          return item.dim_val ? item.dim_val === 'T' : item.default_val === 'T';
+        });
+        let columns = [{
           title: " ",
           key: "stat_type",
           className: "demo-table-info-column"
-        },
-        {
-          title: "视频客流量",
-          key: "video_cf",
-          className: "overview-table-right"
-        },
-        {
-          title: "WI-FI客流量",
-          key: "wifi_cf",
-          className: "overview-table-right"
-        },
-        {
-          title: "活动UV",
-          key: "activity_uv",
-          className: "overview-table-right"
-        },
-        {
-          title: "活动PV",
-          key: "activity_pv",
-          className: "overview-table-right"
-        },
-        {
-                    title: "累计会员数",
-                    key: "mbr_reg_count_acc",
-          className: "overview-table-right"
-        },
-        {
-          title: "新增会员数",
-                    key: "mbr_reg_count",
-          className: "overview-table-right"
-        },
-        {
-          title: "领券量",
-          key: "cpn_get_count",
-          className: "overview-table-right"
-        },
-        {
-          title: "领取人数",
-          key: "cpn_get_persons",
-          className: "overview-table-right"
-        },
-        {
-          title: "核销量",
-          key: "cpn_chk_count",
-          className: "overview-table-right"
-        },
-        {
-          title: "核销人数",
-          key: "cpn_chk_persons",
-          className: "overview-table-right"
-        }
-      ],
+        }];
+        sort(data, "disp_order", "asc").forEach((item, index) => {
+          columns.push({
+            title: item.dim_name,
+            key: item.dim_id,
+            // fixed: index === 0 ? "left" : "",
+            // width: 120,
+            // sortable: index > 7 ? "custom" : ""
+          });
+        });
+        return columns;
+      })(),
+      // columns: [
+      //   {
+      //     title: " ",
+      //     key: "stat_type",
+      //     className: "demo-table-info-column"
+      //   },
+      //   {
+      //     title: "视频客流量",
+      //     key: "video_cf",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "WI-FI客流量",
+      //     key: "wifi_cf",
+      //     width: 110,
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "活动UV",
+      //     key: "activity_uv",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "活动PV",
+      //     key: "activity_pv",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "累计会员数",
+      //     key: "mbr_reg_count_acc",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "新增会员数",
+      //               key: "mbr_reg_count",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "领券量",
+      //     key: "cpn_get_count",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "领取人数",
+      //     key: "cpn_get_persons",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "核销量",
+      //     key: "cpn_chk_count",
+      //     className: "overview-table-right"
+      //   },
+      //   {
+      //     title: "核销人数",
+      //     key: "cpn_chk_persons",
+      //     className: "overview-table-right"
+      //   }
+      // ],
       data: []
     };
   },

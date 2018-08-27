@@ -1,220 +1,181 @@
 <template>
-    <div class="allocation_container">
-        <p class="allocation_title">系统设置详情</p>
-        <Tabs class="allocation_tabs" @on-click="toggleTabpan" value="action">
-            <!-- 动作配置 -->
-            <TabPane label="动作配置" name="action">
-                <div class="allocation-time">
-                    <span style="float:left;margin-top:0.4rem">时间：</span>
-                    <Row>
-                        <Col span="12">
-                        <DatePicker type="daterange" placement="bottom-end" placeholder="请选择时间范围"
-                                    @on-change="searchAction" style="width: 180px"></DatePicker>
-                        </Col>
-                    </Row>
-                    <Input icon="ios-search" placeholder="请输入动作名称"
-                           v-model="action.action_name"
-                           @on-enter="toggleTabpan('action')"
-                           @on-click="toggleTabpan('action')"
-                           style="width: auto;border:1px solid #F2F2F2;border-radius:16px;"/>
-                </div>
-                <div class="action_container">
-                    <button class="new_action ios-add" type="button" @click="addModel('action')">
-                        <Icon type="ios-add"/>
-                        <span>新建</span>
-                    </button>
-                </div>
-                <Table :columns="action.columns" :data="action.pageList"></Table>
-                <div class="table_page">
-                    <div class="table_page_l">
-                        <p>共 <span>{{action.list.length}}</span> 条数据</p>
-                    </div>
-                    <div class="table_page_r">
-                        <Page :total="action.list.length" :current.sync="action.curPage" :page-size="10" show-elevator
-                              @on-change="changePageAction"/>
-                    </div>
-                </div>
-            </TabPane>
-            <!-- 营销成本 -->
-            <TabPane label="营销成本" name="cost">
-                <div class="allocation-time">
-                    <span style="float:left;margin-top:0.4rem">时间：</span>
-                    <Row>
-                        <Col span="12">
-                        <DatePicker type="daterange" placement="bottom-end" placeholder="请选择"
-                                    @on-change="searchCost"
-                                    style="width: 180px"></DatePicker>
-                        </Col>
-                    </Row>
-                    <Input icon="ios-search" placeholder="请输入活动名称"
-                           v-model="cost.activity_name"
-                           @on-enter="toggleTabpan('cost')"
-                           @on-click="toggleTabpan('cost')"
-                           style="width: auto;border:1px solid #F2F2F2;border-radius:16px;"/>
-                </div>
-                <div class="action_container">
-                    <button class="new_action ios-add" type="button" @click="addModel('cost')">
-                        <Icon type="ios-add"/>
-                        <span>新建</span>
-                    </button>
-                </div>
-                <Table :columns="cost.columns" :data="cost.pageList"></Table>
+  <div class="allocation_container">
+    <p class="allocation_title">系统设置详情</p>
+    <Tabs class="allocation_tabs" @on-click="toggleTabpan" value="action">
+      <!-- 运营日志配置 -->
+      <TabPane label="运营日志" name="action">
+        <div class="allocation-time">
+          <span style="float:left;margin-top:0.4rem">时间：</span>
+          <Row>
+            <Col span="12">
+            <DatePicker type="daterange" placement="bottom-end" placeholder="请选择时间范围" @on-change="searchAction" style="width: 180px"></DatePicker>
+            </Col>
+          </Row>
+          <Input icon="ios-search" placeholder="请输入运营日志" v-model="action.action_name" @on-enter="toggleTabpan('action')" @on-click="toggleTabpan('action')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
+        </div>
+        <div class="action_container">
+          <button class="new_action ios-add" type="button" @click="addModel('action')">
+            <Icon type="ios-add" />
+            <span>新建</span>
+          </button>
+        </div>
+        <Table :columns="action.columns" :data="action.pageList"></Table>
+        <div class="table_page">
+          <div class="table_page_l">
+            <p>共
+              <span>{{action.list.length}}</span> 条数据</p>
+          </div>
+          <div class="table_page_r">
+            <Page :total="action.list.length" :current.sync="action.curPage" :page-size="10" show-elevator @on-change="changePageAction" />
+          </div>
+        </div>
+      </TabPane>
+      <!-- 营销成本 -->
+      <TabPane label="营销成本" name="cost">
+        <div class="allocation-time">
+          <span style="float:left;margin-top:0.4rem">时间：</span>
+          <Row>
+            <Col span="12">
+            <DatePicker type="daterange" placement="bottom-end" placeholder="请选择" @on-change="searchCost" style="width: 180px"></DatePicker>
+            </Col>
+          </Row>
+          <Input icon="ios-search" placeholder="请输入活动名称" v-model="cost.activity_name" @on-enter="toggleTabpan('cost')" @on-click="toggleTabpan('cost')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
+        </div>
+        <div class="action_container">
+          <button class="new_action ios-add" type="button" @click="addModel('cost')">
+            <Icon type="ios-add" />
+            <span>新建</span>
+          </button>
+        </div>
+        <Table :columns="cost.columns" :data="cost.pageList"></Table>
 
-                <div class="table_page">
-                    <div class="table_page_l">
-                        <p>共 <span>{{cost.list.length}}</span> 条数据</p>
-                    </div>
-                    <div class="table_page_r">
-                        <Page :total="cost.list.length" :current.sync="cost.curPage" :page-size="10" show-elevator
-                              @on-change="changePageCost"/>
-                    </div>
-                </div>
-            </TabPane>
-            <!-- 指标维度 -->
-            <TabPane label="指标维度" name="level">
-                <!-- 模块1 -->
-                <div class="allocation_pages">
-                    <p class="data_page_title">1. 数据概览页-表头配置</p>
-                    <p class="indicators_dimension">指标维度</p>
-                    <!-- 选择框 -->
-                    <div class="check_all "
-                         style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
-                        <Checkbox
-                                :indeterminate="level.overview.indeterminate"
-                                :value="level.overview.checkAll"
-                                @click.prevent.native="handleCheckAll('overview')">全选
-                        </Checkbox>
-                    </div>
-                    <CheckboxGroup v-model="level.overview.checkAllGroup" @on-change="overviewCheckAllGroupChange">
-                        <Checkbox v-for="(item, index) in level.overview.list" :key="index" :label="item.dim_id">
-                            {{item.dim_name}}
-                        </Checkbox>
-                    </CheckboxGroup>
-                    <input class="apply" type="button" @click="handleApply('overview', level.overview.checkAllGroup)"
-                           value="应用">
-                </div>
-                <!-- 模块2 -->
-                <div class="allocation_pages">
-                    <p class="data_page_title">2. 活动效果分析页-表头配置</p>
-                    <p class="indicators_dimension">1）指标维度（上表）</p>
-                    <!-- 选择框 -->
-                    <div class="check_all "
-                         style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
-                        <Checkbox
-                                :indeterminate="level.activityL1.indeterminate"
-                                :value="level.activityL1.checkAll"
-                                @click.prevent.native="handleCheckAll('activityL1')">全选
-                        </Checkbox>
-                    </div>
-                    <CheckboxGroup v-model="level.activityL1.checkAllGroup" @on-change="activityL1CheckAllGroupChange">
-                        <Checkbox v-for="(item, index) in level.activityL1.list" :key="index" :label="item.dim_id">
-                            {{item.dim_name}}
-                        </Checkbox>
-                    </CheckboxGroup>
+        <div class="table_page">
+          <div class="table_page_l">
+            <p>共
+              <span>{{cost.list.length}}</span> 条数据</p>
+          </div>
+          <div class="table_page_r">
+            <Page :total="cost.list.length" :current.sync="cost.curPage" :page-size="10" show-elevator @on-change="changePageCost" />
+          </div>
+        </div>
+      </TabPane>
+      <!-- 指标维度 -->
+      <TabPane label="指标维度" name="level">
+        <!-- 模块1 -->
+        <div class="allocation_pages">
+          <p class="data_page_title">1. 数据概览页-表头配置</p>
+          <p class="indicators_dimension">指标维度</p>
+          <!-- 选择框 -->
+          <div class="check_all " style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+            <Checkbox :indeterminate="level.overview.indeterminate" :value="level.overview.checkAll" @click.prevent.native="handleCheckAll('overview')">全选
+            </Checkbox>
+          </div>
+          <CheckboxGroup v-model="level.overview.checkAllGroup" @on-change="overviewCheckAllGroupChange">
+            <Checkbox v-for="(item, index) in level.overview.list" :key="index" :disabled="item.editable==='F'" :label="item.dim_id">
+              {{item.dim_name}}
+            </Checkbox>
+          </CheckboxGroup>
+          <input class="apply" type="button" @click="handleApply('overview', level.overview.checkAllGroup)" value="应用">
+        </div>
+        <!-- 模块2 -->
+        <div class="allocation_pages">
+          <p class="data_page_title">2. 活动效果分析页-表头配置</p>
+          <p class="indicators_dimension">1）指标维度（上表）</p>
+          <!-- 选择框 -->
+          <div class="check_all " style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+            <Checkbox :indeterminate="level.activityL1.indeterminate" :value="level.activityL1.checkAll" @click.prevent.native="handleCheckAll('activityL1')">全选
+            </Checkbox>
+          </div>
+          <CheckboxGroup v-model="level.activityL1.checkAllGroup" @on-change="activityL1CheckAllGroupChange">
+            <Checkbox v-for="(item, index) in level.activityL1.list" :key="index" :disabled="item.editable==='F'" :label="item.dim_id">
+              {{item.dim_name}}
+            </Checkbox>
+          </CheckboxGroup>
 
-                    <p class="indicators_dimension">2）指标维度（下表）</p>
-                    <!-- 选择框 -->
-                    <div class="check_all "
-                         style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
-                        <Checkbox
-                                :indeterminate="level.activityL2.indeterminate"
-                                :value="level.activityL2.checkAll"
-                                @click.prevent.native="handleCheckAll('activityL2')">全选
-                        </Checkbox>
-                    </div>
-                    <CheckboxGroup v-model="level.activityL2.checkAllGroup" @on-change="activityL2CheckAllGroupChange">
-                        <Checkbox v-for="(item, index) in level.activityL2.list" :key="index" :label="item.dim_id">
-                            {{item.dim_name}}
-                        </Checkbox>
-                    </CheckboxGroup>
-                    <input class="apply" type="button"
-                           @click="handleApply('activity', {L1:level.activityL1.checkAllGroup, L2: level.activityL2.checkAllGroup})"
-                           value="应用">
-                </div>
-                <!-- 模块3 -->
-                <div class="allocation_pages">
-                    <p class="data_page_title">3. 券效果分析页-表头配置</p>
-                    <p class="indicators_dimension">指标维度</p>
-                    <!-- 选择框 -->
-                    <div class="check_all "
-                         style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
-                        <Checkbox
-                                :indeterminate="level.coupon.indeterminate"
-                                :value="level.coupon.checkAll"
-                                @click.prevent.native="handleCheckAll('coupon')">全选
-                        </Checkbox>
-                    </div>
-                    <CheckboxGroup v-model="level.coupon.checkAllGroup" @on-change="couponCheckAllGroupChange">
-                        <Checkbox v-for="(item, index) in level.coupon.list" :key="index"
-                                  :disabled="item.editable==='F'" :label="item.dim_id">{{item.dim_name}}
-                        </Checkbox>
-                    </CheckboxGroup>
-                    <input class="apply" type="button" @click="handleApply('coupon', level.coupon.checkAllGroup)"
-                           value="应用">
-                </div>
-            </TabPane>
-        </Tabs>
+          <p class="indicators_dimension">2）指标维度（下表）</p>
+          <!-- 选择框 -->
+          <div class="check_all " style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+            <Checkbox :indeterminate="level.activityL2.indeterminate" :value="level.activityL2.checkAll" @click.prevent.native="handleCheckAll('activityL2')">全选
+            </Checkbox>
+          </div>
+          <CheckboxGroup v-model="level.activityL2.checkAllGroup" @on-change="activityL2CheckAllGroupChange">
+            <Checkbox v-for="(item, index) in level.activityL2.list" :key="index" :disabled="item.editable==='F'" :label="item.dim_id">
+              {{item.dim_name}}
+            </Checkbox>
+          </CheckboxGroup>
+          <input class="apply" type="button" @click="handleApply('activity', {L1:level.activityL1.checkAllGroup, L2: level.activityL2.checkAllGroup})" value="应用">
+        </div>
+        <!-- 模块3 -->
+        <div class="allocation_pages">
+          <p class="data_page_title">3. 券效果分析页-表头配置</p>
+          <p class="indicators_dimension">指标维度</p>
+          <!-- 选择框 -->
+          <div class="check_all " style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+            <Checkbox :indeterminate="level.coupon.indeterminate" :value="level.coupon.checkAll" @click.prevent.native="handleCheckAll('coupon')">全选
+            </Checkbox>
+          </div>
+          <CheckboxGroup v-model="level.coupon.checkAllGroup" @on-change="couponCheckAllGroupChange">
+            <Checkbox v-for="(item, index) in level.coupon.list" :key="index" :disabled="item.editable==='F'" :label="item.dim_id">{{item.dim_name}}
+            </Checkbox>
+          </CheckboxGroup>
+          <input class="apply" type="button" @click="handleApply('coupon', level.coupon.checkAllGroup)" value="应用">
+        </div>
+      </TabPane>
+    </Tabs>
 
-        <Modal
-                v-model="action.model"
-                width="416px"
-                :title="action.param.edit ? '编辑动作': '新建动作' "
-                :loading="action.loading"
-                @on-ok="submitAction"
-                @on-cancel="cancel"
-        >
-            <div class="action"><span class="action_name">动作名称</span>
-                <input v-model="action.param.action_name" oninput="if(value.length>11);value=value.slice(0,9)"  placeholder="请输入动作名称"/>
-            </div>
-            <div class="action"><span class="action_name">关联活动</span>
-                <Select v-model="action.param.act_id" style="width:296px" @on-change="changeActionTime(action.param.act_id)">
-                    <Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{
-                        item.activity_name }}
-                    </Option>
-                </Select>
-            </div>
-            <div class="action"><span class="action_name">生效时间</span>
-             <Input v-model="action.param.time" style="width: 296px" disabled/>
-                <!-- <DatePicker type="daterange" @on-change="formatActionDate" v-model="action.param.time"
-                            placement="bottom-end" placeholder="请选择" style="width: 296px"></DatePicker> -->
-            </div>
-        </Modal>
+    <Modal v-model="action.model" width="416px" :title="action.param.edit ? '编辑运营日志': '新建运营日志' " :loading="action.loading" @on-ok="submitAction" @on-cancel="cancel">
+      <div class="action" style="margin-bottom:0;">
+        <span class="action_name">运营日志</span>
+        <Input v-model="action.param.content" type="textarea" size="small" :rows="4" placeholder="请输入运营日志" />
+        <!-- <span class="remark_column">注：运营日志长度不超过9位</span> -->
+      </div>
 
-        <Modal
-                v-model="cost.model"
-                width="416px"
-                :title="cost.param.edit ? '编辑营销成本': '新建营销成本' "
-                :loading="cost.loading"
-                @on-ok="submitCost"
-                @on-cancel="cancel"
-        >
-            <div class="action"><span class="action_name">关联活动</span>
-						<Select v-model="cost.param.activity_id" style="width:296px" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
-							<Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{ item.activity_name }}</Option>
-                </Select>
-            </div>
-            <div class="action"><span class="action_name">活动时间</span>
-                <Input v-model="cost.param.time" style="width: 296px" disabled/>
-                <!-- <DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" ></DatePicker> -->
-            </div>
-            <div class="action"><span class="action_name">线下物料成本</span>
-                <InputNumber v-model="cost.param.offline_mat_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
-                元
-            </div>
-            <div class="action"><span class="action_name">线上推广成本</span>
-                <InputNumber v-model="cost.param.online_ad_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
-                元
-            </div>
-            <div class="action"><span class="action_name" style="padding-right:68px;">券成本</span>
-                <InputNumber v-model="cost.param.coupon_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
-                元
-            </div>
-            <div class="action"><span class="action_name"  style="padding-right:56px;">其他成本</span>
-                <InputNumber v-model="cost.param.other_cost" :min="0" :max="99999999" placeholder="请输入金额" ></InputNumber>
-                元
-            </div>
-        </Modal>
-    </div>
+      <div class="action">
+        <span class="action_name">生效时间</span>
+        <DatePicker type="date" @on-change="formatActionDate" v-model="action.param.ymd"
+          placement="bottom-end" placeholder="请选择" style="width: 296px"></DatePicker>
+      </div>
+
+      <div class="action">
+        <span class="action_name">备注</span>        
+          <Input v-model="action.param.remark" type="textarea" size="small" :rows="4" placeholder="请输入运营日志名称" />
+      </div>
+    </Modal>
+
+    <Modal v-model="cost.model" width="416px" :title="cost.param.edit ? '编辑营销成本': '新建营销成本' " :loading="cost.loading" @on-ok="submitCost" @on-cancel="cancel">
+      <div class="action">
+        <span class="action_name">关联活动</span>
+        <Select v-model="cost.param.activity_id" style="width:296px" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
+          <Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{ item.activity_name }}</Option>
+        </Select>
+      </div>
+      <div class="action">
+        <span class="action_name">活动时间</span>
+        <Input v-model="cost.param.time" style="width: 296px" disabled/>
+        <!-- <DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" ></DatePicker> -->
+      </div>
+      <div class="action">
+        <span class="action_name">线下物料成本</span>
+        <InputNumber v-model="cost.param.offline_mat_cost" :min="0" :max="99999999" placeholder="请输入金额"></InputNumber>
+        元
+      </div>
+      <div class="action">
+        <span class="action_name">线上推广成本</span>
+        <InputNumber v-model="cost.param.online_ad_cost" :min="0" :max="99999999" placeholder="请输入金额"></InputNumber>
+        元
+      </div>
+      <div class="action">
+        <span class="action_name" style="padding-right:68px;">券成本</span>
+        <InputNumber v-model="cost.param.coupon_cost" :min="0" :max="99999999" placeholder="请输入金额"></InputNumber>
+        元
+      </div>
+      <div class="action">
+        <span class="action_name" style="padding-right:56px;">其他成本</span>
+        <InputNumber v-model="cost.param.other_cost" :min="0" :max="99999999" placeholder="请输入金额"></InputNumber>
+        元
+      </div>
+    </Modal>
+  </div>
 </template>
 <script>
 import newAction from "@/components/newAction.vue";
@@ -236,22 +197,21 @@ export default {
         },
         model: false,
         loading: true,
-        action_name: "",
-        val_begin: "",
-        val_end: "",
-        //   动作配置数据
+        content: "",
+        ymd: "",
+        //   运营日志配置数据
         columns: [
           {
-            title: "动作名称",
-            key: "action_name"
-          },
-          {
-            title: "关联活动",
-            key: "activity_name"
+            title: "运营日志名称",
+            key: "content"
           },
           {
             title: "生效时间",
-            key: "date"
+            key: "ymd"
+          },
+          {
+            title: "备注",
+            key: "remark"
           },
           {
             title: "操作",
@@ -277,12 +237,9 @@ export default {
                       let row = params.row;
                       this.action.param.edit = true;
                       this.action.param.id = row.id;
-                      this.action.param.action_name = row.action_name;
-                      this.action.param.act_id = row.act_id;
-                      if (!row.val_end) row.val_end == "至今";
-                      this.action.param.time = `${row.val_begin}~${
-                        row.val_end
-                      }`;
+                      this.action.param.content = row.content;
+                      this.action.param.remark = row.remark;
+                      this.action.param.ymd = row.ymd;
                       this.action.model = true;
                     }
                   }
@@ -301,7 +258,7 @@ export default {
                   on: {
                     click: () => {
                       this.$Modal.confirm({
-                        title: "确认要删除此动作？",
+                        title: "确认要删除此运营日志？",
                         onOk: () => {
                           this.$api
                             .deleteMarketAction({ id: params.row.id })
@@ -310,7 +267,7 @@ export default {
                               this.toggleTabpan("action");
                             });
                         },
-                        onCancel: () => {}
+                        onCancel: () => { }
                       });
                     }
                   }
@@ -418,7 +375,7 @@ export default {
                               this.toggleTabpan("cost");
                             });
                         },
-                        onCancel: () => {}
+                        onCancel: () => { }
                       });
                     }
                   }
@@ -466,7 +423,7 @@ export default {
       actiontime.period_end_time = actiontime.period_end_time || "至今";
       this.action.param.time = `${actiontime.period_start_time}~${
         actiontime.period_end_time
-      }`;
+        }`;
     },
     changeCostTime(acticityId) {
       let time = this.activityObj[acticityId];
@@ -474,7 +431,7 @@ export default {
       time.period_end_time = time.period_end_time || "至今";
       this.cost.param.time = `${time.period_start_time}~${
         time.period_end_time
-      }`;
+        }`;
     },
     addModel(name) {
       this[name].model = true;
@@ -489,8 +446,7 @@ export default {
       }
     },
     formatActionDate(time) {
-      this.action.param.val_begin = time[0];
-      this.action.param.val_end = time[1];
+      this.action.param.ymd = time;
     },
     formatCostDate(time) {
       this.cost.param.period_start_time = time[0];
@@ -503,35 +459,30 @@ export default {
       });
     },
     submitAction() {
-      if (!this.action.param.action_name) {
-        this.$Message.info("请填写动作名称！");
-        return this.changeLoading(this.action);
-      }
-      if (!this.action.param.act_id) {
-        this.$Message.info("请选择活动！");
+      if (!this.action.param.content) {
+        this.$Message.info("请填写运营日志！");
         return this.changeLoading(this.action);
       }
 
-      let time = this.action.param.time.split("~");
-      this.action.param.val_begin = time[0];
-      if (time[1] == "至今") {
-        this.action.param.val_end = null;
-      } else {
-        this.action.param.val_end = time[1];
-      }
-
-      if (!this.action.param.val_begin) {
-        this.$Message.info("请选择生效时间！");
+      if (!this.action.param.ymd) {
+        this.$Message.info("请选择时间！");
         return this.changeLoading(this.action);
       }
-      if (this.action.param.id) {
+
+      let hasAct = this.action.list.some(item => item.ymd === this.action.param.ymd);
+      if (hasAct) {
+        this.$Message.info('此时间已存在，请重新选择！');
+        return this.changeLoading(this.action);
+      }
+
+      if (this.action.param.edit) {
         this.$api.updateMarketAction(this.action.param).then(res => {
-          this.$Message.success("动作修改成功");
+          this.$Message.success("运营日志修改成功");
           this.toggleTabpan("action");
         });
       } else {
         this.$api.addMarketAction(this.action.param).then(res => {
-          this.$Message.success("动作添加成功");
+          this.$Message.success("运营日志添加成功");
           this.toggleTabpan("action");
         });
       }
@@ -541,6 +492,12 @@ export default {
     submitCost() {
       if (!this.cost.param.activity_id) {
         this.$Message.info("请选择活动！");
+        return this.changeLoading(this.cost);
+      }
+
+      let hasAct = this.activityList.some(item => item.activity_id === this.cost.param.activity_id);
+      if (hasAct) {
+        this.$Message.info('此活动已存在，请重新选择！');
         return this.changeLoading(this.cost);
       }
 
@@ -599,7 +556,7 @@ export default {
       this.cost.pageList = this.cost.list.slice((page - 1) * 10, page * 10);
     },
     handleCheckAll(name) {
-      let toggle = function(param) {
+      let toggle = function (param) {
         if (param.indeterminate) {
           param.checkAll = false;
         } else {
@@ -650,8 +607,7 @@ export default {
     },
     handleApply(name, data) {
       let _this = this;
-
-      let format = function(name, data, activityList) {
+      let format = function (name, data, activityList) {
         if (activityList) {
           _this.level[name] = { list: [] };
           _this.level[name].list = activityList;
@@ -671,7 +627,11 @@ export default {
         Object.keys(data).forEach(item => {
           activityList.push(..._this.level[`activity${item}`].list);
         });
-        format(name, Object.values(data), activityList);
+        let selectArr = [];
+        for (let key in data) {
+          selectArr.push(...data[key])
+        }
+        format(name, selectArr, activityList);
       } else {
         format(name, data);
       }
@@ -696,6 +656,7 @@ export default {
             val_end: this.action.val_end
           })
           .then(res => {
+            let activitys = [];
             res.forEach(item => {
               if (item.act_id)
                 item.activity_name = _this.activityObj[item.act_id]
@@ -761,7 +722,6 @@ export default {
             "disp_order",
             "asc"
           ).map(item => item.dim_id);
-          sessionStorage.setItem("coupon", JSON.stringify(levels.coupon));
         });
       }
     }

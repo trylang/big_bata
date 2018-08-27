@@ -12,6 +12,10 @@ export default {
       .format("YYYY-MM-DD"),
       end_date: dayjs(new Date()).format("YYYY-MM-DD"),
       org_id: '01',
+      stat_type: '当周',
+      current_date: dayjs()
+            .subtract(1, "day")
+            .format("YYYY-MM-DD")
     }
   },
   getters: {},
@@ -25,7 +29,10 @@ export default {
     },
     updateLevels(state, levels) {
       state.levels = levels;
-    }
+    },
+    updateSearchOptions(state, options) {
+      state.searchOptions = options;
+    },
   },
   actions: {
     async getOptions({ commit }, param) {

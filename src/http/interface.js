@@ -239,6 +239,7 @@ export const insertSysLevels = (data = {}) => {
 //=================    券效果分析   ===========================
 
 export const getConponEffect = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/effect/query",
     method: "post",
@@ -247,6 +248,7 @@ export const getConponEffect = (data = {}) => {
 };
 
 export const getConponBizcat = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/bizcat/query",
     method: "post",
@@ -255,6 +257,7 @@ export const getConponBizcat = (data = {}) => {
 };
 
 export const getConponChk = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/chk/query",
     method: "post",
@@ -263,6 +266,7 @@ export const getConponChk = (data = {}) => {
 };
 
 export const getConponTop10 = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/top10/query",
     method: "post",
@@ -274,6 +278,7 @@ export const getConponTop10 = (data = {}) => {
 // ====================   会员分析   =========================
 
 export const getMemberNumber = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/number/query",
     method: "post",
@@ -282,6 +287,7 @@ export const getMemberNumber = (data = {}) => {
 };
 
 export const getMemberActivity = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/activity/query",
     method: "post",
@@ -290,6 +296,7 @@ export const getMemberActivity = (data = {}) => {
 };
 
 export const getMemberQrcord = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/qrcord/query",
     method: "post",
@@ -298,6 +305,7 @@ export const getMemberQrcord = (data = {}) => {
 };
 
 export const getMemberSourcesAct = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/sourcesAct/query",
     method: "post",
@@ -306,6 +314,7 @@ export const getMemberSourcesAct = (data = {}) => {
 };
 
 export const getMemberSourcesChnnl = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/sourcesChnnl/query",
     method: "post",
@@ -314,8 +323,18 @@ export const getMemberSourcesChnnl = (data = {}) => {
 };
 
 export const getMemberDist = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/dist/query",
+    method: "post",
+    data
+  });
+};
+
+export const dataDownload = (name, data = {}) => {
+  data = {market_id, ...data}
+  return axios({
+    url: `/bi/marketing/${name}/data/download`,
     method: "post",
     data
   });
@@ -354,5 +373,5 @@ export default {
   getMemberSourcesAct,
   getMemberSourcesChnnl,
   getMemberDist,
-  
+  dataDownload
 };
