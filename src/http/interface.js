@@ -112,7 +112,7 @@ export const getOverviewHistory = (data = {}) => {
 // 获取活动效果分析表格
 export const getActivityT1 = (data = {}) => {
   return axios({
-    url: "/bi/marketing/acivity/text1/query",
+    url: "/bi/marketing/activity/text1/query",
     method: "post",
     data
   });
@@ -121,7 +121,7 @@ export const getActivityT1 = (data = {}) => {
 // 获取活动效果分析数据表格
 export const getActivityT2 = (data = {}) => {
   return axios({
-    url: "/bi/marketing/acivity/text2/query",
+    url: "/bi/marketing/activity/text2/query",
     method: "post",
     data
   });
@@ -130,7 +130,7 @@ export const getActivityT2 = (data = {}) => {
 // 获取活动效果分析数据表格
 export const getActivityChart = (data = {}) => {
   return axios({
-    url: "/bi/marketing/acivity/chart/query",
+    url: "/bi/marketing/activity/chart/query",
     method: "post",
     data
   });
@@ -140,6 +140,7 @@ export const getActivityChart = (data = {}) => {
 //====================  系统设置   =========================
 // 获取动作配置
 export const getMarketActions = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getmarketaction",
     method: "post",
@@ -169,6 +170,7 @@ export const updateMarketAction = (data) => {
 
 // 删除动作配置
 export const deleteMarketAction = (data = {}) => {
+  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/delmarketaction",
     method: "post",

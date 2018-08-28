@@ -3,7 +3,7 @@
     <Icon @click="modal = true" class="export iconfont icon-xiazai" />
     <Modal v-model="modal" width="604px" title="数据详情下载筛选" class-name="download-modal" @on-ok="ok" @on-cancel="cancel">
       <div class="accumulative_total" v-if="meta">
-        <CheckboxGroup v-model="param.stat_type">
+        <CheckboxGroup v-model="stat_type">
           <span class="time_chance">时间选择</span>
           <Checkbox v-for="(item, index) in timeCheckbox[meta.path]" :key="index" :label="item"></Checkbox>
         </CheckboxGroup>
@@ -11,7 +11,7 @@
 
       <div class="accumulative_total" v-if="!meta && filters">
         <span class="time_chance">时间选择</span>
-        <DatePicker v-for="(date, dataIndex) in filters.find(item => item.type==='daterange').data" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="param[date.name]" class="filter-input filter-date-picker"></DatePicker>
+        <DatePicker v-for="(date, dataIndex) in filters.find(item => item.type==='daterange').data" @on-change="changeDate[date.name](param[date.name])" :key="dataIndex" placeholder="请选择时间" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="param[date.name]" class="filter-input filter-date-picker"></DatePicker>
       </div>
 
       <div class="filtrate">
@@ -21,7 +21,7 @@
           <span :style="dateStyle(filter)">{{filter.title}}</span>
           <Checkbox v-show="filter.type==='checkbox'" v-model="market_id" @on-change="event[filter.label](market_id)"></Checkbox>
 
-          <Select v-show="filter.type==='select' && options" :disabled="disabledObj[filter.label]" clearable class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
+          <Select v-show="filter.type==='select' && options" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" :clearable="filter.disClearable !== true" class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
             <Option v-for="(item, itemIndex) in options[filter.label]" :value="item[filter.filterValue]" :key="itemIndex">
               {{item[filter.filterName]}}
             </Option>
@@ -47,8 +47,9 @@ export default {
     return {
       modal: false,
       market_id: false,
+      stat_type: ['昨天', '当周', '当月'],
       param: {
-        stat_type: [],
+        stat_type: '',
         start_date: dayjs(new Date())
           .subtract(1, "month")
           .format("YYYY-MM-DD"),
@@ -60,7 +61,7 @@ export default {
         activity_id: null,
       },
       timeCheckbox: {
-        'index': ['当日', '当周', '当月'],
+        'index': ['昨天', '当周', '当月'],
         'sales-member': ['当周', '上周', '当月', '上月'],
       },
       disabledObj: {
@@ -77,7 +78,7 @@ export default {
             return (
               date &&
               (date.valueOf() <
-                dayjs(_this.param.start_date)
+                dayjs()
                   .subtract(1, "year")
                   .valueOf() ||
                 date.valueOf() > Date.now())
@@ -89,14 +90,14 @@ export default {
             return (
               (date &&
                 date.valueOf() <
-                (dayjs(_this.param.start_date).valueOf() &&
-                  dayjs(_this.param.end_date)
-                    .subtract(1, "year")
-                    .valueOf())) ||
+                  (dayjs(_this.param.start_date).valueOf() &&
+                    dayjs()
+                      .subtract(1, "year")
+                      .valueOf())) ||
               date.valueOf() >
-              dayjs(_this.param.end_date)
-                .add(1, "year")
-                .valueOf() ||
+                dayjs(_this.param.start_date)
+                  .add(1, "month")
+                  .valueOf() ||
               date.valueOf() > Date.now() ||
               date.valueOf() < dayjs(_this.param.start_date).valueOf()
             );
@@ -157,6 +158,9 @@ export default {
             .then(res => {
               _this.options.shop = res;
             });
+          _this.$api.getBizcatList({ org_id: value, shop_floor: value }).then(res => {
+            _this.options.bizcat = res;
+          });
         },
         bizcat: (value, item) => {
           _this.$set(_this.param, 'shop_id', null);
@@ -172,6 +176,33 @@ export default {
         },
         shop: () => { },
         activity: () => { }
+      },
+      changeDate: {
+        start_date: date => {
+          if (_this.param.start_date.valueOf() > _this.param.end_date.valueOf()) {_this.param.end_date = null;}
+          if (_this.param.start_date.valueOf() < dayjs(_this.param.end_date).add(1, 'month').valueOf()) {
+            _this.param.end_date = null;
+          }
+          if (!_this.param.end_date) return;
+          let param = {
+            org_id: _this.param.org_id,
+            period_start_time: dayjs(date).format("YYYY-MM-DD"),
+            period_end_time: dayjs(_this.param.end_date).format("YYYY-MM-DD")
+          };
+          _this.$api.getActivityList(param).then(res => {
+            _this.options.activity = res;
+          });
+        },
+        end_date: date => {
+          let param = {
+            org_id: _this.param.org_id,
+            period_start_time: dayjs(_this.param.start_date).format("YYYY-MM-DD"),
+            period_end_time: dayjs(date).format("YYYY-MM-DD")
+          };
+          _this.$api.getActivityList(param).then(res => {
+            _this.options.activity = res;
+          });
+        }
       },
       options: {}
     };
@@ -190,7 +221,7 @@ export default {
   methods: {
     ok() {
       if (this.meta) {
-        this.param.stat_type = this.param.stat_type.join(',');
+        this.param.stat_type = this.stat_type.join(',');
         this.param.current_date =  this.dayjs()
             .subtract(1, "day")
             .format("YYYY-MM-DD");

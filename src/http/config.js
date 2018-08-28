@@ -24,7 +24,7 @@ switch (domain) {
   case '123.59.0.194':
     // config.baseURL = 'http://localhost:3000/index';
     // config.baseURL = '/api/'
-    config.baseURL = 'http://192.168.14.98:8030/'
+    config.baseURL = 'http://123.59.0.194:8030/'
     break
   default:
     break

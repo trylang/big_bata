@@ -6,15 +6,16 @@
         </div>
         <!-- Table表格 -->
         <div class="table_format">
-            <i-Table :columns="columns" :data="data"></i-Table>
-            <div style="padding-right: 1rem; padding-top: 3rem;overflow:hidden;">
-                <div class="table_title"><span class="table_title_s">数据展示</span>
-                    <div class="et_button">
+      <i-Table :columns="columns" :data="data"></i-Table>
+      <div style="padding-right: 1rem; padding-top: 3rem;overflow:hidden;">
+        <div class="table_title">
+          <span class="table_title_s">数据展示</span>
+          <!-- <div class="et_button">
                         <span v-for="(item, index) in btnList" :key="index"
                               :class="[`et_button${index+1}`, toggleName == item.type ? 'active' : '']"
                               @click="handleChange(item.type)">{{item.title}}</span>
-                    </div>
-                </div>
+                    </div> -->
+        </div>
                 <div id="overview_chart" :style="{width: '1100px', height: '500px'}"></div>
             </div>
         </div>
@@ -34,97 +35,18 @@ export default {
   data() {
     return {
       toggleName: "this_day",
-      btnList: [
-        {
-          title: "节假日",
-          type: "this_day"
-        },
-        {
-          title: "动作",
-          type: "last_action"
-        }
-      ],
-      chartData: [],
-      columns: (() => {
-        let res = JSON.parse(window.sessionStorage.getItem("overview"));
-        if (!res) return [];
-        let data = res.filter(item => {
-          return item.dim_val ? item.dim_val === 'T' : item.default_val === 'T';
-        });
-        let columns = [{
-          title: " ",
-          key: "stat_type",
-          className: "demo-table-info-column"
-        }];
-        sort(data, "disp_order", "asc").forEach((item, index) => {
-          columns.push({
-            title: item.dim_name,
-            key: item.dim_id,
-            // fixed: index === 0 ? "left" : "",
-            // width: 120,
-            // sortable: index > 7 ? "custom" : ""
-          });
-        });
-        return columns;
-      })(),
-      // columns: [
+      // btnList: [
       //   {
-      //     title: " ",
-      //     key: "stat_type",
-      //     className: "demo-table-info-column"
+      //     title: "节假日",
+      //     type: "this_day"
       //   },
       //   {
-      //     title: "视频客流量",
-      //     key: "video_cf",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "WI-FI客流量",
-      //     key: "wifi_cf",
-      //     width: 110,
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "活动UV",
-      //     key: "activity_uv",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "活动PV",
-      //     key: "activity_pv",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "累计会员数",
-      //     key: "mbr_reg_count_acc",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "新增会员数",
-      //               key: "mbr_reg_count",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "领券量",
-      //     key: "cpn_get_count",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "领取人数",
-      //     key: "cpn_get_persons",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "核销量",
-      //     key: "cpn_chk_count",
-      //     className: "overview-table-right"
-      //   },
-      //   {
-      //     title: "核销人数",
-      //     key: "cpn_chk_persons",
-      //     className: "overview-table-right"
+      //     title: "动作",
+      //     type: "last_action"
       //   }
       // ],
+      // overview: JSON.parse(window.sessionStorage.getItem("overview")),
+      chartData: [],
       data: []
     };
   },
@@ -149,6 +71,31 @@ export default {
   beforeDestroy() {
     eventBus.$off("updateSearchParam_index");
   },
+  computed: {
+    columns: function () {
+      let res = this.$store.state.BI.overview;
+      if (!res) return [];
+      let data = res.filter(item => {
+        return item.dim_val ? item.dim_val === "T" : item.default_val === "T";
+      });
+      let columns = [
+        {
+          title: " ",
+          key: "stat_type",
+          className: "demo-table-info-column",
+          align: "center"
+        }
+      ];
+      sort(data, "disp_order", "asc").forEach((item, index) => {
+        columns.push({
+          title: item.dim_name,
+          key: item.dim_id,
+          align: "right"
+        });
+      });
+      return columns;
+    }
+  },
   watch: {
     chartData: "drawChart"
     // searchParam: {
@@ -165,13 +112,13 @@ export default {
       let _this = this;
       this.toggleName = type;
     },
-    drawChart() {
+    drawChart(legendSel) {
       let _this = this;
       if (!_this.chartData) return;
       let overviewChart = this.$echarts.init(
         document.getElementById("overview_chart")
       );
-      let options = setOptions(_this.chartData);
+      let options = setOptions('overview', _this.chartData, legendSel);
       // 绘制图表
       overviewChart.setOption(options);
       overviewChart.on("legendselectchanged", function(obj) {
@@ -184,7 +131,7 @@ export default {
           _this.$Message.warning("最多只能选择4个图例");
           selected[obj.name] = false;
           options.legend.selected = selected;
-          _this.drawChart();
+          _this.drawChart(selected);
         }
       });
 
@@ -225,29 +172,29 @@ export default {
   height: 300px;
 }
 
-.et_button {
-  float: right;
-  .active {
-    color: #396fff !important;
-    border-color: #396fff !important;
-    opacity: 1 !important;
-  }
-  .et_button1,
-  .et_button2 {
-    display: inline-block;
-    width: 56px;
-    height: 24px;
-    line-height: 24px;
-    border-radius: 4px;
-    opacity: 0.4;
-    font-size: 12px;
-    color: #2a3962;
-    text-align: center;
-    border: 1px solid rgba(42, 57, 98, 1);
-    font-family: MicrosoftYaHei;
-  }
-  .et_button1 {
-    margin-right: 1rem;
-  }
-}
+// .et_button {
+//   float: right;
+//   .active {
+//     color: #396fff !important;
+//     border-color: #396fff !important;
+//     opacity: 1 !important;
+//   }
+//   .et_button1,
+//   .et_button2 {
+//     display: inline-block;
+//     width: 56px;
+//     height: 24px;
+//     line-height: 24px;
+//     border-radius: 4px;
+//     opacity: 0.4;
+//     font-size: 12px;
+//     color: #2a3962;
+//     text-align: center;
+//     border: 1px solid rgba(42, 57, 98, 1);
+//     font-family: MicrosoftYaHei;
+//   }
+//   .et_button1 {
+//     margin-right: 1rem;
+//   }
+// }
 </style>

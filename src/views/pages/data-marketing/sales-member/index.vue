@@ -6,7 +6,7 @@
 			</div>
 			<Col span="12" class="item">
 				<div class="item_header">
-					<span class="item_title">注册会员参与数</span>
+					<span class="item_title">累计注册会员参与数</span>
 					<p>
 						<span>参与总数：</span>
 						<strong>{{chartData.number.reg_members}}</strong>
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 			<div class="number_content">
-				<div id="number_channel_chart5" :style="{width: '1200px', height: '400px'}"></div>
+				<div id="number_channel_chart5" :style="{width: '1100px', height: '400px'}"></div>
 			</div>
 		</Row>
 
@@ -74,8 +74,8 @@
 			</div>
 			<div class="number_content">
         
-        <Tabs class="allocation_tabs" value="activity">
-          <TabPane label="活  动" name="activity">
+        <Tabs class="allocation_tabs" value="channel">
+          <!-- <TabPane label="活  动" name="activity">
             <download title="参与会员来源详情_活动" :meta="$route.meta" name="memberact"></download>
             <Table width="100%" v-if="tableData.activity.columns.length>1" :columns="tableData.activity.columns" :data="tableData.activity.pageList" @on-sort-change="handleActivitySort"></Table>
             <div class="table_page">
@@ -87,7 +87,7 @@
                         @on-change="changeActivityPage"/>
               </div>
             </div>
-          </TabPane>
+          </TabPane> -->
           <TabPane label="渠  道" name="channel">
             <download title="参与会员来源详情_渠道" :meta="$route.meta" name="memberchnl"></download>
             <Table v-if="tableData.channel.columns.length>1" :columns="tableData.channel.columns" :data="tableData.channel.pageList" @on-sort-change="handleChannelSort"></Table>
@@ -108,7 +108,7 @@
 
 		<Row class="number_data">
 			<div class="number_header">
-				<span class="number_title">其他数据展示</span>
+				<span class="number_title">会员画像分析</span>
 			</div>
 			<Col span="12" class="item">
 				<div class="item_header">
@@ -200,35 +200,31 @@ export default {
           columns: [
             {
               title: "ID",
-              key: ""
+              key: "id"
             },
             {
               title: "二维码名称",
-              key: ""
+              key: "code_name"
             },
             {
               title: "渠道",
-              key: ""
+              key: "chnnel_name"
             },
             {
               title: "创建时间",
-              key: ""
-            },
-            {
-              title: "链接地址",
-              key: ""
+              key: "create_time"
             },
             {
               title: "累计数",
-              key: ""
+              key: "visits"
             },
             {
-              title: "关联合同注册",
-              key: ""
+              title: "关联会员注册",
+              key: "rel_mbr"
             },
             {
               title: "简介",
-              key: ""
+              key: "code_desc"
             }
           ],
           list: [],
@@ -284,7 +280,7 @@ export default {
         0,
         this.tableData.qrcord.pageList.length
       );
-      this.tableData.qrcord.pageList = tableData.qrcord.list.slice(
+      this.tableData.qrcord.pageList = this.tableData.qrcord.list.slice(
         (page - 1) * 10,
         page * 10
       );
@@ -363,10 +359,12 @@ export default {
           left: "60%",
           right: "10%",
           bottom: "30%",
+          padding: ['5%', '10%']
         },
         color,
         legend: {
           top: "30",
+          width: "88%",
           data: []
         },
         series: [
@@ -485,7 +483,6 @@ export default {
             break;
         }
       })(_this, options);
-
       return options;
     },
     setLineOptions() {
@@ -498,13 +495,13 @@ export default {
         },
         legend: {
           data: ["新增量", "累计量"],
-          right: "40"
+          right: "10%"
         },
         color,
         grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
+          left: "0%",
+          right: "8%",
+          bottom: "8%",
           containLabel: true
         },
         toolbox: {
@@ -514,7 +511,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          boundaryGap: false,
+          boundaryGap: true,
           data: []
         },
         yAxis: {
@@ -1106,7 +1103,7 @@ export default {
       dist.forEach(item => {
         _this.chartData.dist[item.illustrate] = format(item.dist);
       });
-
+      qrcord.map(item => item.rel_mbr == 2 ? '关联' : '不关联');
       this.tableData.qrcord.list = qrcord;
       this.tableData.qrcord.pageList = qrcord.length > 0 ? qrcord.slice(0, 10) : [];
 
@@ -1189,7 +1186,7 @@ export default {
       line-height: 14px;
     }
     .select {
-      width: 16%;
+      width: 20%;
       display: flex;
       span {
         height: 12px;

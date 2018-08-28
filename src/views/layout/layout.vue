@@ -26,26 +26,22 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="数据概览" theme="light" width="auto">
-                        <router-link :to="{ name: item.name }" v-for="item in $router.options.routes[1].children"
-                                     :key="item.name">
-                            <Menu-Item :name="item.meta.title">
-                                <Icon :custom="defaultIcon(item.meta.icon)" size="16"/>
-                                {{item.meta.title}}
-                            </Menu-Item>
-                        </router-link>
-                    </Menu>
-                </Sider>
-                <Layout :style="{padding: '0 1rem'}">
-                    <!-- <Breadcrumb :style="{margin: '1rem 0'}">
+          <Menu :active-name="activeName" theme="light" width="auto">
+            <router-link :to="{ name: item.name }" v-for="item in $router.options.routes[1].children" :key="item.name">
+              <Menu-Item :name="item.meta.title">
+                <Icon :custom="defaultIcon(item.meta.icon)" size="16" /> {{item.meta.title}}
+              </Menu-Item>
+            </router-link>
+          </Menu>
+        </Sider>
+        <Layout>
+          <!-- <Breadcrumb :style="{margin: '1rem 0'}">
                         <BreadcrumbItem>Home</BreadcrumbItem>
                         <BreadcrumbItem>Components</BreadcrumbItem>
                         <BreadcrumbItem>Layout</BreadcrumbItem>
                     </Breadcrumb> -->
-                    <FilterBox :title="$route.meta.title"
-                               :filters="currentFilters"
-                               @searchParam="toggleSearchParam"></FilterBox>
-                    <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+          <FilterBox :title="$route.meta.title" :filters="currentFilters" @searchParam="toggleSearchParam"></FilterBox>
+          <Content :style="{padding: '32px 24px 64px 24px', minHeight: '280px', background: '#fff'}">
                         <transition name="fade-transverse">
                             <router-view :key="key"/>
                         </transition>
@@ -103,6 +99,9 @@ export default {
         return item.id === _this.$route.meta.path;
       }).list;
     },
+    activeName() {
+      return this.$route.meta.title  || '数据概览';
+    },
     key() {
       return this.$route.name !== undefined
         ? this.$route.name + new Date()
@@ -121,7 +120,7 @@ export default {
       await this.$store.dispatch("getLevels").then(() => {
         _this.levels = _this.$store.state.BI.levels;
         for(let key in _this.levels) {
-          sessionStorage.setItem(key, JSON.stringify(_this.levels[key]));
+          this.$store.commit(`update${key}`, _this.levels[key]);
         }
       });
     }

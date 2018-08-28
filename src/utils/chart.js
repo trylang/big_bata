@@ -1,25 +1,42 @@
 import { fmoney } from "@/utils/filter.js";
 import dayjs from "dayjs";
 
-export const setOptions = function (chart_data) {
+export const setOptions = function (type, chart_data, legendSel) {
   let colors = ["#396FFF", "#E4007F", "#90C31F", "#FABE00", "#CCCCCC"];
   let itemColors = {
     holiday: "#396FFF",
     activity: "#F5A623",
     zhoumo: "#E4007F"
   };
-  let json = {
-    视频客流量: "video_cf",
-    WIFI客流量: "wifi_cf",
-    活动UV: "activity_uv",
-    活动PV: "activity_pv",
-    会员数: "mbr_reg_count_acc",
-    新增会员数: "mbr_reg_count",
-    领券量: "cpn_get_count",
-    领取人数: "cpn_get_persons",
-    核销量: "cpn_chk_count",
-    核销人数: "cpn_chk_persons"
-  };
+
+  let json = {};
+
+  if (type === 'overview') {
+    json = {
+      视频客流量: "video_cf",
+      WIFI客流量: "wifi_cf",
+      活动UV: "activity_uv",
+      活动PV: "activity_pv",
+      会员数: "mbr_reg_count_acc",
+      新增会员数: "mbr_reg_count",
+      领券量: "cpn_get_count",
+      领取人数: "cpn_get_persons",
+      核销量: "cpn_chk_count",
+      核销人数: "cpn_chk_persons"
+    };
+  } else {
+    json = {
+      视频客流量: "video_cf",
+      WIFI客流量: "wifi_cf",
+      活动UV: "activity_uv",
+      活动PV: "activity_pv",
+      新增会员数: "mbr_reg_count",
+      领券量: "cpn_get_count",
+      领取人数: "cpn_get_persons",
+      核销量: "cpn_chk_count",
+      核销人数: "cpn_chk_persons"
+    };
+  }
   let options = {
     color: colors,
     tooltip: {
@@ -95,13 +112,20 @@ export const setOptions = function (chart_data) {
   };
 
   options.legend.data = Object.keys(json);
-  options.legend.data.map((item, index) => {
-    if (index < 4) {
-      options.legend.selected[item] = true;
-    } else {
-      options.legend.selected[item] = false;
-    }
-  });
+  if (Array.isArray(legendSel)) {
+    options.legend.data.map((item, index) => {
+      if (index < 4) {
+        options.legend.selected[item] = true;
+      } else {
+        options.legend.selected[item] = false;
+      }
+    });
+  } else {
+    options.legend.data.map(item => {
+      options.legend.selected[item] = legendSel[item];
+    });
+  }
+  
 
   options.xAxis[0].data = (() => {
     let chartData = [];
@@ -144,11 +168,11 @@ export const setOptions = function (chart_data) {
   let holidayObjs = {};
 
   chart_data.forEach(item => {
-    let name = item.action_name || item.holiday_name || item.zhoumo;
+    let name = type=== 'overview' ? item.holiday_name  : (item.content || item.holiday_name) ;
     if (!name) return;
     if (!holidayObjs[name]) {
       holidayObjs[name] = {};
-      holidayObjs[name].type = item.action_name
+      holidayObjs[name].type = item.content
         ? "activity"
         : item.holiday_name ? "holiday" : "zhoumo";
       holidayObjs[name].startTime = item.stat_ymd;
@@ -175,7 +199,7 @@ export const setOptions = function (chart_data) {
         },
         label: {
           offset: [0, 0],
-          fontSize: 16,
+          fontSize: 12,
           color: itemColors[holidayObjs[key].type]
         }
       },

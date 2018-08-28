@@ -14,6 +14,17 @@ $color-border: #f2f2f2;
   }
 }
 
+//筛选页下拉框
+.ivu-select-dropdown-list {
+  .ivu-select-item {
+    color: $color-primary;
+  }
+  .ivu-select-item-selected,
+  .ivu-select-item-selected:hover {
+    color: $color-actived;
+  }
+}
+
 .ivu-input {
   border: 1px solid #fff;
   color: $color-primary;
@@ -46,25 +57,15 @@ $color-border: #f2f2f2;
   .table_title {
     width: 100%;
     height: 40px;
-    line-height: 35px;
+    line-height: 21px;
     border-bottom: 1px solid $color-border;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
     .table_title_s {
       height: 19px;
       line-height: 19px;
       font-size: 14px;
       color: $color-primary;
       font-family: MicrosoftYaHei;
-    }
-  }
-  .ivu-table-cell {
-    padding-left: 10px;
-    span {
-      height: 12px;
-      font-size: 12px;
-      font-family: MicrosoftYaHei-Bold;
-      color: rgba(102, 102, 102, 1);
-      line-height: 12px;
     }
   }
 }
@@ -78,6 +79,21 @@ tr.ivu-table-row-hover td {
 .ivu-table-wrapper {
   border-left: 0;
   border-top: 1px solid $color-border;
+  .ivu-table {
+    .ivu-table-header,
+    .ivu-table-body {
+      table {
+        width: 100% !important;
+      }
+    }
+    span {
+      height: 12px;
+      font-size: 12px;
+      font-family: MicrosoftYaHei-Bold;
+      color: rgba(102, 102, 102, 1);
+      line-height: 12px;
+    }
+  }
 }
 
 .ivu-table-border td,
@@ -105,11 +121,6 @@ tr.ivu-table-row-hover td {
 
 .ivu-table-row td {
   height: 40px;
-  text-align: left;
-}
-
-.ivu-table th {
-  text-align: left;
 }
 
 // 分页器内部样式修改
@@ -155,9 +166,8 @@ tr.ivu-table-row-hover td {
 
 // 分页样式
 .table_page {
-  margin-top: 1rem;
+  margin-top: 24px;
   overflow: hidden;
-  padding-bottom: 3rem;
   .table_page_l {
     float: left;
     p {
@@ -214,18 +224,17 @@ tr.ivu-table-row-hover td {
 }
 
 .ivu-progress {
-  width: 76%;
+  width: 60%;
 }
 
-.ivu-progress-outer {
-  width: 95%;
-}
-
-.ivu-modal-footer>button {
-  border: 1px solid rgba(57, 111, 255, 1);
-  width: 96px;
-  height: 32px;
-  margin-right: 1rem;
+.ivu-modal-footer {
+  margin-top: -80px;
+  button {
+    border: 1px solid rgba(57, 111, 255, 1);
+    width: 96px;
+    height: 32px;
+    margin-right: 24px;
+  }
 }
 
 .ivu-btn-primary {
@@ -259,7 +268,7 @@ tr.ivu-table-row-hover td {
 
 //弹框样式修改
 .filtrate {
-  margin-bottom: 6rem;
+  margin-bottom: 64px;
   .filtrate_s {
     width: 48px;
     height: 16px;
@@ -285,11 +294,11 @@ tr.ivu-table-row-hover td {
 }
 
 .accumulative_total {
-  margin-bottom: 1.5rem;
+  margin-bottom: 32px;
 }
 
 .ivu-checkbox-group {
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
 .vertical-center-modal {
@@ -324,7 +333,7 @@ tr.ivu-table-row-hover td {
 }
 
 .ivu-modal-body {
-  padding: 20px 20px 10px 20px;
+  padding: 20px 24px 10px 24px;
 }
 
 .ivu-checkbox-group .ivu-checkbox-wrapper {
@@ -357,9 +366,9 @@ tr.ivu-table-row-hover td {
 }
 
 .action {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   .ivu-input-number {
-    width: 247px;
+    width: 250px;
   }
   .action_name {
     width: 48px;
@@ -368,10 +377,10 @@ tr.ivu-table-row-hover td {
     font-family: MicrosoftYaHei;
     color: rgba(42, 57, 98, 1);
     line-height: 16px;
-    padding-right: 1.5rem;
+    padding-right: 24px;
   }
   input {
-    width: 296px;
+    width: 250px;
     height: 32px;
     border-radius: 4px;
     padding-left: 0.5rem;
@@ -382,12 +391,16 @@ tr.ivu-table-row-hover td {
   }
   .remark_column {
     display: block;
-    margin: .2rem 0 .2rem 5.5rem;
+    margin: -15px 0 5px 80px;
     color: #E4007F;
   }
   .ivu-date-picker-rel {
     width: 296px;
   }
+}
+
+.active input {
+  width: 290px;
 }
 
 .ivu-select-selection-focused,
@@ -402,7 +415,7 @@ tr.ivu-table-row-hover td {
 
 .ivu-table-cell {
   padding-left: 14px;
-  padding-right: 0px;
+  padding-right: 14px;
 }
 
 .indicators_dimension {
@@ -440,16 +453,15 @@ tr.ivu-table-row-hover td {
   border-color: $color-actived;
 }
 
-.ivu-row {
-  float: left;
-}
-
 .allocation-time {
   float: right;
   margin-top: -3.5rem;
   .ivu-input {
     color: #1E2538;
     font-size: 12px;
+  }
+  .ivu-row {
+    float: left;
   }
 }
 
@@ -461,36 +473,13 @@ tr.ivu-table-row-hover td {
   right: -70px;
 }
 
-//表格对齐
-.ivu-table td.demo-table-info-column {
-  background: #fafafa;
-  .ivu-table-cell {
-    text-align: center !important;
-  }
-}
-
-.ivu-table td.overview-table-right {
-  .ivu-table-cell {
-    text-align: right !important;
-  }
-}
-
-.overview-table-right {
-  text-align: right !important;
-  padding-right: 15px;
-}
-
 .ivu-table th.activity-table-right {
-  text-align: right !important;
   padding-right: 15px;
 }
 
 .ivu-table td.activity-table-right .ivu-table-cell {
-  text-align: right !important;
   padding-right: 15px;
-}
-
-// 时间选择kuang
+} // 时间选择kuang
 .allocation_container .ivu-tabs {
   overflow: visible !important;
 }
@@ -509,4 +498,26 @@ textarea.ivu-input {
 
 .ivu-input:hover {
   border-color: $color-border !important;
+}
+
+table {
+  thead {
+    tr {
+      .demo-table-info-column {
+        background: #fafafa;
+      }
+    }
+  }
+  tbody {
+    tr {
+      .demo-table-info-column {
+        background: #fafafa;
+      }
+    }
+  }
+}
+
+.download_center .export {
+  position: relative;
+  top: 45px;
 }

@@ -8,10 +8,10 @@
           <span style="float:left;margin-top:0.4rem">时间：</span>
           <Row>
             <Col span="12">
-            <DatePicker type="daterange" placement="bottom-end" placeholder="请选择时间范围" @on-change="searchAction" style="width: 180px"></DatePicker>
+            <DatePicker type="date" placement="bottom-end" placeholder="请选择时间" @on-change="searchAction" style="width: 180px"></DatePicker>
             </Col>
           </Row>
-          <Input icon="ios-search" placeholder="请输入运营日志" v-model="action.action_name" @on-enter="toggleTabpan('action')" @on-click="toggleTabpan('action')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
+          <Input icon="ios-search" placeholder="请输入运营日志" v-model="action.content" @on-enter="toggleTabpan('action')" @on-click="toggleTabpan('action')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
         </div>
         <div class="action_container">
           <button class="new_action ios-add" type="button" @click="addModel('action')">
@@ -36,14 +36,22 @@
           <span style="float:left;margin-top:0.4rem">时间：</span>
           <Row>
             <Col span="12">
-            <DatePicker type="daterange" placement="bottom-end" placeholder="请选择" @on-change="searchCost" style="width: 180px"></DatePicker>
+            
+            <DatePicker v-for="(date, dataIndex) in [{name: 'period_start_time'}, {name: 'period_end_time'}]" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" 
+              format="yyyy.MM.dd" 
+              v-model="cost[date.name]" 
+              placeholder="请选择时间"
+              @on-change="changeDate[date.name](cost[date.name])"
+            >
+            </DatePicker>
+
             </Col>
           </Row>
           <Input icon="ios-search" placeholder="请输入活动名称" v-model="cost.activity_name" @on-enter="toggleTabpan('cost')" @on-click="toggleTabpan('cost')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
         </div>
         <div class="action_container">
           <button class="new_action ios-add" type="button" @click="addModel('cost')">
-            <Icon type="ios-add" />
+            <Icon type="ios-add"/>
             <span>新建</span>
           </button>
         </div>
@@ -126,32 +134,31 @@
     <Modal v-model="action.model" width="416px" :title="action.param.edit ? '编辑运营日志': '新建运营日志' " :loading="action.loading" @on-ok="submitAction" @on-cancel="cancel">
       <div class="action" style="margin-bottom:0;">
         <span class="action_name">运营日志</span>
-        <Input v-model="action.param.content" type="textarea" size="small" :rows="4" placeholder="请输入运营日志" />
-        <!-- <span class="remark_column">注：运营日志长度不超过9位</span> -->
+        <Input v-model="action.param.content" type="textarea" size="small" :rows="4" placeholder="1.日志1 2.日志2" />
+        <!-- <span class="remark_column"> 例如：1.录入内容<br>2.录入</span> -->
       </div>
 
-      <div class="action">
+      <div class="action active">
         <span class="action_name">生效时间</span>
-        <DatePicker type="date" @on-change="formatActionDate" v-model="action.param.ymd"
-          placement="bottom-end" placeholder="请选择" style="width: 296px"></DatePicker>
+        <DatePicker type="date" style="width:296px" @on-change="formatActionDate" v-model="action.param.ymd" placement="bottom-end" placeholder="请选择"></DatePicker>
       </div>
 
-      <div class="action">
-        <span class="action_name">备注</span>        
-          <Input v-model="action.param.remark" type="textarea" size="small" :rows="4" placeholder="请输入运营日志名称" />
+      <div class="action" style="margin-bottom:84px">
+        <span class="action_name">备注</span>
+        <Input v-model="action.param.remark" type="textarea" size="small" :rows="4" placeholder="请输入运营日志名称" />
       </div>
     </Modal>
 
     <Modal v-model="cost.model" width="416px" :title="cost.param.edit ? '编辑营销成本': '新建营销成本' " :loading="cost.loading" @on-ok="submitCost" @on-cancel="cancel">
       <div class="action">
-        <span class="action_name">关联活动</span>
-        <Select v-model="cost.param.activity_id" style="width:296px" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
+        <span class="action_name" style="margin-left:22px;">关联活动</span>
+        <Select v-model="cost.param.activity_id" style="width:250px" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
           <Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{ item.activity_name }}</Option>
         </Select>
       </div>
       <div class="action">
-        <span class="action_name">活动时间</span>
-        <Input v-model="cost.param.time" style="width: 296px" disabled/>
+        <span class="action_name" style="margin-left:22px;">活动时间</span>
+        <Input v-model="cost.param.time" style="width: 250px" disabled/>
         <!-- <DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" ></DatePicker> -->
       </div>
       <div class="action">
@@ -165,12 +172,12 @@
         元
       </div>
       <div class="action">
-        <span class="action_name" style="padding-right:68px;">券成本</span>
+        <span class="action_name" style="padding-right:26px;margin-left:35px;">券成本</span>
         <InputNumber v-model="cost.param.coupon_cost" :min="0" :max="99999999" placeholder="请输入金额"></InputNumber>
         元
       </div>
-      <div class="action">
-        <span class="action_name" style="padding-right:56px;">其他成本</span>
+      <div class="action" style="margin-bottom:100px;">
+        <span class="action_name" style="padding-right:24px;margin-left:24px;">其他成本</span>
         <InputNumber v-model="cost.param.other_cost" :min="0" :max="99999999" placeholder="请输入金额"></InputNumber>
         元
       </div>
@@ -178,22 +185,20 @@
   </div>
 </template>
 <script>
-import newAction from "@/components/newAction.vue";
 import dayjs from "dayjs";
 import { sort } from "@/utils/filter.js";
 
 export default {
-  components: {
-    newAction
-  },
   data() {
+    let _this = this;
     return {
       action: {
         list: [],
         pageList: [],
         curPage: 1,
         param: {
-          time: ""
+          ymd: "",
+          content: ""
         },
         model: false,
         loading: true,
@@ -261,7 +266,7 @@ export default {
                         title: "确认要删除此运营日志？",
                         onOk: () => {
                           this.$api
-                            .deleteMarketAction({ id: params.row.id })
+                            .deleteMarketAction({ ymd: params.row.ymd })
                             .then(res => {
                               this.$Message.success("删除成功！");
                               this.toggleTabpan("action");
@@ -290,8 +295,8 @@ export default {
         model: false,
         loading: true,
         activity_name: "",
-        period_start_time: "",
-        period_end_time: "",
+        period_start_time:  dayjs().subtract(1, "month").format("YYYY-MM-DD"),
+        period_end_time: dayjs().format("YYYY-MM-DD"),
         columns: [
           {
             title: "活动名称",
@@ -413,7 +418,68 @@ export default {
       },
       activityName: "",
       activityList: [],
-      activityObj: {}
+      activityObj: {},
+      option: [
+        {
+          disabledDate(date) {
+            return (
+              date &&
+              (date.valueOf() <
+                dayjs()
+                  .subtract(1, "year")
+                  .valueOf() ||
+                date.valueOf() > Date.now())
+            );
+          }
+        },
+        {
+          disabledDate(date) {
+            return (
+              (date &&
+                date.valueOf() <
+                  (dayjs(_this.cost.period_start_time).valueOf() &&
+                    dayjs()
+                      .subtract(1, "year")
+                      .valueOf())) ||
+              date.valueOf() >
+                dayjs(_this.cost.period_end_time)
+                  .add(1, "month")
+                  .valueOf() ||
+              date.valueOf() > Date.now() ||
+              date.valueOf() < dayjs(_this.cost.period_start_time).valueOf()
+            );
+          }
+        }
+      ],
+      changeDate: {
+        period_start_time: date => {
+          if (!_this.cost.period_end_time) return;
+          if (
+            _this.cost.period_start_time.valueOf() > _this.cost.period_end_time.valueOf()
+          ) {
+            _this.cost.period_end_time = null;
+          }
+          if (
+            _this.cost.period_start_time.valueOf() <
+            dayjs(_this.cost.period_end_time)
+              .add(1, "month")
+              .valueOf()
+          ) {
+            _this.cost.period_end_time = null;
+          }
+          
+          this.cost.period_start_time = dayjs(date).format("YYYY-MM-DD");
+          this.cost.period_end_time = dayjs(_this.cost.period_end_time).format("YYYY-MM-DD");
+          this.toggleTabpan("cost");
+        },
+        period_end_time: date => {
+          this.cost.period_start_time = dayjs(_this.cost.period_start_time).format(
+            "YYYY-MM-DD"
+          );
+          this.cost.period_end_time = dayjs(date).format("YYYY-MM-DD");
+          this.toggleTabpan("cost");
+        }
+      },
     };
   },
   methods: {
@@ -494,8 +560,7 @@ export default {
         this.$Message.info("请选择活动！");
         return this.changeLoading(this.cost);
       }
-
-      let hasAct = this.activityList.some(item => item.activity_id === this.cost.param.activity_id);
+      let hasAct = this.cost.list.some(item => item.activity_id === this.cost.param.activity_id);
       if (hasAct) {
         this.$Message.info('此活动已存在，请重新选择！');
         return this.changeLoading(this.cost);
@@ -529,8 +594,7 @@ export default {
       this.cost.model = false;
     },
     searchAction(time) {
-      this.action.val_begin = time[0];
-      this.action.val_end = time[1];
+      this.action.ymd = time;
       this.toggleTabpan("action");
     },
     searchCost(time) {
@@ -618,7 +682,7 @@ export default {
           item.dim_val = ifShow ? "T" : "F";
         });
         _this.$api.insertSysLevels(_this.level[name].list).then(res => {
-          sessionStorage.setItem(name, JSON.stringify(_this.level[name].list));
+          _this.$store.commit(`update${name}`, _this.level[name].list);
           _this.$Message.success("指标维度设置成功！");
         });
       };
@@ -651,9 +715,8 @@ export default {
       if (name === "action") {
         await this.$api
           .getMarketActions({
-            action_name: this.action.action_name,
-            val_begin: this.action.val_begin,
-            val_end: this.action.val_end
+            content: this.action.content,
+            ymd: this.action.ymd,
           })
           .then(res => {
             let activitys = [];
@@ -676,8 +739,8 @@ export default {
         await this.$api
           .getActivityCost({
             activity_name: this.cost.activity_name,
-            period_start_time: this.cost.period_start_time,
-            period_end_time: this.cost.period_end_time
+            period_start_time: dayjs(this.cost.period_start_time).format("YYYY-MM-DD"),
+            period_end_time: dayjs(this.cost.period_end_time).format("YYYY-MM-DD")
           })
           .then(res => {
             res.forEach(item => {
@@ -706,22 +769,22 @@ export default {
             levels.overview,
             "disp_order",
             "asc"
-          ).map(item => item.dim_id);
+          ).filter(item => item.default_val === 'T').map(item => item.dim_id);
           this.level.coupon.checkAllGroup = sort(
             levels.coupon,
             "disp_order",
             "asc"
-          ).map(item => item.dim_id);
+          ).filter(item => item.default_val === 'T').map(item => item.dim_id);
           this.level.activityL1.checkAllGroup = sort(
             levels.activityL1,
             "disp_order",
             "asc"
-          ).map(item => item.dim_id);
+          ).filter(item => item.default_val === 'T').map(item => item.dim_id);
           this.level.activityL2.checkAllGroup = sort(
             levels.activityL2,
             "disp_order",
             "asc"
-          ).map(item => item.dim_id);
+          ).filter(item => item.default_val === 'T').map(item => item.dim_id);
         });
       }
     }

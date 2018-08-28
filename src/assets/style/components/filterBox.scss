@@ -1,18 +1,18 @@
 @import '~@/assets/style/public.scss';
 .filterBox {
-  margin: 1.2rem 0 0 0;
+  margin: 24px 0 -13px 0;
   padding-bottom: 1rem;
   width: 100%; //   box-shadow:0px 2px 4px 0px rgba(221,221,221,0.5);
   .inline-content {
-    padding-left: 1.4rem;
-    height: 45px;
+    padding-left: 24px;
+    height: 60px;
     box-shadow: 0px 2px 4px 0px rgba(221, 221, 221, 0.5);
   }
   .filter-title {
     width: 64px;
     height: 16px;
     line-height: 16px;
-    padding-left: 1.4rem;
+    padding-left: 24px;
     font-size: 16px;
     color: $color-primary;
     padding-right: 8px;
@@ -31,15 +31,14 @@
   }
   .inline-content {
     display: flex;
-    padding-top: .5rem;
+    padding-top: 16px;
     .inline-item {
       margin-right: 1rem;
       span {
         color: $color-gray;
-        width: 56px;
       }
       .filter-date-picker {
-        width: 104px;
+        width: 50%;
         ;
       }
       .filter-select {

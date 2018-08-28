@@ -4,33 +4,35 @@
             <span class="table_title_s">活动详情</span>
             <download title="活动详情" name="activity1"></download>
         </div>
-        <Table width="100%" :columns="columnsT1" @on-sort-change="handleSortT1" :data="pageT1List"></Table>
-        <div class="table_page">
-            <div class="table_page_l">
-                <p>共 <span>{{dataT1.length}}</span> 条数据</p>
-            </div>
-            <div class="table_page_r">
-                <Page :total="dataT1.length" :current.sync="curPageT1" :page-size="10" show-elevator
-                      @on-change="changePageT1"/>
-            </div>
+    <Table width="100%" :columns="columnsT1" @on-sort-change="handleSortT1" :data="pageT1List"></Table>
+    <div class="table_page">
+      <div class="table_page_l">
+        <p>共
+          <span>{{dataT1.length}}</span> 条数据</p>
+      </div>
+      <div class="table_page_r">
+        <Page :total="dataT1.length" :current.sync="curPageT1" :page-size="10" show-elevator @on-change="changePageT1" />
+      </div>
+    </div>
+    <div style="margin-top:48px;">
+      <div class="table_title">
+        <span class="table_title_s">数据展示</span>
+      </div>
+      <div id="activity_chart" :style="{width: '100%', height: '500px'}"></div>
+    </div>
+    <div style="margin-top:20px;">
+      <div class="table_title">
+        <span class="table_title_s">数据详情</span>
+        <download title="活动数据详情" name="activity2"></download>
+      </div>
+      <Table width="100%" :columns="columnsT2" :data="pageT2List" @on-sort-change="handleSortT2"></Table>
+      <div class="table_page">
+        <div class="table_page_l">
+          <p>共
+            <span>{{dataT2.length}}</span> 条数据</p>
         </div>
-        <div>
-            <div class="table_title"><span class="table_title_s">数据展示</span></div>
-            <div id="activity_chart" :style="{width: '1100px', height: '500px'}"></div>
-        </div>
-        <div>
-            <div class="table_title">
-                <span class="table_title_s">数据详情</span>
-                <download title="活动数据详情" name="activity2"></download>
-            </div>
-            <Table width="100%" :columns="columnsT2" :data="pageT2List" @on-sort-change="handleSortT2"></Table>
-            <div class="table_page">
-                <div class="table_page_l">
-                    <p>共 <span>{{dataT2.length}}</span> 条数据</p>
-                </div>
-                <div class="table_page_r">
-                    <Page :total="dataT2.length" :current.sync="curPageT2" :page-size="10" show-elevator
-                          @on-change="changePageT2"/>
+        <div class="table_page_r">
+          <Page :total="dataT2.length" :current.sync="curPageT2" :page-size="10" show-elevator @on-change="changePageT2" />
                 </div>
             </div>
         </div>
@@ -48,49 +50,11 @@ export default {
     download
   },
   data() {
-    let activityL1 = JSON.parse(window.sessionStorage.getItem("activityL1"));
-    let activityL2 = JSON.parse(window.sessionStorage.getItem("activityL2"));
-    let activity = JSON.parse(window.sessionStorage.getItem("activity"));
+    let activityL1 = this.$store.state.BI.activityL1;
+    let activityL2 = this.$store.state.BI.activityL2;
+    let activity = this.$store.state.BI.activity;
     return {
       chartData: {},
-      columnsT1: (() => {
-          let res = [];
-          res = activity  && activity.length >= 0 ? activity.filter(item => item.dim_grp === 'sale.activity.1') : activityL1;
-          if (!res) return [];
-          let data = res.filter(item => {
-            return item.dim_val ? item.dim_val === 'T' : item.default_val === 'T';
-          });
-          let columns = [];
-          sort(data, "disp_order", "asc").forEach((item, index) => {
-            columns.push({
-              title: item.dim_name,
-              key: item.dim_id,
-              fixed: index === 0 ? "left" : "",
-              width: 120,
-              sortable: index > 2 ? "custom" : ""
-            });
-          });
-          return columns;
-        })(),
-        columnsT2: (() => {
-          let res = [];
-          res = activity && activity.length >= 0 ? activity.filter(item => item.dim_grp === 'sale.activity.2') : activityL2;
-          if (!res) return [];
-          let data = res.filter(item => {
-            return item.dim_val ? item.dim_val === 'T' : item.default_val === 'T';
-          });
-          let columns = [];
-          sort(data, "disp_order", "asc").forEach((item, index) => {
-            columns.push({
-              title: item.dim_name,
-              key: item.dim_id,
-              fixed: index === 0 ? "left" : "",
-              width: 120,
-              sortable: index > 2 ? "custom" : ""
-            });
-          });
-          return columns;
-        })(),
       // columnsT1: [
       //   {
       //     title: "活动名称",
@@ -284,7 +248,57 @@ export default {
   computed: {
     ...mapState({
       searchParam: state => state.BI.searchParam
-    })
+    }),
+    columnsT1: function() {
+      let activityL1 = this.$store.state.BI.activityL1;
+      let activity = this.$store.state.BI.activity;
+      let res = [];
+      res =
+        activity && activity.length >= 0
+          ? activity.filter(item => item.dim_grp === "sale.activity.1")
+          : activityL1;
+      if (!res) return [];
+      let data = res.filter(item => {
+        return item.dim_val ? item.dim_val === "T" : item.default_val === "T";
+      });
+      let columns = [];
+      sort(data, "disp_order", "asc").forEach((item, index) => {
+        columns.push({
+          title: item.dim_name,
+          key: item.dim_id,
+          width: index === 0 || index === 1 ? 160 : 120,
+          align: index === 0 || index === 1 ? "left" : "right",
+          sortable: index > 2 ? "custom" : ""
+        });
+      });
+      return columns;
+    },
+    columnsT2: function() {
+      let activityL2 = this.$store.state.BI.activityL2;
+      let activity = this.$store.state.BI.activity;
+      let res = [];
+      res =
+        activity && activity.length >= 0
+          ? activity.filter(item => item.dim_grp === "sale.activity.2")
+          : activityL2;
+      if (!res) return [];
+      let data = res.filter(item => {
+        return item.dim_val ? item.dim_val === "T" : item.default_val === "T";
+      });
+      let columns = [];
+      sort(data, "disp_order", "asc").forEach((item, index) => {
+        columns.push({
+          title: item.dim_name,
+          key: item.dim_id,
+          fixed: index === 0 ? "left" : "",
+          className: index === 0 ? "demo-table-info-column" : "",
+          align: index === 0 || index === 1 || index === 2 ? "center" : "right",
+          width: index === 0 ? 150 : 130,
+          sortable: index > 2 ? "custom" : ""
+        });
+      });
+      return columns;
+    }
   },
   watch: {
     chartData: "drawChart"
@@ -324,10 +338,10 @@ export default {
       let _this = this;
       this.$api.getActivityT1(param).then(res => {
         res.forEach(item => {
-          let date = item.period_dur_name.split('~');
-          date[1] = date[1] ? date[1] : '至今';
-          item.period_dur_name = date.join('~');
-        })
+          let date = item.period_dur_name.split("~");
+          date[1] = date[1] ? date[1] : "至今";
+          item.period_dur_name = date.join("~");
+        });
         _this.dataT1 = res;
         _this.pageT1List = this.dataT1.slice(0, 10);
       });
@@ -351,13 +365,13 @@ export default {
         _this.chartData = res;
       });
     },
-    drawChart() {
+    drawChart(legendSel) {
       let _this = this;
       if (!_this.chartData) return;
       let overviewChart = this.$echarts.init(
         document.getElementById("activity_chart")
       );
-      let options = setOptions(_this.chartData);
+      let options = setOptions('activity', _this.chartData, legendSel);
       // 绘制图表
       overviewChart.setOption(options);
       overviewChart.on("legendselectchanged", function(obj) {
@@ -370,7 +384,7 @@ export default {
           _this.$Message.warning("最多只能选择4个图例");
           selected[obj.name] = false;
           options.legend.selected = selected;
-          _this.drawChart();
+          _this.drawChart(selected);
         }
       });
 

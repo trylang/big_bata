@@ -28,7 +28,8 @@
           "filterName": "org_name",
           "filterValue": "org_id",
           "type": "select",
-          "name": "org_id"
+          "name": "org_id",
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -52,7 +53,8 @@
           "filterName": "shop_name",
           "filterValue": "shop_id",
           "type": "select",
-          "name": "shop_id"
+          "name": "shop_id",
+          "filterable": true
         }
       ]
     },
@@ -84,7 +86,8 @@
           "filterName": "org_name",
           "filterValue": "org_id",
           "type": "select",
-          "name": "org_id"
+          "name": "org_id",
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -108,7 +111,8 @@
           "type": "select",
           "filterName": "activity_name",
           "filterValue": "activity_id",
-          "name": "activity_id"
+          "name": "activity_id",
+          "filterable": true
         }
       ]
     },
@@ -140,7 +144,8 @@
           "filterName": "org_name",
           "filterValue": "org_id",
           "type": "select",
-          "name": "org_id"
+          "name": "org_id",
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -164,7 +169,8 @@
           "filterName": "shop_name",
           "filterValue": "shop_id",
           "type": "select",
-          "name": "shop_id"
+          "name": "shop_id",
+          "filterable": true
         }
       ]
     },
@@ -209,7 +215,8 @@
           "filterName": "org_name",
           "filterValue": "org_id",
           "type": "select",
-          "name": "org_id"
+          "name": "org_id",
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -233,7 +240,8 @@
           "filterName": "shop_name",
           "filterValue": "shop_id",
           "type": "select",
-          "name": "shop_id"
+          "name": "shop_id",
+          "filterable": true
         }
       ]
     },

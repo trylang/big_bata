@@ -16,7 +16,11 @@ export default {
       current_date: dayjs()
             .subtract(1, "day")
             .format("YYYY-MM-DD")
-    }
+    },
+    overview: [],
+    activityL1: [],
+    activityL2: [],
+    coupon: []
   },
   getters: {},
   mutations: {
@@ -29,6 +33,21 @@ export default {
     },
     updateLevels(state, levels) {
       state.levels = levels;
+    },
+    updateoverview(state, overview) {
+      state.overview = overview;
+    },
+    updateactivity(state, activity) {
+      state.activity = activity;
+    },
+    updateactivityL1(state, activityL1) {
+      state.activityL1 = activityL1;
+    },
+    updateactivityL2(state, activityL2) {
+      state.activityL2 = activityL2;
+    },
+    updatecoupon(state, coupon) {
+      state.coupon = coupon;
     },
     updateSearchOptions(state, options) {
       state.searchOptions = options;
