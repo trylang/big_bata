@@ -8,9 +8,41 @@ $color-gray: #999999;
 $color-border: #f2f2f2;
 @import "~@/assets/iconfont/iconfont.css";
 @import "~@/assets/style/views/animate.scss";
+
 .ivu-icon-ios-calendar-outline {
   &::before {
     content: "\F116";
+  }
+}
+
+.log_record {
+  table {
+    tbody {
+      tr {
+        td {
+          .ivu-table-cell {
+
+            span:nth-child(1),
+            :nth-child(3) {
+              display: block;
+              width: 230px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.inline-item {
+  .ivu-select-single {
+    .ivu-select-selection {
+      border-color: #fff;
+      width: 90px;
+    }
   }
 }
 
@@ -18,7 +50,9 @@ $color-border: #f2f2f2;
 .ivu-select-dropdown-list {
   .ivu-select-item {
     color: $color-primary;
+    padding: 3px 5px;
   }
+
   .ivu-select-item-selected,
   .ivu-select-item-selected:hover {
     color: $color-actived;
@@ -30,12 +64,13 @@ $color-border: #f2f2f2;
   color: $color-primary;
 }
 
-.ivu-select-selection {
-  border: 1px solid #fff;
+.ivu-select {
+  width: 50%;
 }
 
 .ivu-select-input {
   color: $color-primary;
+  height: 30px;
 }
 
 .ivu-input-icon {
@@ -54,12 +89,14 @@ $color-border: #f2f2f2;
 //表格样式
 #table_container {
   position: relative;
+
   .table_title {
     width: 100%;
     height: 40px;
     line-height: 21px;
     border-bottom: 1px solid $color-border;
     margin-bottom: 16px;
+
     .table_title_s {
       height: 19px;
       line-height: 19px;
@@ -79,13 +116,16 @@ tr.ivu-table-row-hover td {
 .ivu-table-wrapper {
   border-left: 0;
   border-top: 1px solid $color-border;
+
   .ivu-table {
+
     .ivu-table-header,
     .ivu-table-body {
       table {
         width: 100% !important;
       }
     }
+
     span {
       height: 12px;
       font-size: 12px;
@@ -114,6 +154,7 @@ tr.ivu-table-row-hover td {
   &::before {
     background-color: $color-border;
   }
+
   &::after {
     background-color: #fff;
   }
@@ -168,34 +209,42 @@ tr.ivu-table-row-hover td {
 .table_page {
   margin-top: 24px;
   overflow: hidden;
+
   .table_page_l {
     float: left;
+
     p {
-      float: left;
       width: 130px;
-      height: 12px;
+      height: 32px;
       font-size: 12px;
       font-family: MicrosoftYaHei;
       color: rgba(153, 153, 153, 1);
       line-height: 12px;
-      margin-top: 9px;
+
       span {
+        display: inline-block;
+        width: 2rem;
         font-weight: bold;
       }
     }
   }
+
   .table_page_r {
     float: right;
+
     .ivu-page {
       float: left;
     }
+
     .ivu-page-item-active {
       border-color: #fff;
       background-color: $color-actived;
     }
+
     .ivu-page-item {
       border: 0;
     }
+
     .ivu-page-item-active a,
     .ivu-page-item-active:hover a {
       color: #fff;
@@ -229,6 +278,7 @@ tr.ivu-table-row-hover td {
 
 .ivu-modal-footer {
   margin-top: -80px;
+
   button {
     border: 1px solid rgba(57, 111, 255, 1);
     width: 96px;
@@ -269,6 +319,7 @@ tr.ivu-table-row-hover td {
 //弹框样式修改
 .filtrate {
   margin-bottom: 64px;
+
   .filtrate_s {
     width: 48px;
     height: 16px;
@@ -279,13 +330,16 @@ tr.ivu-table-row-hover td {
     padding-right: 2rem;
     vertical-align: top;
   }
+
   .inline-content {
     position: relative;
     top: -1.45rem;
     left: 5rem;
+
     .ivu-col-span-12 {
       width: 40%;
       margin-bottom: .5rem;
+
       .ivu-select {
         width: 50%;
       }
@@ -293,6 +347,8 @@ tr.ivu-table-row-hover td {
   }
 }
 
+// .timer{
+// }
 .accumulative_total {
   margin-bottom: 32px;
 }
@@ -357,6 +413,7 @@ tr.ivu-table-row-hover td {
     outline: 0;
     color: #ffffff;
     cursor: pointer;
+
     .ivu-icon {
       width: 16px;
       height: 14px;
@@ -367,9 +424,15 @@ tr.ivu-table-row-hover td {
 
 .action {
   margin-bottom: 16px;
+
+  .ivu-select-selection {
+    width: 250px;
+  }
+
   .ivu-input-number {
     width: 250px;
   }
+
   .action_name {
     width: 48px;
     height: 16px;
@@ -379,33 +442,49 @@ tr.ivu-table-row-hover td {
     line-height: 16px;
     padding-right: 24px;
   }
+
   input {
     width: 250px;
     height: 32px;
     border-radius: 4px;
     padding-left: 0.5rem;
     border: 1px solid rgba(242, 242, 242, 1);
+
     &::placeholder {
       color: #c5c8ce;
     }
   }
+
   .remark_column {
     display: block;
     margin: -15px 0 5px 80px;
     color: #E4007F;
   }
+
   .ivu-date-picker-rel {
     width: 296px;
   }
 }
 
 .active input {
-  width: 290px;
+  width: 296px;
 }
+
+textarea::placeholder:after {
+  content: "line@ \A line#";
+  /*  \A 表示换行  */
+  color: red;
+}
+
+;
 
 .ivu-select-selection-focused,
 .ivu-select-selection:hover {
   border-color: #fff;
+}
+
+.ivu-select-selection {
+  border: 0;
 }
 
 .ivu-modal-footer {
@@ -456,12 +535,33 @@ tr.ivu-table-row-hover td {
 .allocation-time {
   float: right;
   margin-top: -3.5rem;
+  overflow: hidden;
+
+  .ivu-row {
+    float: left;
+  }
+
+  .timer {
+    float: left;
+
+    .ivu-col-span-12 {
+      width: 100%;
+
+      .ivu-date-picker .ivu-date-picker-rel {
+        input {
+          width: 102px;
+        }
+
+        .ivu-input-icon {
+          right: 0;
+        }
+      }
+    }
+  }
+
   .ivu-input {
     color: #1E2538;
     font-size: 12px;
-  }
-  .ivu-row {
-    float: left;
   }
 }
 
@@ -479,7 +579,9 @@ tr.ivu-table-row-hover td {
 
 .ivu-table td.activity-table-right .ivu-table-cell {
   padding-right: 15px;
-} // 时间选择kuang
+}
+
+// 时间选择kuang
 .allocation_container .ivu-tabs {
   overflow: visible !important;
 }
@@ -508,6 +610,7 @@ table {
       }
     }
   }
+
   tbody {
     tr {
       .demo-table-info-column {
@@ -520,4 +623,12 @@ table {
 .download_center .export {
   position: relative;
   top: 45px;
+}
+
+.ivu-input-icon-normal .ivu-input {
+  padding-right: 0;
+}
+
+.ivu-input-wrapper {
+  width: 102%;
 }

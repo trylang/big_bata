@@ -1,4 +1,5 @@
 ﻿@import '~@/assets/style/public.scss';
+
 a {
   color: $color-primary;
 }
@@ -14,11 +15,13 @@ a {
 
 .layout-logo {
   float: left;
+
   img {
     width: 104px;
     height: 42px;
     margin: 0.8rem 0 0 3.5rem;
   }
+
   .logo-name {
     width: 104px;
     height: 20px;
@@ -43,6 +46,7 @@ a {
 .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
   color: $color-actived;
   background: #fff;
+
   &::after {
     width: 1px;
     background: #dee0e4;
@@ -91,6 +95,7 @@ a {
   float: right;
   text-align: center;
   box-sizing: border-box;
+
   .ivu-dropdown-rel a {
     color: #fff;
     opacity: 0.88;
@@ -147,7 +152,7 @@ a {
 }
 
 .ivu-date-picker-rel {
-  width: 105px;
+  width: 100px;
 }
 
 .ivu-input:hover {

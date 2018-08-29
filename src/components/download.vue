@@ -2,7 +2,12 @@
   <div class="download">
     <Icon @click="modal = true" class="export iconfont icon-xiazai" />
     <Modal v-model="modal" width="604px" title="数据详情下载筛选" class-name="download-modal" @on-ok="ok" @on-cancel="cancel">
-      <div class="accumulative_total" v-if="meta">
+      <div class="accumulative_total" v-if="slotFilter">
+        <span class="time_chance">时间选择</span>
+        <DatePicker v-for="(date, dataIndex) in slotFilter.find(item => item.type==='daterange').data" @on-change="changeDate[date.name](param[date.name])" :key="dataIndex" placeholder="请选择时间" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="param[date.name]" class="filter-input filter-date-picker"></DatePicker>
+      </div>
+      
+      <div class="accumulative_total" v-if="meta && !noTimeCheck">
         <CheckboxGroup v-model="stat_type">
           <span class="time_chance">时间选择</span>
           <Checkbox v-for="(item, index) in timeCheckbox[meta.path]" :key="index" :label="item"></Checkbox>
@@ -15,22 +20,24 @@
       </div>
 
       <div class="filtrate">
-        <span class="filtrate_s">条件筛选</span>
-        <Row class="inline-content" v-if="filters">
-          <Col span="12" v-for="(filter, index) in filters.filter(item => item.type !== 'daterange' && item.type !== 'btn')" :key="index">
-          <span :style="dateStyle(filter)">{{filter.title}}</span>
-          <Checkbox v-show="filter.type==='checkbox'" v-model="market_id" @on-change="event[filter.label](market_id)"></Checkbox>
+        <div v-if="!noFilter">
+          <span class="filtrate_s">条件筛选</span>
+          <Row class="inline-content" v-if="filters">
+            <Col span="12" v-for="(filter, index) in filters.filter(item => item.type !== 'daterange' && item.type !== 'btn')" :key="index">
+            <span :style="dateStyle(filter)">{{filter.title}}</span>
+            <Checkbox v-show="filter.type==='checkbox'" v-model="market_id" @on-change="event[filter.label](market_id)"></Checkbox>
 
-          <Select v-show="filter.type==='select' && options" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" :clearable="filter.disClearable !== true" class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
-            <Option v-for="(item, itemIndex) in options[filter.label]" :value="item[filter.filterValue]" :key="itemIndex">
-              {{item[filter.filterName]}}
-            </Option>
-          </Select>
-          <p v-show="filter.type === 'btn'">
-            <span v-for="(btn,btnIndex) in filter.data" :key="btnIndex" :class="[ 'btn-' + btn.position, toggleName === btn.position ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
-          </p>
-          </Col>
-        </Row>
+            <Select v-show="filter.type==='select' && options" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" :clearable="filter.disClearable !== true" class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
+              <Option v-for="(item, itemIndex) in options[filter.label]" :label="item[filter.filterName]" :value="item[filter.filterValue]" :key="itemIndex">
+              </Option>
+            </Select>
+            <p v-show="filter.type === 'btn'">
+              <span v-for="(btn,btnIndex) in filter.data" :key="btnIndex" :class="[ 'btn-' + btn.position, toggleName === btn.position ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
+            </p>
+            </Col>
+          </Row>
+        </div>
+        
       </div>
     </Modal>
   </div>
@@ -54,7 +61,8 @@ export default {
           .subtract(1, "month")
           .format("YYYY-MM-DD"),
         end_date: dayjs(new Date()).format("YYYY-MM-DD"),
-        org_id: "01",
+        region_id: "1",
+        org_id: null,
         shop_floor: null,
         shop_bizcat: null,
         shop_id: null,
@@ -65,11 +73,11 @@ export default {
         'sales-member': ['当周', '上周', '当月', '上月'],
       },
       disabledObj: {
-        building: false,
-        floor: false,
-        bizcat: false,
-        shop: false,
-        activity: false
+        building: true,
+        floor: true,
+        bizcat: true,
+        shop: true,
+        activity: true
       },
       toggleName: "",
       option: [
@@ -105,6 +113,31 @@ export default {
         }
       ],
       event: {
+        region: value => {
+          if (value == 1 || value == 2) {
+            _this.param = Object.assign(_this.param, {
+              org_id: null,
+              shop_floor: null,
+              shop_bizcat: null,
+              shop_id: value == 1 ? null : -1,
+              activity_id: null
+            });
+            for (let key in _this.disabledObj) {
+              _this.disabledObj[key] = true;
+            }
+          } else if (value == 3) {
+            _this.param = Object.assign(_this.param, {
+              org_id: '01',
+              shop_floor: null,
+              shop_bizcat: null,
+              shop_id: null,
+              activity_id: null
+            });
+            for (let key in _this.disabledObj) {
+              _this.disabledObj[key] = false;
+            }
+          }
+        },
         market: (value) => {
           if (value) {
             _this.param = Object.assign(_this.param, {
@@ -216,7 +249,16 @@ export default {
     title: {
       type: String,
       required: true
-    }
+    },
+    noFilter: {
+      type: Boolean,
+      default: false
+    },
+    noTimeCheck: {
+      type: Boolean,
+      default: false
+    },
+    slotFilter: Array
   },
   methods: {
     ok() {

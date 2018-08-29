@@ -4,7 +4,7 @@
     <span class="filter-mark">?</span>
     <div class="inline-content">
       <div class="inline-item" v-for="(filter, index) in filters" :key="index">
-        <span :style="dateStyle(filter)">{{filter.title}}</span>
+        <span :style="dateStyle(filter)" style="color:#999999;">{{filter.title}}</span>
         <p v-show="filter.type==='daterange'" style="margin-top: -1.8rem; padding-left: 2rem;">
           <DatePicker v-for="(date, dataIndex) in filter.data" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" 
           format="yyyy.MM.dd" 
@@ -15,12 +15,10 @@
         
         <Checkbox v-show="filter.type==='checkbox'" v-model="market_id" @on-change="event[filter.label](market_id)"></Checkbox>
        
-        <Select v-show="filter.type==='select' && options" remote
-                :remote-method="event[`remote_${filter.label}`]" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" 
+        <Select v-show="filter.type==='select' && options" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" 
             :clearable="filter.disClearable !== true" class="filter-input filter-select" 
             @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
-          <Option v-for="(item, index) in options[filter.label]" :value="item[filter.filterValue]" :key="index">
-            {{item[filter.filterName]}}
+          <Option v-for="(item, index) in options[filter.label]" :label="item[filter.filterName]" :value="item[filter.filterValue]" :key="index">
           </Option>
         </Select>
         <p v-show="filter.type === 'btn'">
@@ -47,7 +45,8 @@ export default {
           .subtract(1, "month")
           .format("YYYY-MM-DD"),
         end_date: dayjs(new Date()).format("YYYY-MM-DD"),
-        org_id: "01",
+        region_id: "1",
+        org_id: null,
         shop_floor: null,
         shop_bizcat: null,
         shop_id: null,
@@ -55,11 +54,11 @@ export default {
         stat_type: null
       },
       disabledObj: {
-        building: false,
-        floor: false,
-        bizcat: false,
-        shop: false,
-        activity: false
+        building: true,
+        floor: true,
+        bizcat: true,
+        shop: true,
+        activity: true
       },
       toggleName: "当周",
       option: [
@@ -95,18 +94,26 @@ export default {
         }
       ],
       event: {
-        market: value => {
-          if (value) {
+        region: value => {
+          if (value == 1 || value == 2) {
             _this.param = Object.assign(_this.param, {
+              org_id: null,
               shop_floor: null,
               shop_bizcat: null,
-              shop_id: -1,
+              shop_id: value == 1 ? null : -1,
               activity_id: null
             });
             for (let key in _this.disabledObj) {
               _this.disabledObj[key] = true;
             }
-          } else {
+          } else if (value == 3) {
+            _this.param = Object.assign(_this.param, {
+              org_id: '01',
+              shop_floor: null,
+              shop_bizcat: null,
+              shop_id: null,
+              activity_id: null
+            });
             for (let key in _this.disabledObj) {
               _this.disabledObj[key] = false;
             }
@@ -119,6 +126,7 @@ export default {
             shop_id: null,
             activity_id: null
           });
+          _this.$set(_this.param, "shop_floor", null);
           _this.$set(_this.param, "shop_id", null);
           if (!value) {
             _this.options.floor = [];
@@ -254,7 +262,7 @@ export default {
         this.$Message.warning("请选择结束时间！");
         return;
       }
-      if (!this.param.org_id) {
+      if (this.param.region_id == "3" && !this.param.org_id) {
         this.$Message.warning("请选择建筑物！");
         return;
       }
@@ -286,7 +294,8 @@ export default {
           .subtract(1, "month")
           .format("YYYY-MM-DD"),
         end_date: dayjs(new Date()).format("YYYY-MM-DD"),
-        org_id: "01"
+        region_id: "1",
+        org_id: null,
       };
 
       this.param = param;
@@ -312,30 +321,24 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped lang="scss" scoped>
 @import "@/assets/style/components/filterBox.scss";
 .inline-content {
-  :nth-child(6) {
+  :nth-child(2) {
     .ivu-select-single {
-      width: 158px !important;
-      .ivu-select-selection {
-        width: 158px !important;
-      }
+      width: 64px;
+      margin-right: 30px;
     }
   }
-  button {
-    width: 64px;
-    height: 24px;
-    border-radius: 12px;
-    border: 1px solid rgba(42, 57, 98, 0.4);
-    .query {
-      display: block;
-      height: 12px;
-      font-size: 12px;
-      text-align: center;
-      font-family: MicrosoftYaHei;
-      color: $color-primary;
-      line-height: 11px;
+  :nth-child(6) {
+    .ivu-checkbox-wrapper {
+      width: 128px;
+    }
+    .ivu-select-single {
+      width: 128px;
+      // .ivu-select-selection {
+      //   width: 128px;
+      // }
     }
   }
 }

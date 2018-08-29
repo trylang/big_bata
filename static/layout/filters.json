@@ -17,10 +17,13 @@
           ]
         },
         {
-          "title": "只看商场：",
-          "label": "market",
-          "type": "checkbox",
-          "name": "market_id"
+          "title": "",
+          "label": "region",
+          "filterName": "region_name",
+          "filterValue": "region_id",
+          "type": "select",
+          "name": "region_id",
+          "disClearable": true
         },
         {
           "title": "建筑物：",
@@ -29,7 +32,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": true
+          "disClearable": false
         },
         {
           "title": "楼层：",
@@ -75,10 +78,13 @@
           ]
         },
         {
-          "title": "只看商场：",
-          "label": "market",
-          "type": "checkbox",
-          "name": "market_id"
+          "title": "",
+          "label": "region",
+          "filterName": "region_name",
+          "filterValue": "region_id",
+          "type": "select",
+          "name": "region_id",
+          "disClearable": true
         },
         {
           "title": "建筑物：",
@@ -87,7 +93,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": true
+          "disClearable": false
         },
         {
           "title": "楼层：",
@@ -133,10 +139,13 @@
           ]
         },
         {
-          "title": "只看商场：",
-          "label": "market",
-          "type": "checkbox",
-          "name": "market_id"
+          "title": "",
+          "label": "region",
+          "filterName": "region_name",
+          "filterValue": "region_id",
+          "type": "select",
+          "name": "region_id",
+          "disClearable": true
         },
         {
           "title": "建筑物：",
@@ -145,7 +154,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": true
+          "disClearable": false
         },
         {
           "title": "楼层：",
@@ -204,10 +213,13 @@
           ]
         },
         {
-          "title": "只看商场：",
-          "label": "market",
-          "type": "checkbox",
-          "name": "market_id"
+          "title": "",
+          "label": "region",
+          "filterName": "region_name",
+          "filterValue": "region_id",
+          "type": "select",
+          "name": "region_id",
+          "disClearable": true
         },
         {
           "title": "建筑物：",
@@ -216,7 +228,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": true
+          "disClearable": false
         },
         {
           "title": "楼层：",

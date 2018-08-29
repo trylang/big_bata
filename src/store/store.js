@@ -11,7 +11,8 @@ export default {
       .subtract(1, "month")
       .format("YYYY-MM-DD"),
       end_date: dayjs(new Date()).format("YYYY-MM-DD"),
-      org_id: '01',
+      org_id: null,
+      region_id: "1",
       stat_type: '当周',
       current_date: dayjs()
             .subtract(1, "day")
@@ -70,6 +71,7 @@ export default {
       ]);
 
       let options = {
+        region: [{region_name: '全部', region_id: "1"}, {region_name: '只看场馆', region_id: "2"}, {region_name: '只看店铺', region_id: "3"}, ],
         building: buildingList,
         floor: floorList,
         bizcat: bizcatList,

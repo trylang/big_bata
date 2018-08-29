@@ -14,7 +14,7 @@
     <div class="content">
       <div v-if="toggleName == 'sum'">
         <p v-for="(item, index) in list" :key="index">
-          <strong>{{item.shop_name}}&nbsp;&nbsp;
+          <strong>{{item.shop_name}}
             <span class="progress_control">{{item.main_info}}</span>
           </strong>
           <Progress v-if="index=3" :percent="item.r_sum | percent" hide-info/>
@@ -25,7 +25,7 @@
       </div>
       <div v-if="toggleName == 'average'">
         <p v-for="(item, index) in list" :key="index">
-          <strong>{{item.shop_name}}&nbsp;&nbsp;
+          <strong>{{item.shop_name}}
             <span class="progress_control">{{item.main_info}}</span>
           </strong>
           <Progress v-if="index<3" :percent="item.r_avg | percent" hide-info/>
@@ -84,6 +84,7 @@ export default {
 
 .ticketsTop {
   width: 353px;
+  box-sizing: border-box;
   padding: 2rem 1rem;
   border: 1px solid $color-border;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.04);

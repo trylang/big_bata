@@ -1,42 +1,25 @@
 import { fmoney } from "@/utils/filter.js";
 import dayjs from "dayjs";
 
-export const setOptions = function (type, chart_data, legendSel) {
-  let colors = ["#396FFF", "#E4007F", "#90C31F", "#FABE00", "#CCCCCC"];
+export const setOptions = function (type, option) {
+  let colors = [
+    "#396FFF",  "#90C31F",  "#FABE00",  "#F78345", " #E4007F",  "#62A1FF",
+     "#4ED4FF",  "#6FFAFF", "#1F7EBF",  "#7693FF",  "#FF6EBF"
+    ];
   let itemColors = {
     holiday: "#396FFF",
     activity: "#F5A623",
     zhoumo: "#E4007F"
   };
 
-  let json = {};
+  let chart_data = option.chart_data;
+  let json = option.json;
+  let legendSel = option.legendSel;
 
-  if (type === 'overview') {
-    json = {
-      视频客流量: "video_cf",
-      WIFI客流量: "wifi_cf",
-      活动UV: "activity_uv",
-      活动PV: "activity_pv",
-      会员数: "mbr_reg_count_acc",
-      新增会员数: "mbr_reg_count",
-      领券量: "cpn_get_count",
-      领取人数: "cpn_get_persons",
-      核销量: "cpn_chk_count",
-      核销人数: "cpn_chk_persons"
-    };
-  } else {
-    json = {
-      视频客流量: "video_cf",
-      WIFI客流量: "wifi_cf",
-      活动UV: "activity_uv",
-      活动PV: "activity_pv",
-      新增会员数: "mbr_reg_count",
-      领券量: "cpn_get_count",
-      领取人数: "cpn_get_persons",
-      核销量: "cpn_chk_count",
-      核销人数: "cpn_chk_persons"
-    };
+  if (type === 'activity') {
+    json = { 视频客流量: "video_cf", WIFI客流量: "wifi_cf", 活动UV: "activity_uv", 活动PV: "activity_pv", 新增会员数: "mbr_reg_count", 领券量: "cpn_get_count", 领取人数: "cpn_get_persons", 核销量: "cpn_chk_count", 核销人数: "cpn_chk_persons" };
   }
+
   let options = {
     color: colors,
     tooltip: {

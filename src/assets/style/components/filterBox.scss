@@ -1,51 +1,70 @@
 @import '~@/assets/style/public.scss';
+
 .filterBox {
   margin: 24px 0 -13px 0;
   padding-bottom: 1rem;
   width: 100%; //   box-shadow:0px 2px 4px 0px rgba(221,221,221,0.5);
-  .inline-content {
-    padding-left: 24px;
-    height: 60px;
-    box-shadow: 0px 2px 4px 0px rgba(221, 221, 221, 0.5);
-  }
-  .filter-title {
-    width: 64px;
-    height: 16px;
-    line-height: 16px;
-    padding-left: 24px;
-    font-size: 16px;
-    color: $color-primary;
-    padding-right: 8px;
-    font-family: MicrosoftYaHei;
-  }
-  .filter-mark {
-    display: inline-block;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    line-height: 17px;
-    opacity: 0.99;
-    color: #CCCCCC;
-    text-align: center;
-    border: 1px solid rgba(204, 204, 204, 1);
-  }
+
   .inline-content {
     display: flex;
-    padding-top: 16px;
+    justify-content: flex-start;
+    padding-left: 24px;
+    height: 50px;
+    align-items: center;
+    width: 100%;
+    padding-top: 14px;
+    box-shadow: 0px 2px 4px 0px rgba(221, 221, 221, 0.5);
+
+    button {
+      width: 64px;
+      height: 24px;
+      border-radius: 12px;
+      margin-top: -5px;
+      border: 1px solid rgba(42, 57, 98, 0.4);
+
+      .query {
+        display: block;
+        height: 12px;
+        font-size: 12px;
+        text-align: center;
+        font-family: MicrosoftYaHei;
+        color: $color-primary;
+        line-height: 11px;
+      }
+    }
+
     .inline-item {
-      margin-right: 1rem;
+      height: 30px;
+      line-height: 30px;
+
       span {
-        color: $color-gray;
-      }
-      .filter-date-picker {
-        width: 50%;
-        ;
-      }
-      .filter-select {
-        width: 5rem;
+        color: $color-primary;
       }
     }
   }
+}
+
+.filter-title {
+  width: 64px;
+  height: 14px;
+  line-height: 14px;
+  padding-left: 24px;
+  font-size: 16px;
+  color: $color-primary;
+  padding-right: 8px;
+  font-family: MicrosoftYaHei;
+}
+
+.filter-mark {
+  display: inline-block;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 17px;
+  opacity: 0.99;
+  color: #CCCCCC;
+  text-align: center;
+  border: 1px solid rgba(204, 204, 204, 1);
 }
 
 p {
@@ -57,22 +76,26 @@ p {
     line-height: 1.5rem;
     text-align: center;
   }
+
   .btn-left {
     color: $color-actived;
     border: 1px solid $color-primary;
     border-top-left-radius: 0.8rem;
     border-bottom-left-radius: 0.8rem;
   }
+
   .btn-middle {
     color: $color-actived;
     border: 1px solid $color-primary;
   }
+
   .btn-right {
     color: $color-primary;
     border: 1px solid $color-primary;
     border-top-right-radius: 0.8rem;
     border-bottom-right-radius: 0.8rem;
   }
+
   .actived {
     background: $color-primary;
     color: #fff !important;
@@ -80,9 +103,5 @@ p {
 }
 
 .ivu-input {
-  border: 1px solid #fff;
-}
-
-.ivu-select-selection {
   border: 1px solid #fff;
 }

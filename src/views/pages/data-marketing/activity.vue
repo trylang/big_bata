@@ -55,187 +55,6 @@ export default {
     let activity = this.$store.state.BI.activity;
     return {
       chartData: {},
-      // columnsT1: [
-      //   {
-      //     title: "活动名称",
-      //     key: "activity_name",
-      //     width: 150,
-      //     fixed: 'left'
-      //   },
-      //   {
-      //     title: "活动时间",
-      //     key: "period_dur_name",
-      //     className: "activity-time-right",
-      //     width: 155
-      //   },
-      //   {
-      //     title: "历时天数",
-      //     key: "period_days",
-      //     width: 110,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "获取会员数",
-      //     key: "quantity",
-      //     width: 110,
-      //     sortable: "custom",
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "参与商户数",
-      //     key: "shops",
-      //     width: 110,
-      //     sortable: "custom",
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "活动总成本",
-      //     key: "gross_cost",
-      //     width: 110,
-      //     sortable: "custom",
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "日均拉新",
-      //     key: "daily_trd_new",
-      //     width: 110,
-      //     sortable: "custom",
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "日均销售",
-      //     key: "daily_trd_amount",
-      //     width: 110,
-      //     sortable: "custom",
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "拉新ROI",
-      //     key: "roi",
-      //     width: 110,
-      //     sortable: "custom",
-      //     className: "activity-table-right"
-      //   }
-      // ],
-      // columnsT2: [
-      //   {
-      //     title: "日期",
-      //     key: "stat_ymd",
-      //     width: 140,
-      //     fixed: "left",
-      //     className: "demo-table-info-column"
-      //   },
-      //   {
-      //     title: "楼层",
-      //     key: "shop_floor",
-      //     width: 110,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "业态",
-      //     key: "shop_bizcat",
-      //     width: 110,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "WIFI客流量",
-      //     key: "wifi_cf",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "视频客流量",
-      //     key: "video_cf",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "销售额",
-      //     key: "trd_amout",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "交易笔数",
-      //     key: " trd_bills",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "发券量",
-      //     key: "cpn_put_count",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "UV数",
-      //     key: "activity_uv",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "PV数",
-      //     key: "activity_pv",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "参与会员数",
-      //     key: "cpn_get_members",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "会员占比",
-      //     key: "members_rate",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "新增会员数",
-      //     key: "mbr_reg_count",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "领券量",
-      //     key: "cpn_get_count",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "领券人数",
-      //     key: "cpn_get_persons",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "核销量",
-      //     key: "cpn_chk_count",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   },
-      //   {
-      //     title: "核销人数",
-      //     key: "cpn_chk_persons",
-      //     width: 110,
-      //     sortable: true,
-      //     className: "activity-table-right"
-      //   }
-      // ],
       curPageT1: 1,
       curPageT2: 1,
       pageT1List: [],
@@ -338,6 +157,11 @@ export default {
       let _this = this;
       this.$api.getActivityT1(param).then(res => {
         res.forEach(item => {
+          for (let key in item) {
+            if (!item[key] && item[key] != 0) item[key] = "--";
+          }
+        });
+        res.forEach(item => {
           let date = item.period_dur_name.split("~");
           date[1] = date[1] ? date[1] : "至今";
           item.period_dur_name = date.join("~");
@@ -351,6 +175,11 @@ export default {
           _this.pageT2List = res;
           return;
         }
+        res.forEach(item => {
+          for (let key in item) {
+            if (!item[key] && item[key] != 0) item[key] = "--";
+          }
+        });
         res.forEach(item => {
           if (!item.stat_ymd && item.explain == "合计") {
             item.stat_ymd = item.explain;
@@ -371,7 +200,20 @@ export default {
       let overviewChart = this.$echarts.init(
         document.getElementById("activity_chart")
       );
-      let options = setOptions('activity', _this.chartData, legendSel);
+
+      let json = (function(res) {
+        if (!res) return [];
+        let obj = {};
+        let data = res.filter(item => {
+          return item.dim_val ? item.dim_val === "T" : item.default_val === "T";
+        });
+        data.forEach(item => {
+          obj[item.dim_name] = item.dim_id;
+        })
+        return obj;
+      })(this.$store.state.BI.activityL1);
+
+      let options = setOptions('activity', {chart_data: _this.chartData, json, legendSel});
       // 绘制图表
       overviewChart.setOption(options);
       overviewChart.on("legendselectchanged", function(obj) {

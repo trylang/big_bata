@@ -118,7 +118,20 @@ export default {
       let overviewChart = this.$echarts.init(
         document.getElementById("overview_chart")
       );
-      let options = setOptions('overview', _this.chartData, legendSel);
+
+      let json = (function(res) {
+        if (!res) return [];
+        let obj = {};
+        let data = res.filter(item => {
+          return item.dim_val ? item.dim_val === "T" : item.default_val === "T";
+        });
+        data.forEach(item => {
+          obj[item.dim_name] = item.dim_id;
+        })
+        return obj;
+      })(this.$store.state.BI.overview);
+      
+      let options = setOptions('overview', {chart_data: _this.chartData, json, legendSel});
       // 绘制图表
       overviewChart.setOption(options);
       overviewChart.on("legendselectchanged", function(obj) {

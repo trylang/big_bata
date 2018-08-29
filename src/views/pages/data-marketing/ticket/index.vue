@@ -43,7 +43,7 @@
           <span v-for="(item, index) in btnList" :key="index" :class="[`tiket_btn${index+1}`, toggleName == item.type ? 'active' : '']" @click="handleChange(item.type)">{{item.title}}</span>
         </p>
       </div>
-      <Row :gutter="16" style="width:102%;margin-top:30px;">
+      <Row :gutter="16" style="width:100%;margin-top:30px;margin-left:0;margin-right:0;">
         <Col span="8" v-for="(top, index) in top2Tail10" :key="index">
         <ticketsTop :title="top.title" :progress="top.list" :_index="index"></ticketsTop>
         </Col>
@@ -163,13 +163,6 @@ export default {
         ],
         curPage: 1
       },
-      searchParam: {
-        start_date: this.dayjs(new Date())
-          .subtract(1, "month")
-          .format("YYYY-MM-DD"),
-        end_date: this.dayjs(new Date()).format("YYYY-MM-DD"),
-        shop_bizcat: null
-      },
       bizcatList: [],
       couponObj: {
         cpn_get_count: {}
@@ -245,13 +238,8 @@ export default {
       this.getConponChk();
     },
     getConponChk(biacat) {
-      this.searchParam.shop_bizcat =
-        this.searchParam.shop_bizcat === "全部"
-          ? null
-          : this.searchParam.shop_bizcat;
-      this.searchParam.shop_bizcat =
-        biacat || this.searchParam.shop_bizcat || null;
       let param = Object.assign({}, this.searchParam);
+      param.shop_bizcat = this.searchParam.shop_bizcat === "全部" ? null : (biacat ? biacat: null);
       param.pageSize = 10;
       param.pageIndex = this.conponChk.curPage * param.pageSize;
       this.$api.getConponChk(param).then(res => {
@@ -266,10 +254,13 @@ export default {
       });
     },
     getConponEffect(name) {
-      this.searchParam.coupon_name = name || null;
-      this.$api.getConponEffect(this.searchParam).then(res => {
+      let param = Object.assign({}, this.searchParam);
+      param =  name || null;
+      this.$api.getConponEffect(param).then(res => {
         res.forEach((item, index) => {
-          if (index === res.length-1 && item.coupon_name == "[合计]") {
+          item.get_count_rate = item.get_count_rate.toFixed(2) * 100 + '%';
+          item.chk_count_rate = item.chk_count_rate.toFixed(2) * 100 + '%';
+          if (index === res.length - 1 && item.coupon_name == "[合计]") {
             item.coupon_name = "合计";
           }
           for (let key in item) {
@@ -288,6 +279,9 @@ export default {
     }
   },
   computed: {
+    searchParam() {
+      return this.$store.state.BI.searchParam;
+    },
     conponEffectColumns: function() {
       let res = this.$store.state.BI.coupon;
       if (!res) return [];

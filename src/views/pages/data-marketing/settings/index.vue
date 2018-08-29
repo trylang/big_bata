@@ -19,7 +19,9 @@
             <span>新建</span>
           </button>
         </div>
-        <Table :columns="action.columns" :data="action.pageList"></Table>
+        <div class="log_record">
+          <Table :columns="action.columns" :data="action.pageList"></Table>
+        </div>
         <div class="table_page">
           <div class="table_page_l">
             <p>共
@@ -34,24 +36,19 @@
       <TabPane label="营销成本" name="cost">
         <div class="allocation-time">
           <span style="float:left;margin-top:0.4rem">时间：</span>
-          <Row>
-            <Col span="12">
-            
-            <DatePicker v-for="(date, dataIndex) in [{name: 'period_start_time'}, {name: 'period_end_time'}]" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" 
-              format="yyyy.MM.dd" 
-              v-model="cost[date.name]" 
-              placeholder="请选择时间"
-              @on-change="changeDate[date.name](cost[date.name])"
-            >
-            </DatePicker>
-
-            </Col>
-          </Row>
+          <div class="timer">
+            <Row>
+              <Col span="12">
+              <DatePicker v-for="(date, dataIndex) in [{name: 'period_start_time'}, {name: 'period_end_time'}]" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="cost[date.name]" placeholder="请选择时间" @on-change="changeDate[date.name](cost[date.name])">
+              </DatePicker>
+              </Col>
+            </Row>
+          </div>
           <Input icon="ios-search" placeholder="请输入活动名称" v-model="cost.activity_name" @on-enter="toggleTabpan('cost')" @on-click="toggleTabpan('cost')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
         </div>
         <div class="action_container">
           <button class="new_action ios-add" type="button" @click="addModel('cost')">
-            <Icon type="ios-add"/>
+            <Icon type="ios-add" />
             <span>新建</span>
           </button>
         </div>
@@ -132,9 +129,9 @@
     </Tabs>
 
     <Modal v-model="action.model" width="416px" :title="action.param.edit ? '编辑运营日志': '新建运营日志' " :loading="action.loading" @on-ok="submitAction" @on-cancel="cancel">
-      <div class="action" style="margin-bottom:0;">
+      <div class="action message" style="margin-bottom:0;">
         <span class="action_name">运营日志</span>
-        <Input v-model="action.param.content" type="textarea" size="small" :rows="4" placeholder="1.日志1 2.日志2" />
+        <Input v-model="action.param.content" type="textarea" size="small" :rows="4" placeholder="例如：1.日志1 &#13;&#10; 2.日志2" />
         <!-- <span class="remark_column"> 例如：1.录入内容<br>2.录入</span> -->
       </div>
 
@@ -215,10 +212,6 @@ export default {
             key: "ymd"
           },
           {
-            title: "备注",
-            key: "remark"
-          },
-          {
             title: "操作",
             key: "action",
             width: 150,
@@ -295,7 +288,7 @@ export default {
         model: false,
         loading: true,
         activity_name: "",
-        period_start_time:  dayjs().subtract(1, "month").format("YYYY-MM-DD"),
+        period_start_time: dayjs().subtract(1, "month").format("YYYY-MM-DD"),
         period_end_time: dayjs().format("YYYY-MM-DD"),
         columns: [
           {
@@ -305,7 +298,7 @@ export default {
           {
             title: "活动时间",
             key: "time",
-            width: 160
+            width: 170
           },
           {
             title: "总成本",
@@ -437,14 +430,14 @@ export default {
             return (
               (date &&
                 date.valueOf() <
-                  (dayjs(_this.cost.period_start_time).valueOf() &&
-                    dayjs()
-                      .subtract(1, "year")
-                      .valueOf())) ||
+                (dayjs(_this.cost.period_start_time).valueOf() &&
+                  dayjs()
+                    .subtract(1, "year")
+                    .valueOf())) ||
               date.valueOf() >
-                dayjs(_this.cost.period_end_time)
-                  .add(1, "month")
-                  .valueOf() ||
+              dayjs(_this.cost.period_end_time)
+                .add(1, "month")
+                .valueOf() ||
               date.valueOf() > Date.now() ||
               date.valueOf() < dayjs(_this.cost.period_start_time).valueOf()
             );
@@ -467,7 +460,7 @@ export default {
           ) {
             _this.cost.period_end_time = null;
           }
-          
+
           this.cost.period_start_time = dayjs(date).format("YYYY-MM-DD");
           this.cost.period_end_time = dayjs(_this.cost.period_end_time).format("YYYY-MM-DD");
           this.toggleTabpan("cost");
@@ -481,6 +474,36 @@ export default {
         }
       },
     };
+  },
+  watch: {
+    'level.overview.checkAllGroup': function(newV) {
+      if (newV.length < this.level.overview.list.length) {
+        this.level.overview.indeterminate = true;
+      } else {
+        this.level.overview.checkAll = true;
+      }
+    },
+    'level.coupon.checkAllGroup': function(newV) {
+      if (newV.length < this.level.coupon.list.length) {
+        this.level.coupon.indeterminate = true;
+      } else {
+        this.level.coupon.checkAll = true;
+      }
+    },
+    'level.activityL1.checkAllGroup': function(newV) {
+      if (newV.length < this.level.activityL1.list.length) {
+        this.level.activityL1.indeterminate = true;
+      } else {
+        this.level.activityL1.checkAll = true;
+      }
+    },
+    'level.activityL2.checkAllGroup': function(newV) {
+      if (newV.length < this.level.activityL2.list.length) {
+        this.level.activityL2.indeterminate = true;
+      } else {
+        this.level.activityL2.checkAll = true;
+      }
+    }
   },
   methods: {
     changeActionTime(actId) {
@@ -561,7 +584,7 @@ export default {
         return this.changeLoading(this.cost);
       }
       let hasAct = this.cost.list.some(item => item.activity_id === this.cost.param.activity_id);
-      if (hasAct) {
+      if (!this.cost.param.edit && hasAct) {
         this.$Message.info('此活动已存在，请重新选择！');
         return this.changeLoading(this.cost);
       }
@@ -796,9 +819,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 @import "@/assets/style/components/filterBox.scss";
-
 .allocation_container {
   .allocation_title {
     width: 100%;
