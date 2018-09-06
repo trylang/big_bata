@@ -6,7 +6,6 @@ import axios from "./api";
  */
 
 let domain = document.domain;
-let market_id = 12555;
 
 // let urlBase = ''
 switch (domain) {
@@ -20,7 +19,6 @@ switch (domain) {
 
 // 获取场馆
 export const getMarketList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/init/mark/query",
     method: "post",
@@ -30,7 +28,6 @@ export const getMarketList = (data = {}) => {
 
 // 获取商场建筑物
 export const getOrgList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshoporg",
     method: "post",
@@ -40,7 +37,6 @@ export const getOrgList = (data = {}) => {
 
 // 获取楼层
 export const getFloorList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshopfloor",
     method: "post",
@@ -50,7 +46,6 @@ export const getFloorList = (data = {}) => {
 
 // 获取节假日
 export const getHolidayList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getholiday",
     method: "post",
@@ -60,7 +55,6 @@ export const getHolidayList = (data = {}) => {
 
 // 获取活动
 export const getActivityList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getactivity",
     method: "post",
@@ -70,7 +64,6 @@ export const getActivityList = (data = {}) => {
 
 // 获取店铺
 export const getShopList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshopname",
     method: "post",
@@ -80,7 +73,6 @@ export const getShopList = (data = {}) => {
 
 // 获取业态
 export const getBizcatList = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getshopbizcat",
     method: "post",
@@ -90,7 +82,6 @@ export const getBizcatList = (data = {}) => {
 
 // 获取概览表格
 export const getOverviewCur = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/overview/query",
     method: "post",
@@ -100,9 +91,17 @@ export const getOverviewCur = (data = {}) => {
 
 // 获取概览历史图表
 export const getOverviewHistory = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/overview/queryhistory",
+    method: "post",
+    data
+  });
+};
+
+// 获取活动
+export const getWeather = (data = {}) => {
+  return axios({
+    url: "bi/marketing/getweatherall",
     method: "post",
     data
   });
@@ -140,7 +139,6 @@ export const getActivityChart = (data = {}) => {
 //====================  系统设置   =========================
 // 获取动作配置
 export const getMarketActions = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getmarketaction",
     method: "post",
@@ -150,7 +148,6 @@ export const getMarketActions = (data = {}) => {
 
 // 新建动作配置
 export const addMarketAction = (data) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/insetmarketaction",
     method: "post",
@@ -160,7 +157,6 @@ export const addMarketAction = (data) => {
 
 // 修改动作配置
 export const updateMarketAction = (data) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/updatemarketaction",
     method: "post",
@@ -170,7 +166,6 @@ export const updateMarketAction = (data) => {
 
 // 删除动作配置
 export const deleteMarketAction = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/delmarketaction",
     method: "post",
@@ -180,7 +175,6 @@ export const deleteMarketAction = (data = {}) => {
 
 // 获取营销成本
 export const getActivityCost = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/getactivitycost",
     method: "post",
@@ -190,7 +184,6 @@ export const getActivityCost = (data = {}) => {
 
 // 增加营销成本
 export const addActivityCost = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/insetactivitycost",
     method: "post",
@@ -200,7 +193,6 @@ export const addActivityCost = (data = {}) => {
 
 // 修改营销成本
 export const updataActivityCost = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/updataactivitycost",
     method: "post",
@@ -210,7 +202,6 @@ export const updataActivityCost = (data = {}) => {
 
 // 删除营销成本
 export const delActivitycost = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/delactivitycost",
     method: "post",
@@ -221,7 +212,6 @@ export const delActivitycost = (data = {}) => {
 
 // 系统配置 指标维度
 export const getSysLevels = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "bi/marketing/sys",
     method: "post",
@@ -241,7 +231,6 @@ export const insertSysLevels = (data = {}) => {
 //=================    券效果分析   ===========================
 
 export const getConponEffect = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/effect/query",
     method: "post",
@@ -250,7 +239,6 @@ export const getConponEffect = (data = {}) => {
 };
 
 export const getConponBizcat = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/bizcat/query",
     method: "post",
@@ -259,7 +247,6 @@ export const getConponBizcat = (data = {}) => {
 };
 
 export const getConponChk = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/chk/query",
     method: "post",
@@ -268,7 +255,6 @@ export const getConponChk = (data = {}) => {
 };
 
 export const getConponTop10 = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/conpon/top10/query",
     method: "post",
@@ -280,7 +266,6 @@ export const getConponTop10 = (data = {}) => {
 // ====================   会员分析   =========================
 
 export const getMemberNumber = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/number/query",
     method: "post",
@@ -289,7 +274,6 @@ export const getMemberNumber = (data = {}) => {
 };
 
 export const getMemberActivity = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/activity/query",
     method: "post",
@@ -298,7 +282,6 @@ export const getMemberActivity = (data = {}) => {
 };
 
 export const getMemberQrcord = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/qrcord/query",
     method: "post",
@@ -307,7 +290,6 @@ export const getMemberQrcord = (data = {}) => {
 };
 
 export const getMemberSourcesAct = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/sourcesAct/query",
     method: "post",
@@ -316,7 +298,6 @@ export const getMemberSourcesAct = (data = {}) => {
 };
 
 export const getMemberSourcesChnnl = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/sourcesChnnl/query",
     method: "post",
@@ -325,7 +306,6 @@ export const getMemberSourcesChnnl = (data = {}) => {
 };
 
 export const getMemberDist = (data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: "/bi/marketing/member/dist/query",
     method: "post",
@@ -334,7 +314,6 @@ export const getMemberDist = (data = {}) => {
 };
 
 export const dataDownload = (name, data = {}) => {
-  data = {market_id, ...data}
   return axios({
     url: `/bi/marketing/${name}/data/download`,
     method: "post",
@@ -347,6 +326,7 @@ export default {
   getFloorList,
   getHolidayList,
   getShopList,
+  getWeather,
   getOverviewCur,
   getOverviewHistory,
   getOrgList,

@@ -1,56 +1,56 @@
 <template>
-    <div class="layout">
-        <Layout>
-            <Header>
-                <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo">
-                        <img src="../../assets/bbg-logo.png" alt="">
-                    </div>
-                    <div class="layout-nav">
-                        <Menu-Item :name="menu.id" v-for="menu in menus" :key="menu.id">
-                            {{menu.label}}
-                        </Menu-Item>
-                    </div>
+  <div class="layout">
+    <Layout>
+        <Header>
+            <Menu mode="horizontal" theme="dark" active-name="1">
+                <div class="layout-logo">
+                    <img src="../../assets/bbg-logo.png" alt="">
+                </div>
+                <div class="layout-nav">
+                    <Menu-Item :name="menu.id" v-for="menu in menus" :key="menu.id">
+                        {{menu.label}}
+                    </Menu-Item>
+                </div>
 
-                    <Dropdown>
-                        <a href="javascript:void(0)">
-                            管理员
-                            <Icon type="ios-arrow-down"></Icon>
-                        </a>
-                        <DropdownMenu slot="list">
-                            <DropdownItem> 退出</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                    <div class="yayout_bbg">步步高梅溪新天地</div>
-                </Menu>
-            </Header>
-            <Layout>
-                <Sider hide-trigger :style="{background: '#fff'}">
-          <Menu :active-name="activeName" theme="light" width="auto">
-            <router-link :to="{ name: item.name }" v-for="item in $router.options.routes[1].children" :key="item.name">
-              <Menu-Item :name="item.meta.title">
-                <Icon :custom="defaultIcon(item.meta.icon)" size="16" /> {{item.meta.title}}
-              </Menu-Item>
-            </router-link>
-          </Menu>
-        </Sider>
+                <Dropdown>
+                    <a href="javascript:void(0)">
+                        管理员
+                        <Icon type="ios-arrow-down"></Icon>
+                    </a>
+                    <DropdownMenu slot="list">
+                        <DropdownItem> 退出</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+                <div class="yayout_bbg">步步高梅溪新天地</div>
+            </Menu>
+        </Header>
         <Layout>
-          <!-- <Breadcrumb :style="{margin: '1rem 0'}">
-                        <BreadcrumbItem>Home</BreadcrumbItem>
-                        <BreadcrumbItem>Components</BreadcrumbItem>
-                        <BreadcrumbItem>Layout</BreadcrumbItem>
-                    </Breadcrumb> -->
-          <FilterBox :title="$route.meta.title" :filters="currentFilters" @searchParam="toggleSearchParam"></FilterBox>
-          <Content :style="{padding: '32px 24px 64px 24px', minHeight: '280px', background: '#fff'}">
-                        <transition name="fade-transverse">
-                            <router-view :key="key"/>
-                        </transition>
-                    </Content>
-                </Layout>
+            <Sider hide-trigger :style="{background: '#fff'}">
+      <Menu :active-name="activeName" theme="light" width="auto">
+        <router-link :to="{ name: item.name }" v-for="item in $router.options.routes[1].children" :key="item.name">
+          <Menu-Item :name="item.meta.title">
+            <Icon :custom="defaultIcon(item.meta.icon)" size="16" /> {{item.meta.title}}
+          </Menu-Item>
+        </router-link>
+      </Menu>
+    </Sider>
+    <Layout>
+      <!-- <Breadcrumb :style="{margin: '1rem 0'}">
+                    <BreadcrumbItem>Home</BreadcrumbItem>
+                    <BreadcrumbItem>Components</BreadcrumbItem>
+                    <BreadcrumbItem>Layout</BreadcrumbItem>
+                </Breadcrumb> -->
+      <FilterBox :title="$route.meta.title" :filters="currentFilters" @searchParam="toggleSearchParam"></FilterBox>
+      <Content :style="{padding: '32px 24px 64px 24px', minHeight: '280px', background: '#fff'}">
+                    <transition name="fade-transverse">
+                        <router-view :key="key"/>
+                    </transition>
+                </Content>
             </Layout>
-
         </Layout>
-    </div>
+
+    </Layout>
+  </div>
 </template>
 <script>
 import FilterBox from "../../components/FilterBox";
@@ -59,6 +59,7 @@ import filterList from "^/layout/filters.json";
 export default {
   data() {
     return {
+      market_id: this.$route.query.market_id || 12555,
       filterOptions: {},
       menus: [
         // {
@@ -117,7 +118,7 @@ export default {
     },
     async fetchDate() {
       let _this = this;
-      await this.$store.dispatch("getLevels").then(() => {
+      await this.$store.dispatch("getLevels", {market_id: this.market_id}).then(() => {
         _this.levels = _this.$store.state.BI.levels;
         for(let key in _this.levels) {
           this.$store.commit(`update${key}`, _this.levels[key]);
@@ -128,7 +129,7 @@ export default {
   watch: {
 		'$route': function(from, to) {
 			this.$store.commit("updateSearchOptions", this.currentFilters);
-		}
+    },
 	},
   components: {
     FilterBox

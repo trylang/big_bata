@@ -1,4 +1,4 @@
-# data-analysis-demo
+# data-analysis
 
 ## Project setup
 ```

@@ -6,11 +6,11 @@
     </div>
     <Input icon="ios-search" placeholder="请输入券名称" style="width: auto" v-model="conponEffect.coupon_name" @on-enter="getConponEffect(conponEffect.coupon_name)" @on-click="getConponEffect(conponEffect.coupon_name)" />
     <!-- Table表格 -->
-    <i-Table border :columns="conponEffectColumns" @on-sort-change="effectHandleSort" :data="conponEffect.pageList"></i-Table>
+    <i-Table width="100%" border :row-class-name="rowClassName" :columns="conponEffectColumns" @on-sort-change="effectHandleSort" :data="conponEffect.pageList"></i-Table>
     <div class="table_page">
       <div class="table_page_l">
         <p>共
-          <span>{{conponEffect.list.length}}</span> 条数据</p>
+          <span>{{conponEffect.list.total>0?conponEffect.list.total-1:0}}</span> 条数据</p>
       </div>
       <div class="table_page_r">
         <Page :total="conponEffect.list.length" :current.sync="conponEffect.curPage" :page-size="10" show-elevator @on-change="effectChangePage" />
@@ -19,15 +19,15 @@
     <div>
       <div class="table_title_m">
         <span class="table_sp">券核销记录</span>
-         <download title="券核销记录" name="conponchk" class="download_center"></download>
+        <download title="券核销记录" name="conponchk" class="download_center"></download>
       </div>
-      <Tabs v-model="searchParam.shop_bizcat" @on-click="toggleTab">
+      <Tabs v-model="filterParam.shop_bizcat" @on-click="toggleTab">
         <TabPane v-for="(item, index) in bizcatList" :key="index" :label="item.title" :name="item.shop_bizcat">
-          <i-Table :columns="conponChk.columns" :data="conponChk.list"></i-Table>
+          <i-Table width="100%" :columns="conponChk.columns" :data="conponChk.list"></i-Table>
           <div class="table_page">
             <div class="table_page_l">
               <p>共
-                <span>{{conponChk.list.total}}</span> 条数据</p>
+                <span>{{conponChk.list.total>0?conponChk.list.total:0}}</span> 条数据</p>
             </div>
             <div class="table_page_r">
               <Page :total="conponChk.list.total" :current.sync="conponChk.curPage" :page-size="10" show-elevator @on-change="conponChkChangePage" />
@@ -44,9 +44,9 @@
         </p>
       </div>
       <Row :gutter="16" style="width:100%;margin-top:30px;margin-left:0;margin-right:0;">
-        <Col span="8" v-for="(top, index) in top2Tail10" :key="index">
-        <ticketsTop :title="top.title" :progress="top.list" :_index="index"></ticketsTop>
-        </Col>
+        <i-Col span="8" v-for="(top, index) in top2Tail10" :key="index">
+          <ticketsTop :title="top.title" :progress="top.list" :_index="index"></ticketsTop>
+        </i-Col>
       </Row>
     </div>
 
@@ -56,6 +56,8 @@
 import ticketsTop from "./ticketsTop";
 import { sort } from "@/utils/filter.js";
 import download from "@/components/download.vue";
+import {mapState} from 'vuex';
+
 export default {
   components: {
     ticketsTop,
@@ -63,7 +65,9 @@ export default {
   },
   data() {
     return {
+      market_id: this.$route.query.market_id || 12555,
       toggleName: "this_week",
+      filterParam: {},
       btnList: [
         {
           title: "当周",
@@ -100,7 +104,6 @@ export default {
               title: item.dim_name,
               key: item.dim_id,
               fixed: index === 0 ? "left" : "",
-              width: 120,
               sortable: index > 7 ? "custom" : ""
             });
           });
@@ -122,43 +125,37 @@ export default {
           },
           {
             title: "券ID",
-            width: 120,
             key: "coupon_id"
           },
           {
             title: "券类型",
-            width: 120,
             key: "category_name"
           },
           {
             title: "发券主体",
-            width: 120,
             key: "rectangleName"
           },
           {
             title: "商户名",
-            width: 120,
             key: "shop_name"
           },
           {
             title: "楼层",
-            width: 120,
             key: "shop_floor"
           },
           {
             title: "发券时间",
-            width: 120,
             key: "put_date"
           },
           {
             title: "领取时间",
-            width: 150,
-            key: "get_time"
+            key: "get_time",
+            width: 160
           },
           {
             title: "核销时间",
-            width: 150,
-            key: "chk_time"
+            key: "chk_time",
+            width: 160
           }
         ],
         curPage: 1
@@ -202,6 +199,12 @@ export default {
     };
   },
   methods: {
+    rowClassName(row, index) {
+      if (index === 10) {
+        return 'demo-table-info-row';
+      }
+      return '';
+    },
     toggleTab(biacat) {
       this.biacat = biacat;
       this.getConponChk();
@@ -216,6 +219,7 @@ export default {
       });
     },
     effectHandleSort(column) {
+      if (this.conponEffect.list.every(item => item[column.key] === 0)) return;
       this.conponEffect.list = sort(
         this.conponEffect.list,
         column.key,
@@ -238,15 +242,15 @@ export default {
       this.getConponChk();
     },
     getConponChk(biacat) {
-      let param = Object.assign({}, this.searchParam);
-      param.shop_bizcat = this.searchParam.shop_bizcat === "全部" ? null : (biacat ? biacat: null);
+      let param = Object.assign({}, this.filterParam);
+      param.shop_bizcat = this.filterParam.shop_bizcat === "全部" ? null : (this.biacat ? this.biacat: null);
       param.pageSize = 10;
-      param.pageIndex = this.conponChk.curPage * param.pageSize;
-      this.$api.getConponChk(param).then(res => {
+      param.pageIndex = (this.conponChk.curPage - 1) * param.pageSize;
+      this.$api.getConponChk({market_id: this.market_id, ...param}).then(res => {
         res.map(item => {
           item.rectangleName = item.rectangle == 2 ? "商户" : "商场";
           for (let key in item) {
-            if (!item[key]) item[key] = "--";
+            if (!item[key] && item[key] != 0) item[key] = "--";
           }
           return item;
         });
@@ -254,34 +258,45 @@ export default {
       });
     },
     getConponEffect(name) {
-      let param = Object.assign({}, this.searchParam);
-      param =  name || null;
-      this.$api.getConponEffect(param).then(res => {
+      let param = Object.assign({}, this.filterParam);
+      param.coupon_name =  name || null;
+      this.$api.getConponEffect({market_id: this.market_id, ...param}).then(res => {
         res.forEach((item, index) => {
-          item.get_count_rate = item.get_count_rate.toFixed(2) * 100 + '%';
-          item.chk_count_rate = item.chk_count_rate.toFixed(2) * 100 + '%';
+          item.get_count_rate = (item.get_count_rate * 100).toFixed(2) + '%';
+          item.chk_count_rate = (item.chk_count_rate * 100).toFixed(2) + '%';
           if (index === res.length - 1 && item.coupon_name == "[合计]") {
             item.coupon_name = "合计";
           }
           for (let key in item) {
-            if (!item[key]) item[key] = "--";
+            if (!item[key] && item[key] != 0) item[key] = "--";
           }
         });
         this.conponEffect.list = res;
         this.conponEffect.total = res.pop();
         this.conponEffect.pageList = this.conponEffect.list.slice(0, 10);
-        this.conponEffect.pageList.push(this.conponEffect.total)
+        this.conponEffect.pageList.push(this.conponEffect.total);
+        this.conponEffect.curPage = 1;
       });
     },
     init(param) {
+      this.conponChk.curPage = 1;
+      this.$api.getConponBizcat({ market_id: this.market_id, ...this.filterParam }).then(res => {
+        res.sort((obj1, obj2) => {
+          return obj2.ratio - obj1.ratio
+        });
+        res.forEach(item => {
+          item.title = `${item.shop_bizcat}（${(item.ratio !== 1 ? (item.ratio * 100).toFixed(2) : item.ratio * 100)}%）`;
+        });
+        this.bizcatList = res;
+      });
       this.getConponEffect();
       this.getConponChk();
     }
   },
   computed: {
-    searchParam() {
-      return this.$store.state.BI.searchParam;
-    },
+    ...mapState({
+      searchParam: state => state.BI.searchParam
+    }),
     conponEffectColumns: function() {
       let res = this.$store.state.BI.coupon;
       if (!res) return [];
@@ -294,9 +309,9 @@ export default {
           title: item.dim_name,
           key: item.dim_id,
           fixed: index === 0 ? "left" : "",
-          width: index === 0 ? 160 : 120,
+          width: index === 0 ? 160 : 140,
           className: index === 0 ? "demo-table-info-column" : "",
-          sortable: index > 7 ? "custom" : ""
+          sortable: index > 7 && item.dim_id != "status" ? "custom" : ""
         });
       });
       return columns;
@@ -304,26 +319,21 @@ export default {
   },
   async created() {
     let _this = this;
+    _this.filterParam = this.$store.state.BI.searchParam;
     this.init(this.$store.state.BI.searchParam);
     eventBus.$on("updateSearchParam_ticket", data => {
-      _this.searchParam = data;
-      _this.searchParam.shop_bizcat = data.bizcat;
+      _this.filterParam = data;
+      _this.filterParam.shop_bizcat = data.bizcat;
       this.init(data);
     });
 
-    this.$api.getConponBizcat().then(res => {
-      res.forEach(item => {
-        item.title = `${item.shop_bizcat}（${(item.ratio !== 1 ? (item.ratio * 100).toFixed(2) : item.ratio * 100)}%）`;
-      });
-      this.bizcatList = res;
-    });
     let $api = this.$api;
     let current_date = this.dayjs()
       .format("YYYY-MM-DD");
     let [pvList, getList, chkList] = await Promise.all([
-      $api.getConponTop10({ current_date, target: "pv" }),
-      $api.getConponTop10({ current_date, target: "cpn_get_count" }),
-      $api.getConponTop10({ current_date, target: "cpn_chk_count" })
+      $api.getConponTop10({ market_id: this.market_id, current_date, target: "pv" }),
+      $api.getConponTop10({ market_id: this.market_id, current_date, target: "cpn_get_count" }),
+      $api.getConponTop10({ market_id: this.market_id, current_date, target: "cpn_chk_count" })
     ]);
 
     this.couponObj = {
@@ -386,7 +396,7 @@ export default {
   border: 1px solid rgba(42, 57, 98, 1);
   margin-top: 0.4rem;
   .active {
-    background: #2a3962;
+    background: rgba(42, 57, 98, 0.8);
     color: rgba(255, 255, 255, 1);
   }
   span {
@@ -398,10 +408,7 @@ export default {
   }
   .tiket_btn1 {
     border-right: 1px solid rgba(42, 57, 98, 1);
-    // background: #2a3962;
     border-radius: 12px 0px 0px 12px;
-    opacity: 0.8;
-    // color: rgba(255, 255, 255, 1);
   }
   .tiket_btn2,
   .tiket_btn3 {

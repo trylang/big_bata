@@ -6,11 +6,14 @@
       <TabPane label="运营日志" name="action">
         <div class="allocation-time">
           <span style="float:left;margin-top:0.4rem">时间：</span>
-          <Row>
-            <Col span="12">
-            <DatePicker type="date" placement="bottom-end" placeholder="请选择时间" @on-change="searchAction" style="width: 180px"></DatePicker>
-            </Col>
-          </Row>
+          <div class="timer">
+            <Row>
+              <Col span="12">
+                <DatePicker v-for="(date, dataIndex) in [{name: 'period_start_time'}, {name: 'period_end_time'}]" :key="dataIndex" type="date" :clearable="false" :options="optionAction[dataIndex]" format="yyyy.MM.dd" v-model="action[date.name]" placeholder="请选择时间" @on-change="changeDate[date.name]('action', action[date.name])">
+                </DatePicker>
+              </Col>
+            </Row>
+          </div>
           <Input icon="ios-search" placeholder="请输入运营日志" v-model="action.content" @on-enter="toggleTabpan('action')" @on-click="toggleTabpan('action')" style="width: auto;border:1px solid #F2F2F2;border-radius:16px;" />
         </div>
         <div class="action_container">
@@ -39,8 +42,8 @@
           <div class="timer">
             <Row>
               <Col span="12">
-              <DatePicker v-for="(date, dataIndex) in [{name: 'period_start_time'}, {name: 'period_end_time'}]" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="cost[date.name]" placeholder="请选择时间" @on-change="changeDate[date.name](cost[date.name])">
-              </DatePicker>
+                <DatePicker v-for="(date, dataIndex) in [{name: 'period_start_time'}, {name: 'period_end_time'}]" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="cost[date.name]" placeholder="请选择时间" @on-change="changeDate[date.name]('cost', cost[date.name])">
+                </DatePicker>
               </Col>
             </Row>
           </div>
@@ -131,32 +134,31 @@
     <Modal v-model="action.model" width="416px" :title="action.param.edit ? '编辑运营日志': '新建运营日志' " :loading="action.loading" @on-ok="submitAction" @on-cancel="cancel">
       <div class="action message" style="margin-bottom:0;">
         <span class="action_name">运营日志</span>
-        <Input v-model="action.param.content" type="textarea" size="small" :rows="4" placeholder="例如：1.日志1 &#13;&#10; 2.日志2" />
+        <Input v-model="action.param.content" :maxlength=64 type="textarea" size="small" :rows="4" placeholder="例如：1.日志1；2.日志2；最多可输入64个字符" />
         <!-- <span class="remark_column"> 例如：1.录入内容<br>2.录入</span> -->
       </div>
 
       <div class="action active">
         <span class="action_name">生效时间</span>
-        <DatePicker type="date" style="width:296px" @on-change="formatActionDate" v-model="action.param.ymd" placement="bottom-end" placeholder="请选择"></DatePicker>
+        <DatePicker type="date" style="width:296px" @on-change="formatActionDate" v-model="action.param.ymd" :readonly="action.param.edit" :class="{'activeTime':action.param.edit}" placement="bottom-end" placeholder="请选择"></DatePicker>
       </div>
 
       <div class="action" style="margin-bottom:84px">
         <span class="action_name">备注</span>
-        <Input v-model="action.param.remark" type="textarea" size="small" :rows="4" placeholder="请输入运营日志名称" />
+        <Input v-model="action.param.remark" :maxlength=32 type="textarea" size="small" :rows="4" placeholder="请输入运营日志名称；最多可输入32个字符" />
       </div>
     </Modal>
 
-    <Modal v-model="cost.model" width="416px" :title="cost.param.edit ? '编辑营销成本': '新建营销成本' " :loading="cost.loading" @on-ok="submitCost" @on-cancel="cancel">
+    <Modal  v-model="cost.model" width="416px" :title="cost.param.edit ? '编辑营销成本': '新建营销成本' " :loading="cost.loading" @on-ok="submitCost" @on-cancel="cancel">
       <div class="action">
         <span class="action_name" style="margin-left:22px;">关联活动</span>
-        <Select v-model="cost.param.activity_id" style="width:250px" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
+        <Select v-model="cost.param.activity_id" style="width:250px" ref="cost_ref" :disabled="cost.param.edit" @on-change="changeCostTime(cost.param.activity_id)">
           <Option v-for="item in activityList" :value="item.activity_id" :key="item.activity_id">{{ item.activity_name }}</Option>
         </Select>
       </div>
       <div class="action">
         <span class="action_name" style="margin-left:22px;">活动时间</span>
         <Input v-model="cost.param.time" style="width: 250px" disabled/>
-        <!-- <DatePicker type="daterange" @on-change="formatCostDate" v-model="cost.param.time" placement="bottom-end" placeholder="请选择" ></DatePicker> -->
       </div>
       <div class="action">
         <span class="action_name">线下物料成本</span>
@@ -189,6 +191,7 @@ export default {
   data() {
     let _this = this;
     return {
+      market_id: this.$route.query.market_id || 12555,
       action: {
         list: [],
         pageList: [],
@@ -197,6 +200,8 @@ export default {
           ymd: "",
           content: ""
         },
+        period_start_time: dayjs().subtract(1, "month").format("YYYY-MM-DD"),
+        period_end_time: dayjs().format("YYYY-MM-DD"),
         model: false,
         loading: true,
         content: "",
@@ -212,9 +217,12 @@ export default {
             key: "ymd"
           },
           {
+            title: "备注",
+            key: "remark"
+          },
+          {
             title: "操作",
             key: "action",
-            width: 150,
             align: "center",
             render: (h, params) => {
               return h("div", [
@@ -227,6 +235,7 @@ export default {
                     "icon-bianji": true
                   },
                   style: {
+                    cursor: "pointer",
                     marginRight: "15px",
                     color: "#4C84FF"
                   },
@@ -251,7 +260,8 @@ export default {
                     "icon-shanchu": true
                   },
                   style: {
-                    color: "#E4007F"
+                    color: "#E4007F",
+                    cursor: "pointer"
                   },
                   on: {
                     click: () => {
@@ -259,7 +269,7 @@ export default {
                         title: "确认要删除此运营日志？",
                         onOk: () => {
                           this.$api
-                            .deleteMarketAction({ ymd: params.row.ymd })
+                            .deleteMarketAction({ market_id: this.market_id, ymd: params.row.ymd })
                             .then(res => {
                               this.$Message.success("删除成功！");
                               this.toggleTabpan("action");
@@ -293,38 +303,45 @@ export default {
         columns: [
           {
             title: "活动名称",
-            key: "activity_name"
+            key: "activity_name",
+            width: 130
           },
           {
             title: "活动时间",
             key: "time",
-            width: 170
+            width: 180
           },
           {
-            title: "总成本",
-            key: "gross_cost"
+            title: "总成本（元）",
+            key: "gross_cost",
+            align: "right",
+            width: 100
           },
           {
-            title: "线下物料成本",
-            key: "offline_mat_cost"
+            title: "线下物料成本（元）",
+            key: "offline_mat_cost",
+            align: "right"
           },
           {
-            title: "线上推广成本",
-            key: "online_ad_cost"
+            title: "线上推广成本（元）",
+            key: "online_ad_cost",
+            align: "right"
           },
           {
-            title: "券成本",
-            key: "coupon_cost"
+            title: "券成本（元）",
+            key: "coupon_cost",
+            align: "right",
           },
           {
-            title: "其他成本",
-            key: "other_cost"
+            title: "其他成本（元）",
+            key: "other_cost",
+            align: "right"
           },
           {
             title: "操作",
             key: "action",
-            width: 150,
             align: "center",
+            width: 100,
             render: (h, params) => {
               return h("div", [
                 h("Icon", {
@@ -337,7 +354,8 @@ export default {
                   },
                   style: {
                     marginRight: "15px",
-                    color: "#4C84FF"
+                    color: "#4C84FF",
+                    cursor: "pointer",
                   },
                   on: {
                     click: () => {
@@ -357,7 +375,8 @@ export default {
                     "icon-shanchu": true
                   },
                   style: {
-                    color: "#E4007F"
+                    color: "#E4007F",
+                    cursor: "pointer",
                   },
                   on: {
                     click: () => {
@@ -366,6 +385,7 @@ export default {
                         onOk: () => {
                           this.$api
                             .delActivitycost({
+                              market_id: this.market_id,
                               activity_id: params.row.activity_id
                             })
                             .then(res => {
@@ -412,6 +432,38 @@ export default {
       activityName: "",
       activityList: [],
       activityObj: {},
+      optionAction: [
+        {
+          disabledDate(date) {
+            return (
+              date &&
+              (date.valueOf() <
+                dayjs()
+                  .subtract(1, "year")
+                  .valueOf() ||
+                date.valueOf() > Date.now())
+            );
+          }
+        },
+        {
+          disabledDate(date) {
+            return (
+              (date &&
+                date.valueOf() <
+                (dayjs(_this.action.period_start_time).valueOf() &&
+                  dayjs()
+                    .subtract(1, "year")
+                    .valueOf())) ||
+              date.valueOf() >
+              dayjs(_this.action.period_start_time)
+                .add(1, "month")
+                .valueOf() ||
+              date.valueOf() > Date.now() ||
+              date.valueOf() < dayjs(_this.action.period_start_time).valueOf()
+            );
+          }
+        }
+      ],
       option: [
         {
           disabledDate(date) {
@@ -435,7 +487,7 @@ export default {
                     .subtract(1, "year")
                     .valueOf())) ||
               date.valueOf() >
-              dayjs(_this.cost.period_end_time)
+              dayjs(_this.cost.period_start_time)
                 .add(1, "month")
                 .valueOf() ||
               date.valueOf() > Date.now() ||
@@ -445,59 +497,61 @@ export default {
         }
       ],
       changeDate: {
-        period_start_time: date => {
-          if (!_this.cost.period_end_time) return;
+        period_start_time: (type, date) => {
+          if (!_this[type].period_end_time) return;
           if (
-            _this.cost.period_start_time.valueOf() > _this.cost.period_end_time.valueOf()
+            _this[type].period_start_time.valueOf() > _this[type].period_end_time.valueOf()
           ) {
-            _this.cost.period_end_time = null;
+            _this[type].period_end_time = null;
+            return;
           }
           if (
-            _this.cost.period_start_time.valueOf() <
-            dayjs(_this.cost.period_end_time)
+            _this[type].period_start_time.valueOf() <
+            dayjs(_this[type].period_end_time)
               .add(1, "month")
               .valueOf()
           ) {
-            _this.cost.period_end_time = null;
+            _this[type].period_end_time = null;
+            return;
           }
 
-          this.cost.period_start_time = dayjs(date).format("YYYY-MM-DD");
-          this.cost.period_end_time = dayjs(_this.cost.period_end_time).format("YYYY-MM-DD");
-          this.toggleTabpan("cost");
+          this[type].period_start_time = dayjs(date).format("YYYY-MM-DD");
+          this[type].period_end_time = dayjs(_this[type].period_end_time).format("YYYY-MM-DD");
+          this.toggleTabpan(type);
         },
-        period_end_time: date => {
-          this.cost.period_start_time = dayjs(_this.cost.period_start_time).format(
+        period_end_time: (type, date) => {
+          this[type].period_start_time = dayjs(_this[type].period_start_time).format(
             "YYYY-MM-DD"
           );
-          this.cost.period_end_time = dayjs(date).format("YYYY-MM-DD");
-          this.toggleTabpan("cost");
+          this[type].period_end_time = dayjs(date).format("YYYY-MM-DD");
+          this.toggleTabpan(type);
         }
       },
     };
   },
   watch: {
-    'level.overview.checkAllGroup': function(newV) {
+    'level.overview.checkAllGroup': function (newV) {
       if (newV.length < this.level.overview.list.length) {
         this.level.overview.indeterminate = true;
       } else {
         this.level.overview.checkAll = true;
       }
     },
-    'level.coupon.checkAllGroup': function(newV) {
+    'level.coupon.checkAllGroup': function (newV) {
       if (newV.length < this.level.coupon.list.length) {
         this.level.coupon.indeterminate = true;
       } else {
         this.level.coupon.checkAll = true;
       }
     },
-    'level.activityL1.checkAllGroup': function(newV) {
+    'level.activityL1.checkAllGroup': function (newV) {
       if (newV.length < this.level.activityL1.list.length) {
         this.level.activityL1.indeterminate = true;
       } else {
         this.level.activityL1.checkAll = true;
       }
     },
-    'level.activityL2.checkAllGroup': function(newV) {
+    'level.activityL2.checkAllGroup': function (newV) {
       if (newV.length < this.level.activityL2.list.length) {
         this.level.activityL2.indeterminate = true;
       } else {
@@ -506,14 +560,6 @@ export default {
     }
   },
   methods: {
-    changeActionTime(actId) {
-      let actiontime = this.activityObj[actId];
-      if (!actiontime) return;
-      actiontime.period_end_time = actiontime.period_end_time || "至今";
-      this.action.param.time = `${actiontime.period_start_time}~${
-        actiontime.period_end_time
-        }`;
-    },
     changeCostTime(acticityId) {
       let time = this.activityObj[acticityId];
       if (!time) return;
@@ -525,6 +571,7 @@ export default {
     addModel(name) {
       this[name].model = true;
       this[name].param = {};
+      this.$refs.cost_ref && this.$refs.cost_ref.clearSingleSelect();
       if (name === "cost") {
         this.cost.param = {
           offline_mat_cost: 1,
@@ -542,10 +589,10 @@ export default {
       this.cost.param.period_end_time = time[1];
     },
     changeLoading(param) {
-      param.loading = false;
-      this.$nextTick(() => {
-        param.loading = true;
-      });
+       param.loading = false;
+       setTimeout(function(){
+          param.loading = true;
+       },0);
     },
     submitAction() {
       if (!this.action.param.content) {
@@ -559,18 +606,18 @@ export default {
       }
 
       let hasAct = this.action.list.some(item => item.ymd === this.action.param.ymd);
-      if (hasAct) {
+      if (!this.action.param.edit && hasAct) {
         this.$Message.info('此时间已存在，请重新选择！');
         return this.changeLoading(this.action);
       }
 
       if (this.action.param.edit) {
-        this.$api.updateMarketAction(this.action.param).then(res => {
+        this.$api.updateMarketAction({market_id: this.market_id, ...this.action.param}).then(res => {
           this.$Message.success("运营日志修改成功");
           this.toggleTabpan("action");
         });
       } else {
-        this.$api.addMarketAction(this.action.param).then(res => {
+        this.$api.addMarketAction({market_id: this.market_id, ...this.action.param}).then(res => {
           this.$Message.success("运营日志添加成功");
           this.toggleTabpan("action");
         });
@@ -580,13 +627,16 @@ export default {
     },
     submitCost() {
       if (!this.cost.param.activity_id) {
+        var that = this;
         this.$Message.info("请选择活动！");
-        return this.changeLoading(this.cost);
+        this.changeLoading(this.cost);
+        return;
       }
       let hasAct = this.cost.list.some(item => item.activity_id === this.cost.param.activity_id);
       if (!this.cost.param.edit && hasAct) {
         this.$Message.info('此活动已存在，请重新选择！');
-        return this.changeLoading(this.cost);
+        this.changeLoading(this.cost);
+        return false;
       }
 
       if (this.cost.param.time) {
@@ -603,29 +653,21 @@ export default {
       ].activity_name;
       delete this.cost.param.time;
       if (this.cost.param.edit) {
-        this.$api.updataActivityCost(this.cost.param).then(res => {
+        this.$api.updataActivityCost({market_id: this.market_id, ...this.cost.param}).then(res => {
           this.$Message.success("营销成本修改成功");
           this.toggleTabpan("cost");
         });
       } else {
-        this.$api.addActivityCost(this.cost.param).then(res => {
+        this.$api.addActivityCost({market_id: this.market_id, ...this.cost.param}).then(res => {
           this.$Message.success("营销成本添加成功");
           this.toggleTabpan("cost");
         });
       }
-      this.cost.loading = false;
+     // this.cost.loading = false;
       this.cost.model = false;
     },
-    searchAction(time) {
-      this.action.ymd = time;
-      this.toggleTabpan("action");
-    },
-    searchCost(time) {
-      this.cost.period_start_time = time[0];
-      this.cost.period_end_time = time[1];
-      this.toggleTabpan("cost");
-    },
     cancel() {
+      _this.$refs.cost_ref && _this.$refs.cost_ref.clearSingleSelect();
       this.action.param = {};
       this.cost.param = {
         offline_mat_cost: 1,
@@ -645,11 +687,11 @@ export default {
     handleCheckAll(name) {
       let toggle = function (param) {
         if (param.indeterminate) {
-          param.checkAll = false;
+          param.checkAll = true;
+          param.indeterminate = false;
         } else {
           param.checkAll = !param.checkAll;
         }
-        param.indeterminate = false;
         if (param.checkAll) {
           param.checkAllGroup = param.list.map(item => item.dim_id);
         } else {
@@ -700,7 +742,7 @@ export default {
           _this.level[name].list = activityList;
         }
         _this.level[name].list.forEach(item => {
-          item.market_id = 12555;
+          item.market_id = _this.market_id;
           let ifShow = data.some(d => d === item.dim_id);
           item.dim_val = ifShow ? "T" : "F";
         });
@@ -725,7 +767,7 @@ export default {
     },
     getActivityList(param, cb) {
       let _this = this;
-      this.$api.getActivityList(param).then(res => {
+      this.$api.getActivityList({market_id: this.market_id, ...param}).then(res => {
         this.activityList = res;
         res.forEach(item => {
           _this.activityObj[item.activity_id] = item;
@@ -738,8 +780,10 @@ export default {
       if (name === "action") {
         await this.$api
           .getMarketActions({
+            market_id: this.market_id,
             content: this.action.content,
-            ymd: this.action.ymd,
+            period_start_time: dayjs(this.action.period_start_time).format("YYYY-MM-DD"),
+            period_end_time: dayjs(this.action.period_end_time).format("YYYY-MM-DD")
           })
           .then(res => {
             let activitys = [];
@@ -761,6 +805,7 @@ export default {
       } else if (name === "cost") {
         await this.$api
           .getActivityCost({
+            market_id: this.market_id,
             activity_name: this.cost.activity_name,
             period_start_time: dayjs(this.cost.period_start_time).format("YYYY-MM-DD"),
             period_end_time: dayjs(this.cost.period_end_time).format("YYYY-MM-DD")
@@ -782,7 +827,7 @@ export default {
           });
       } else if (name === "level") {
         let _this = this;
-        await this.$store.dispatch("getLevels").then(() => {
+        await this.$store.dispatch("getLevels", {market_id: this.market_id}).then(() => {
           let levels = _this.$store.state.BI.levels;
           this.level.overview.list = levels.overview;
           this.level.coupon.list = levels.coupon;
@@ -862,7 +907,7 @@ export default {
       margin: 0 0 2rem 1rem;
       .ivu-checkbox-wrapper {
         margin: 0 3rem 0.5rem 0;
-        width: 85px;
+        width: 120px;
       }
     }
     .apply {

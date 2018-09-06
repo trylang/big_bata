@@ -1,12 +1,12 @@
 <template>
-    <div id="table_container">
-        <div class="table_title">
-            <span class="table_title_s">数据详情</span>
-            <download :meta="$route.meta" title="数据概览" name="overview"></download>
-        </div>
-        <!-- Table表格 -->
-        <div class="table_format">
-      <i-Table :columns="columns" :data="data"></i-Table>
+  <div id="table_container">
+    <div class="table_title">
+      <span class="table_title_s">数据详情</span>
+      <download :meta="$route.meta" title="数据概览" name="overview"></download>
+    </div>
+    <!-- Table表格 -->
+    <div class="table_format">
+      <i-Table width="100%" :columns="columns" :data="data"></i-Table>
       <div style="padding-right: 1rem; padding-top: 3rem;overflow:hidden;">
         <div class="table_title">
           <span class="table_title_s">数据展示</span>
@@ -16,10 +16,10 @@
                               @click="handleChange(item.type)">{{item.title}}</span>
                     </div> -->
         </div>
-                <div id="overview_chart" :style="{width: '1100px', height: '500px'}"></div>
-            </div>
-        </div>
+        <div id="overview_chart" :style="{width: '100%', height: '500px'}"></div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 import { mapState } from "vuex";
@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      market_id: this.$route.query.market_id || 12555,
       toggleName: "this_day",
       // btnList: [
       //   {
@@ -45,7 +46,7 @@ export default {
       //     type: "last_action"
       //   }
       // ],
-      // overview: JSON.parse(window.sessionStorage.getItem("overview")),
+      overview: JSON.parse(window.sessionStorage.getItem("overview")),
       chartData: [],
       data: []
     };
@@ -72,7 +73,12 @@ export default {
     eventBus.$off("updateSearchParam_index");
   },
   computed: {
-    columns: function () {
+    columns: function() {
+      this.$store.state.BI.overview.forEach(item => {
+        item.dim_id == "video_cf" || item.dim_id == "wifi_cf"
+          ? (item.default_val = "F")
+          : "";
+      });
       let res = this.$store.state.BI.overview;
       if (!res) return [];
       let data = res.filter(item => {
@@ -83,7 +89,9 @@ export default {
           title: " ",
           key: "stat_type",
           className: "demo-table-info-column",
-          align: "center"
+          align: "center",
+          fixed: "left",
+          width: 90
         }
       ];
       sort(data, "disp_order", "asc").forEach((item, index) => {
@@ -125,13 +133,17 @@ export default {
         let data = res.filter(item => {
           return item.dim_val ? item.dim_val === "T" : item.default_val === "T";
         });
-        data.forEach(item => {
+        sort(data, "disp_order", "asc").forEach(item => {
           obj[item.dim_name] = item.dim_id;
-        })
+        });
         return obj;
       })(this.$store.state.BI.overview);
-      
-      let options = setOptions('overview', {chart_data: _this.chartData, json, legendSel});
+
+      let options = setOptions("overview", {
+        chart_data: _this.chartData,
+        json,
+        legendSel
+      });
       // 绘制图表
       overviewChart.setOption(options);
       overviewChart.on("legendselectchanged", function(obj) {
@@ -157,12 +169,38 @@ export default {
     async init(param) {
       let _this = this;
 
-      await this.$api.getOverviewCur(param).then(res => {
-        _this.chartData = res;
+      await this.$api.getWeather({sno: "430100", period_start_time: param.start_date
+      , period_end_time: param.end_date}).then(weather => {
+
+        this.$api
+        .getOverviewCur({ market_id: this.market_id, ...param })
+          .then(res => {
+            var format = function(item){
+              weather.forEach(wea => {
+                if (wea.ymd == item.stat_ymd) {
+                  item.weather = wea;
+                }
+              })
+            }
+            res.forEach(item => {
+              format(item);
+              if (!item.weather) {
+                item.weather = {};
+                item.weather.ymd = item.stat_ymd;
+              }
+            });
+            _this.chartData = res.sort(function(a, b) {
+              return new Date(a.stat_ymd) - new Date(b.stat_ymd);
+            });
+
+            console.log(_this.chartData);
+            
+        });
       });
 
       await this.$api
         .getOverviewHistory({
+          market_id: this.market_id,
           current_date: this.dayjs()
             .subtract(1, "day")
             .format("YYYY-MM-DD"),
@@ -184,30 +222,4 @@ export default {
 .echarts {
   height: 300px;
 }
-
-// .et_button {
-//   float: right;
-//   .active {
-//     color: #396fff !important;
-//     border-color: #396fff !important;
-//     opacity: 1 !important;
-//   }
-//   .et_button1,
-//   .et_button2 {
-//     display: inline-block;
-//     width: 56px;
-//     height: 24px;
-//     line-height: 24px;
-//     border-radius: 4px;
-//     opacity: 0.4;
-//     font-size: 12px;
-//     color: #2a3962;
-//     text-align: center;
-//     border: 1px solid rgba(42, 57, 98, 1);
-//     font-family: MicrosoftYaHei;
-//   }
-//   .et_button1 {
-//     margin-right: 1rem;
-//   }
-// }
 </style>

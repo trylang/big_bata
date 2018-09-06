@@ -18,8 +18,8 @@
     button {
       width: 64px;
       height: 24px;
+      margin-left: 5px;
       border-radius: 12px;
-      margin-top: -5px;
       border: 1px solid rgba(42, 57, 98, 0.4);
 
       .query {
@@ -37,8 +37,39 @@
       height: 30px;
       line-height: 30px;
 
-      span {
-        color: $color-primary;
+      p {
+        span {
+          display: inline-block;
+          cursor: pointer;
+          width: 2.75rem;
+          height: 1.5rem;
+          line-height: 1.5rem;
+          text-align: center;
+        }
+
+        .btn-left {
+          border: 1px solid $color-primary;
+          border-right: 0;
+          border-top-left-radius: 0.8rem;
+          border-bottom-left-radius: 0.8rem;
+        }
+
+        .btn-middle {
+          border: 1px solid $color-primary;
+          border-right: 0;
+        }
+
+        .btn-right {
+          color: $color-primary;
+          border: 1px solid $color-primary;
+          border-top-right-radius: 0.8rem;
+          border-bottom-right-radius: 0.8rem;
+        }
+
+        .actived {
+          background: rgba(42, 57, 98, .8);
+          color: rgba(255, 255, 255, 1) !important;
+        }
       }
     }
   }
@@ -55,53 +86,6 @@
   font-family: MicrosoftYaHei;
 }
 
-.filter-mark {
-  display: inline-block;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  line-height: 17px;
-  opacity: 0.99;
-  color: #CCCCCC;
-  text-align: center;
-  border: 1px solid rgba(204, 204, 204, 1);
-}
-
-p {
-  span {
-    display: inline-block;
-    cursor: pointer;
-    width: 2.75rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    text-align: center;
-  }
-
-  .btn-left {
-    color: $color-actived;
-    border: 1px solid $color-primary;
-    border-top-left-radius: 0.8rem;
-    border-bottom-left-radius: 0.8rem;
-  }
-
-  .btn-middle {
-    color: $color-actived;
-    border: 1px solid $color-primary;
-  }
-
-  .btn-right {
-    color: $color-primary;
-    border: 1px solid $color-primary;
-    border-top-right-radius: 0.8rem;
-    border-bottom-right-radius: 0.8rem;
-  }
-
-  .actived {
-    background: $color-primary;
-    color: #fff !important;
-  }
-}
-
 .ivu-input {
-  border: 1px solid #fff;
+  border: 1px solid rgba(255, 255, 255, 1);
 }

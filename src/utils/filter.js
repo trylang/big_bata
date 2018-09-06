@@ -56,6 +56,7 @@ export function fmoney(s, n = 2) {
 
 export function sort(arr, name, type) {
   return arr.sort(function(a, b) {
+    if (a[name] == b[name]) return 0;
     if (type === "asc") {
       return b[name] - a[name] > 0 ? -1 : 1;
     } else {

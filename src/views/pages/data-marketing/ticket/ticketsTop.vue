@@ -14,9 +14,9 @@
     <div class="content">
       <div v-if="toggleName == 'sum'">
         <p v-for="(item, index) in list" :key="index">
-          <strong>{{item.shop_name}}
+          <span class="shopping">{{item.shop_name}}
             <span class="progress_control">{{item.main_info}}</span>
-          </strong>
+          </span>
           <Progress v-if="index=3" :percent="item.r_sum | percent" hide-info/>
           <Progress v-else :percent="item.r_sum | percent" status="wrong" hide-info/>
           <i v-if="_index == 0 || _index == 3">{{item.v_sum}}</i>
@@ -25,9 +25,9 @@
       </div>
       <div v-if="toggleName == 'average'">
         <p v-for="(item, index) in list" :key="index">
-          <strong>{{item.shop_name}}
+          <span class="shopping">{{item.shop_name}}
             <span class="progress_control">{{item.main_info}}</span>
-          </strong>
+          </span>
           <Progress v-if="index<3" :percent="item.r_avg | percent" hide-info/>
           <Progress v-else :percent="item.r_avg | percent" status="wrong" hide-info/>
           <i v-if="_index == 0 || _index == 3">{{item.v_avg.toFixed(0)}}</i>
@@ -83,12 +83,13 @@ export default {
 @import "@/assets/style/public.scss";
 
 .ticketsTop {
-  width: 353px;
+  width: 100%;
   box-sizing: border-box;
   padding: 2rem 1rem;
   border: 1px solid $color-border;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
   header {
+    width: 100%;
     display: flex;
     align-items: flex-end;
     margin-bottom: 34px;
@@ -106,12 +107,11 @@ export default {
     }
     .icon-ticket {
       line-height: 10px;
-      padding-right: 115px;
+      flex: 3;
     }
 
     p {
       flex: 2;
-      float: left;
       span {
         display: inline-block;
         cursor: pointer;
@@ -133,34 +133,37 @@ export default {
         border-bottom-right-radius: 0.8rem;
       }
       .actived {
-        background: $color-primary;
-        color: #fff;
+        background: rgba(42, 57, 98, 0.8);
+        color: rgba(255, 255, 255, 1);
       }
     }
   }
 }
 
 .content p {
-  width: 330px;
+  width: 100%;
   padding-right: 5px;
   box-sizing: border-box;
 }
-.content strong {
+.content .shopping {
   display: block;
+  font-weight: bold;
 
   .progress_control {
     display: inline-block;
-    font-weight: normal;
     vertical-align: middle;
-    width: 150px;
+    font-weight: normal;
+    width: 40%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: -2px;
   }
 }
 .content i {
   font-style: normal;
   float: right;
+  margin-right: 20px;
 }
 </style>
 

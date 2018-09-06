@@ -1,31 +1,30 @@
 <template>
   <div class="filterBox">
     <span class="filter-title">{{title}}</span>
-    <span class="filter-mark">?</span>
-    <div class="inline-content">
+    <div class="inline-content" :style="{height: filterHeight}">
       <div class="inline-item" v-for="(filter, index) in filters" :key="index">
         <span :style="dateStyle(filter)" style="color:#999999;">{{filter.title}}</span>
-        <p v-show="filter.type==='daterange'" style="margin-top: -1.8rem; padding-left: 2rem;">
-          <DatePicker v-for="(date, dataIndex) in filter.data" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" 
-          format="yyyy.MM.dd" 
-          v-model="param[date.name]" 
-          placeholder="请选择时间"
-          class="filter-input filter-date-picker" @on-change="changeDate[date.name](param[date.name])"></DatePicker>
+        <p v-if="filter.type==='daterange'" style="margin-top: -31px; padding-left: 33px;">
+          <DatePicker v-for="(date, dataIndex) in filter.data" :key="dataIndex" type="date" :clearable="false" :options="option[dataIndex]" format="yyyy.MM.dd" v-model="param[date.name]" placeholder="请选择时间" class="filter-input filter-date-picker" @on-change="changeDate[date.name](param[date.name])"></DatePicker>
         </p>
-        
-        <Checkbox v-show="filter.type==='checkbox'" v-model="market_id" @on-change="event[filter.label](market_id)"></Checkbox>
-       
-        <Select v-show="filter.type==='select' && options" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" 
-            :clearable="filter.disClearable !== true" class="filter-input filter-select" 
-            @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
+
+        <Select style="width:90px;" v-if="filter.type==='select' && options" :ref="filter.label" :filterable="filter.filterable" :disabled="disabledObj[filter.label]" :clearable="filter.disClearable !== true" class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
           <Option v-for="(item, index) in options[filter.label]" :label="item[filter.filterName]" :value="item[filter.filterValue]" :key="index">
           </Option>
         </Select>
-        <p v-show="filter.type === 'btn'">
+
+        <!-- <i-Select style="width:90px;" v-if="filter.type==='select'  && options" :disabled="disabledObj[filter.label]" :clearable="filter.disClearable !== true" class="filter-input filter-select" @on-change="event[filter.label](param[filter.name], filter)" v-model="param[filter.name]">
+          <Option v-for="(item, index) in options[filter.label]" :label="item[filter.filterName]" :value="item[filter.filterValue]" :key="index">
+          </Option>
+        </i-Select> -->
+
+        <p v-if="filter.type === 'btn'">
           <span v-for="(btn,index) in filter.data" :key="index" :class="[ 'btn-' + btn.position, toggleName === btn.btnTitle ? 'actived' : '']" @click="handleChange(btn, filter.data)">{{btn.btnTitle}}</span>
-        </p> 
+        </p>
       </div>
-      <Button v-show="filters.length>0" @click="handle"><span class="query">查询</span></Button>
+      <Button v-if="filters.length>0" @click="handle">
+        <span class="query">查询</span>
+      </Button>
     </div>
   </div>
 </template>
@@ -39,7 +38,7 @@ export default {
   data() {
     let _this = this;
     return {
-      market_id: false,
+      market_id: this.$route.query.market_id || 12555,
       param: {
         start_date: dayjs(new Date())
           .subtract(1, "month")
@@ -79,14 +78,14 @@ export default {
             return (
               (date &&
                 date.valueOf() <
-                  (dayjs(_this.param.start_date).valueOf() &&
-                    dayjs()
-                      .subtract(1, "year")
-                      .valueOf())) ||
+                (dayjs(_this.param.start_date).valueOf() &&
+                  dayjs()
+                    .subtract(1, "year")
+                    .valueOf())) ||
               date.valueOf() >
-                dayjs(_this.param.start_date)
-                  .add(1, "month")
-                  .valueOf() ||
+              dayjs(_this.param.start_date)
+                .add(1, "month")
+                .valueOf() ||
               date.valueOf() > Date.now() ||
               date.valueOf() < dayjs(_this.param.start_date).valueOf()
             );
@@ -117,65 +116,74 @@ export default {
             for (let key in _this.disabledObj) {
               _this.disabledObj[key] = false;
             }
+            delete(_this.options.route);
           }
         },
-        building: (value, item) => {
+        async building (value, item) {
           _this.param = Object.assign(_this.param, {
             shop_floor: null,
             shop_bizcat: null,
             shop_id: null,
             activity_id: null
           });
+          _this.$refs.shop && _this.$refs.shop.length > 0 && _this.$refs.shop[0].clearSingleSelect();
+          _this.$refs.activity && _this.$refs.activity.length>0 && _this.$refs.activity[0].clearSingleSelect();
+
           _this.$set(_this.param, "shop_floor", null);
           _this.$set(_this.param, "shop_id", null);
           if (!value) {
-            _this.options.floor = [];
-            _this.options.bizcat = [];
-            _this.options.shop = [];
-            _this.options.activity = [];
+            if (_this.options.route) return;
+            _this.$set(_this.options, 'floor', []);
+            _this.$set(_this.options, 'bizcat', []);
+            _this.$set(_this.options, 'shop', []);
+            _this.$set(_this.options, 'activity', []);
             return;
           }
-          _this.$api.getFloorList({ org_id: value }).then(res => {
+          await _this.$api.getFloorList({ market_id: this.market_id, org_id: value }).then(res => {
             _this.options.floor = res;
           });
-          _this.$api.getBizcatList({ org_id: value }).then(res => {
+          await _this.$api.getBizcatList({ market_id: this.market_id, org_id: value }).then(res => {
             _this.options.bizcat = res;
           });
-          _this.$api.getShopList({ org_id: value }).then(res => {
+          await _this.$api.getShopList({ market_id: this.market_id, org_id: value }).then(res => {
             _this.options.shop = res;
           });
-          _this.$api.getActivityList({ org_id: value }).then(res => {
+          await _this.$api.getActivityList({ market_id: this.market_id, org_id: value }).then(res => {
             _this.options.activity = res;
           });
         },
-        floor: (value, item) => {
+        async floor (value, item) {
+          _this.$refs.shop && _this.$refs.shop[0].clearSingleSelect();
           _this.$set(_this.param, "shop_id", null);
           _this.$set(_this.param, "shop_bizcat", null);
-          _this.$api
-            .getShopList({ org_id: _this.param.org_id, shop_floor: value })
+          await _this.$api
+            .getShopList({ market_id: this.market_id, org_id: _this.param.org_id, shop_floor: value })
             .then(res => {
               _this.options.shop = res;
             });
-          _this.$api
-            .getBizcatList({ org_id: _this.param.org_id, shop_floor: value })
+          await _this.$api
+            .getBizcatList({ market_id: this.market_id, org_id: _this.param.org_id, shop_floor: value })
             .then(res => {
               _this.options.bizcat = res;
             });
         },
         bizcat: (value, item) => {
+          _this.$refs.shop && _this.$refs.shop[0].clearSingleSelect();
           _this.$set(_this.param, "shop_id", null);
           _this.$api
             .getShopList({
+              market_id: this.market_id,
               org_id: _this.param.org_id,
               shop_floor: _this.param.shop_floor,
               shop_bizcat: value
             })
             .then(res => {
               _this.$set(_this.options, "shop", res);
+              _this.$forceUpdate();
             });
         },
-        shop: () => {},
-        activity: () => {},
+        shop: () => { },
+        activity: () => { },
         remote_shop(query) {
           if (query !== "") {
             setTimeout(() => {
@@ -220,7 +228,7 @@ export default {
             period_start_time: dayjs(date).format("YYYY-MM-DD"),
             period_end_time: dayjs(_this.param.end_date).format("YYYY-MM-DD")
           };
-          _this.$api.getActivityList(param).then(res => {
+          _this.$api.getActivityList({market_id: this.market_id, ...param}).then(res => {
             _this.options.activity = res;
           });
         },
@@ -232,12 +240,19 @@ export default {
             ),
             period_end_time: dayjs(date).format("YYYY-MM-DD")
           };
-          _this.$api.getActivityList(param).then(res => {
+          _this.$api.getActivityList({market_id: this.market_id, ...param}).then(res => {
             _this.options.activity = res;
           });
         }
       },
-      options: {}
+      options: {
+        activity: [],
+        bizcat: [],
+        building: [],
+        floor: [],
+        region: [],
+        shop: []
+      }
     };
   },
   props: {
@@ -248,7 +263,7 @@ export default {
     }
   },
   methods: {
-    dateStyle: function(filter) {
+    dateStyle: function (filter) {
       return filter.type === "daterange" || filter.type === "checkbox"
         ? "line-height: 28px;"
         : "";
@@ -282,13 +297,13 @@ export default {
       eventBus.$emit(`updateSearchParam_${this.$route.meta.path}`, this.param);
     },
     async fetchDate() {
-      await this.$store.dispatch("getOptions").then(() => {
-        this.options = this.$store.state.BI.options;
+      await this.$store.dispatch("getOptions",  {market_id: this.market_id}).then(() => {
+        this.options = Object.assign({}, this.$store.state.BI.options);
       });
     }
   },
   watch: {
-    $route: function() {
+    $route: function () {
       let param = {
         start_date: dayjs(new Date())
           .subtract(1, "month")
@@ -297,10 +312,23 @@ export default {
         region_id: "1",
         org_id: null,
       };
-
+      this.disabledObj = {
+        building: true,
+        floor: true,
+        bizcat: true,
+        shop: true,
+        activity: true
+      };
+      
+      this.options = Object.assign({}, this.$store.state.BI.options, {route: 'route'});      
       this.param = param;
       eventBus.$emit(`updateSearchParam_${this.$route.meta.path}`, this.param);
     }
+  },
+  computed: {
+    filterHeight: function() {
+      return this.filters.length == 0 ? '0' : '50px'; 
+    } 
   },
   created() {
     this.fetchDate();
@@ -324,21 +352,12 @@ export default {
 <style scoped lang="scss" scoped>
 @import "@/assets/style/components/filterBox.scss";
 .inline-content {
-  :nth-child(2) {
-    .ivu-select-single {
-      width: 64px;
-      margin-right: 30px;
-    }
-  }
   :nth-child(6) {
     .ivu-checkbox-wrapper {
-      width: 128px;
+      width: 140px !important;
     }
     .ivu-select-single {
-      width: 128px;
-      // .ivu-select-selection {
-      //   width: 128px;
-      // }
+      width: 140px !important;
     }
   }
 }

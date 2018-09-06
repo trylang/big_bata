@@ -63,11 +63,11 @@ export default {
         activityList,
         bizcatList
       ] = await Promise.all([
-        $api.getFloorList({org_id: '01'}),
-        $api.getOrgList({org_id: '01'}),
-        $api.getShopList({org_id: '01'}),
-        $api.getActivityList({org_id: '01'}),
-        $api.getBizcatList({org_id: '01'})
+        $api.getFloorList({org_id: '01', market_id: param.market_id}),
+        $api.getOrgList({org_id: '01', market_id: param.market_id}),
+        $api.getShopList({org_id: '01', market_id: param.market_id}),
+        $api.getActivityList({org_id: '01', market_id: param.market_id}),
+        $api.getBizcatList({org_id: '01', market_id: param.market_id})
       ]);
 
       let options = {
@@ -78,14 +78,13 @@ export default {
         shop: shopList,
         activity: activityList
       };
-
       return new Promise((resolve, reject) => {
         this.commit("updateOptions", options);
         resolve();
       });
     },
     async getLevels({commit}, param) {
-      await $api.getSysLevels({}).then(res => {
+      await $api.getSysLevels({market_id: param.market_id}).then(res => {
         let [overview, coupon, activityL1, activityL2] = [
           res.filter(item => item.dim_grp === "sale.overview"),
           res.filter(item => item.dim_grp === "sale.coupon"),

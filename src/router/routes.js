@@ -53,6 +53,6 @@ const routes = [
                 component: () => import('@/views/pages/data-marketing/settings/index')
             }])('data-marketing')
     }
-]
+];
 
 export default routes

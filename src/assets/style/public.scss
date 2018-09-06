@@ -25,7 +25,7 @@ $color-border: #f2f2f2;
             span:nth-child(1),
             :nth-child(3) {
               display: block;
-              width: 230px;
+              width: 80%;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -40,10 +40,13 @@ $color-border: #f2f2f2;
 .inline-item {
   .ivu-select-single {
     .ivu-select-selection {
-      border-color: #fff;
-      width: 90px;
+      border-color: rgba(255, 255, 255, 1);
     }
   }
+}
+
+.ivu-select-disabled .ivu-select-selection {
+  background-color: rgba(255, 255, 255, 1);
 }
 
 //筛选页下拉框
@@ -59,11 +62,6 @@ $color-border: #f2f2f2;
   }
 }
 
-.ivu-input {
-  border: 1px solid #fff;
-  color: $color-primary;
-}
-
 .ivu-select {
   width: 50%;
 }
@@ -71,6 +69,9 @@ $color-border: #f2f2f2;
 .ivu-select-input {
   color: $color-primary;
   height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ivu-input-icon {
@@ -108,8 +109,7 @@ $color-border: #f2f2f2;
 }
 
 tr.ivu-table-row-hover td {
-  background-color: #F2F6FF; // filter: Alpha(opacity=10);
-  // opacity: 0.1;
+  background-color: #F2F6FF;
 }
 
 // 表格内部样式修改
@@ -118,14 +118,6 @@ tr.ivu-table-row-hover td {
   border-top: 1px solid $color-border;
 
   .ivu-table {
-
-    .ivu-table-header,
-    .ivu-table-body {
-      table {
-        width: 100% !important;
-      }
-    }
-
     span {
       height: 12px;
       font-size: 12px;
@@ -156,7 +148,7 @@ tr.ivu-table-row-hover td {
   }
 
   &::after {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 1);
   }
 }
 
@@ -217,13 +209,12 @@ tr.ivu-table-row-hover td {
       width: 130px;
       height: 32px;
       font-size: 12px;
+      margin-left: 5px;
       font-family: MicrosoftYaHei;
       color: rgba(153, 153, 153, 1);
       line-height: 12px;
 
       span {
-        display: inline-block;
-        width: 2rem;
         font-weight: bold;
       }
     }
@@ -237,7 +228,7 @@ tr.ivu-table-row-hover td {
     }
 
     .ivu-page-item-active {
-      border-color: #fff;
+      border-color: rgba(255, 255, 255, 1);
       background-color: $color-actived;
     }
 
@@ -247,20 +238,22 @@ tr.ivu-table-row-hover td {
 
     .ivu-page-item-active a,
     .ivu-page-item-active:hover a {
-      color: #fff;
+      color: rgba(255, 255, 255, 1);
     }
   }
 }
 
 //搜索框
 .ivu-input {
+  border: 1px solid rgba(255, 255, 255, 1);
+  color: $color-primary;
   height: 30px;
   border-radius: 16px;
 }
 
 //券进度条修改
 .ivu-progress-inner {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 1);
 }
 
 .ivu-progress-bg {
@@ -289,7 +282,7 @@ tr.ivu-table-row-hover td {
 
 .ivu-btn-primary {
   background-color: $color-actived;
-  color: #fff;
+  color: rgba(255, 255, 255, 1);
 }
 
 .ivu-btn-primary:hover {
@@ -304,20 +297,17 @@ tr.ivu-table-row-hover td {
   color: $color-actived;
 }
 
-.ve-histogram {
-  top: 0 !important;
-}
-
 //下载按钮
 .export {
   cursor: pointer;
   font-size: 24px;
   color: $color-actived;
   float: right;
+  margin-top: 4px;
 }
 
 //弹框样式修改
-.filtrate {
+#filtrate {
   margin-bottom: 64px;
 
   .filtrate_s {
@@ -332,13 +322,45 @@ tr.ivu-table-row-hover td {
   }
 
   .inline-content {
+    width: 490px;
     position: relative;
     top: -1.45rem;
     left: 5rem;
 
+    div:nth-child(1) {
+      margin-left: 48px;
+      display: block;
+
+      .ivu-select {
+        width: 160px;
+      }
+    }
+
+    div:nth-child(3),
+    div:nth-child(4) {
+      width: 220px;
+      margin-left: 12px;
+
+      .ivu-select {
+        width: 160px;
+      }
+    }
+
+    div:nth-child(2),
+    div:nth-child(5) {
+      width: 220px;
+
+      .ivu-select {
+        width: 160px;
+      }
+    }
+
     .ivu-col-span-12 {
-      width: 40%;
       margin-bottom: .5rem;
+
+      :nth-child(1) {
+        margin-left: 0px;
+      }
 
       .ivu-select {
         width: 50%;
@@ -347,8 +369,6 @@ tr.ivu-table-row-hover td {
   }
 }
 
-// .timer{
-// }
 .accumulative_total {
   margin-bottom: 32px;
 }
@@ -392,10 +412,6 @@ tr.ivu-table-row-hover td {
   padding: 20px 24px 10px 24px;
 }
 
-.ivu-checkbox-group .ivu-checkbox-wrapper {
-  margin-right: 90px;
-}
-
 .ivu-checkbox-checked .ivu-checkbox-inner {
   border-color: $color-actived;
   background-color: $color-actived;
@@ -415,6 +431,8 @@ tr.ivu-table-row-hover td {
     cursor: pointer;
 
     .ivu-icon {
+      box-sizing: border-box;
+      padding-right: 20px;
       width: 16px;
       height: 14px;
       font-weight: 600;
@@ -425,12 +443,20 @@ tr.ivu-table-row-hover td {
 .action {
   margin-bottom: 16px;
 
+  .ivu-input:hover {
+    border-color: $color-border;
+  }
+
   .ivu-select-selection {
     width: 250px;
   }
 
   .ivu-input-number {
     width: 250px;
+  }
+
+  .ivu-input-number:hover {
+    border-color: $color-border;
   }
 
   .action_name {
@@ -470,17 +496,9 @@ tr.ivu-table-row-hover td {
   width: 296px;
 }
 
-textarea::placeholder:after {
-  content: "line@ \A line#";
-  /*  \A 表示换行  */
-  color: red;
-}
-
-;
-
 .ivu-select-selection-focused,
 .ivu-select-selection:hover {
-  border-color: #fff;
+  border-color: rgba(255, 255, 255, 1);
 }
 
 .ivu-select-selection {
@@ -502,7 +520,6 @@ textarea::placeholder:after {
 }
 
 .allocation_tabs .ivu-tabs-ink-bar {
-  width: 56px !important;
   background-color: $color-actived;
 }
 
@@ -535,7 +552,6 @@ textarea::placeholder:after {
 .allocation-time {
   float: right;
   margin-top: -3.5rem;
-  overflow: hidden;
 
   .ivu-row {
     float: left;
@@ -565,27 +581,6 @@ textarea::placeholder:after {
   }
 }
 
-.allocation_tabs .ivu-date-picker-rel input {
-  width: 180px;
-}
-
-.allocation_tabs .ivu-date-picker-rel .ivu-input-icon {
-  right: -70px;
-}
-
-.ivu-table th.activity-table-right {
-  padding-right: 15px;
-}
-
-.ivu-table td.activity-table-right .ivu-table-cell {
-  padding-right: 15px;
-}
-
-// 时间选择kuang
-.allocation_container .ivu-tabs {
-  overflow: visible !important;
-}
-
 textarea.ivu-input {
   max-width: 79%;
   border: 1px solid $color-border;
@@ -596,10 +591,6 @@ textarea.ivu-input {
   position: relative;
   top: -1rem;
   left: 4.5rem;
-}
-
-.ivu-input:hover {
-  border-color: $color-border !important;
 }
 
 table {
@@ -620,15 +611,19 @@ table {
   }
 }
 
-.download_center .export {
-  position: relative;
-  top: 45px;
-}
-
 .ivu-input-icon-normal .ivu-input {
   padding-right: 0;
 }
 
 .ivu-input-wrapper {
   width: 102%;
+}
+
+.activeTime input {
+  background-color: #F3F3F3;
+}
+
+.ivu-table .demo-table-info-row td {
+  background-color: #fafafa;
+  font-weight: bold;
 }

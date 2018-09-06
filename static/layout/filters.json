@@ -32,7 +32,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": false
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -93,7 +93,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": false
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -154,7 +154,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": false
+          "disClearable": true
         },
         {
           "title": "楼层：",
@@ -228,7 +228,7 @@
           "filterValue": "org_id",
           "type": "select",
           "name": "org_id",
-          "disClearable": false
+          "disClearable": true
         },
         {
           "title": "楼层：",
