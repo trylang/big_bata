@@ -1,9 +1,10 @@
 <template>
-    <div id="table_container">
-        <div class="table_title">
-            <span class="table_title_s">活动详情</span>
-            <download title="活动详情" name="activity1"></download>
-        </div>
+  <div id="table_container">
+    <!-- 活动详情 -->
+    <div class="table_title">
+      <span class="table_title_s">活动详情</span>
+      <download title="活动详情" name="activity1"></download>
+    </div>
     <i-Table width="100%" :columns="columnsT1" @on-sort-change="handleSortT1" :data="pageT1List"></i-Table>
     <div class="table_page">
       <div class="table_page_l">
@@ -14,16 +15,18 @@
         <Page :total="dataT1.length" :current.sync="curPageT1" :page-size="10" show-elevator @on-change="changePageT1" />
       </div>
     </div>
+    <!-- 数据展示 -->
     <div style="margin-top:48px;">
       <div class="table_title">
         <span class="table_title_s">数据展示</span>
       </div>
-      <div id="activity_chart" :style="{width: '100%', height: '550px'}"></div>
+      <div id="activity_chart" :style="{width: '100%', height: '500px'}"></div>
     </div>
+    <!-- 日活动效果数据 -->
     <div style="margin-top:20px;">
       <div class="table_title">
-        <span class="table_title_s">数据详情</span>
-        <download title="活动数据详情" name="activity2"></download>
+        <span class="table_title_s">日活动效果数据</span>
+        <download title="日活动效果数据" name="activity2"></download>
       </div>
       <i-Table width="100%" :row-class-name="rowClassName" :columns="columnsT2" :data="pageT2List" @on-sort-change="handleSortT2"></i-Table>
       <div class="table_page">
@@ -33,10 +36,43 @@
         </div>
         <div class="table_page_r">
           <Page :total="dataT2.length" :current.sync="curPageT2" :page-size="10" show-elevator @on-change="changePageT2" />
-                </div>
-            </div>
         </div>
+      </div>
     </div>
+    <!-- 活动转发渠道分布 -->
+    <div style="margin-top:48px;">
+      <div class="table_title">
+        <span class="table_title_s">活动转发渠道分布</span>
+      </div>
+      <Row>
+          <Col span="12">
+            <div id="container" :style="{height: '200px'}">{{noData}}
+            </div>
+          </Col>
+          <Col span="12">
+            <i-Table width="100%" :columns="columns1" :data="data1"></i-Table>
+          </Col>
+      </Row>
+    </div>
+    <!-- 活动页面漏斗转化 -->
+    <div style="margin-top:48px;">
+      <div class="table_title">
+        <span class="table_title_s">活动页面漏斗转化</span>
+        <download title="活动页面漏斗转化" name="activity1"></download>
+      </div>
+      <i-Table width="100%" :columns="columnsT1" @on-sort-change="handleSortT1" :data="pageT1List"></i-Table>
+      <div class="table_page">
+        <div class="table_page_l">
+          <p>共
+            <span>{{dataT1.total>0?dataT1.total:0}}</span> 条数据</p>
+        </div>
+        <div class="table_page_r">
+          <Page :total="dataT1.length" :current.sync="curPageT1" :page-size="10" show-elevator @on-change="changePageT1" />
+        </div>
+      </div>
+    </div>
+
+  </div>
 </template>
 <script>
 import download from "@/components/download.vue";
@@ -62,7 +98,39 @@ export default {
       dataT1: [],
       pageT2List: [],
       dataT2: [],
-      totalT2: {}
+      totalT2: {},
+      noData:'',
+      columns1: [
+          {
+              title: '转发渠道',
+              key: 'name'
+          },
+          {
+              title: '转发次数',
+              key: 'age'
+          },
+          {
+              title: '占比',
+              key: 'address'
+          }
+      ],
+      data1: [
+          {
+              name: '朋友圈',
+              age: 218,
+              address: '38%'
+          },
+          {
+              name: '小程序',
+              age: 204,
+              address: '26%'
+          },
+          {
+              name: 'H5页面',
+              age: 116,
+              address: '35%'
+          }
+      ]
     };
   },
   computed: {
@@ -230,7 +298,6 @@ export default {
           _this.chartData = res;
         });
       });
-      
     },  
     drawChart(legendSel) {
       let _this = this;
@@ -267,13 +334,68 @@ export default {
           _this.drawChart(selected);
         }
       });
-      
+
       setTimeout(function() {
         window.onresize = function() {
           overviewChart.resize();
         };
       }, 0);
-    }
+    },
+    typePie:function(){
+      var dom = document.getElementById("container");
+      var myChart = echarts.init(dom);
+      var app = {};
+      var option = null;
+      let color = [
+        "#396FFF",
+        "#62A1FF",
+        "#4ED4FF",
+        "#6FFAFF",
+        "#1F7EBF",
+        "#7693FF",
+        "#FF6EBF",
+        "#E4007F"
+      ];
+      option = {
+        color,
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series : [
+        {
+            name: "",
+            type: "pie",
+            radius: "55%",
+            center: ['40%', '45%'],
+            data:[
+                    {value:335, name:'朋友圈'},
+                    {value:310, name:'小程序'},
+                    {value:234, name:'H5页面'}
+                ],
+            label: {
+              normal: {
+                show: true,
+                color: "#666",
+                formatter: "{b}" + "\n\r" + "{d}%"
+              }
+            },
+            labelLine: {
+              lineStyle: {
+                color: "#ccc"
+              }
+            }
+          }
+        ]
+      };
+
+      if (option && typeof option === "object") {
+          myChart.setOption(option, true);
+      }
+    }             
+  },
+  mounted() {
+    this.typePie();
   },
   created() {
     this.init(this.$store.state.BI.searchParam);

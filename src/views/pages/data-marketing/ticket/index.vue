@@ -37,6 +37,20 @@
       </Tabs>
     </div>
     <div>
+      <div class="table_title">
+        <span class="table_title_m">核销时长分布</span>
+      </div>
+      <Row>
+          <Col span="12">
+            <div id="container" :style="{height: '200px'}">{{noData}}
+            </div>
+          </Col>
+          <Col span="12">
+            <i-Table width="100%" :columns="columns1" :data="data1"></i-Table>
+          </Col>
+      </Row>
+    </div>
+    <div>
       <div class="table_title_m">
         <span class="table_sp">券排名</span>
         <p class="tiket_btn">
@@ -195,10 +209,128 @@ export default {
           type: "tail10_chk",
           list: []
         }
+      ],
+      noData:'',
+      columns1: [
+          {
+              title: '转发渠道',
+              key: 'name'
+          },
+          {
+              title: '转发次数',
+              key: 'age'
+          },
+          {
+              title: '占比',
+              key: 'address'
+          }
+      ],
+      data1: [
+          {
+              name: '朋友圈',
+              age: 218,
+              address: '38%'
+          },
+          {
+              name: '小程序',
+              age: 204,
+              address: '26%'
+          },
+          {
+              name: 'H5页面',
+              age: 116,
+              address: '35%'
+          }
       ]
     };
   },
+  mounted() {
+    this.typePie();
+  },
   methods: {
+    typePie:function(){
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        var option = null;
+        let color = [
+          "#396FFF",
+          "#62A1FF",
+          "#4ED4FF",
+          "#6FFAFF",
+          "#1F7EBF",
+          "#7693FF",
+          "#FF6EBF",
+          "#E4007F"
+        ];
+        option = {
+          color,
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}:{d}%"
+            },
+            series: [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius: ['40%', '55%'],
+                    center: ['40%', '45%'],
+                    label: {
+                        normal: {
+                            formatter: '{b|{b}：}{d}%',
+                            // backgroundColor: '#eee',
+                            // borderColor: '#aaa',
+                            // borderWidth: 1,
+                            // borderRadius: 4,
+                            // shadowBlur:3,
+                            // shadowOffsetX: 2,
+                            // shadowOffsetY: 2,
+                            // shadowColor: '#999',
+                            // padding: [0, 7],
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                // abg: {
+                                //     backgroundColor: '#333',
+                                //     width: '100%',
+                                //     align: 'right',
+                                //     height: 22,
+                                //     borderRadius: [4, 4, 0, 0]
+                                // },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 12,
+                                    lineHeight: 20
+                                }
+                            }
+                        }
+                    },
+                    data:[
+                        {value:335, name:'直达'},
+                        {value:310, name:'邮件营销'},
+                        {value:234, name:'联盟广告'},
+                        {value:135, name:'视频广告'},
+                        {value:1048, name:'百度'},
+                        {value:251, name:'谷歌'},
+                        {value:147, name:'必应'},
+                        {value:102, name:'其他'}
+                    ]
+                }
+            ]
+        };
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }          
+    },
     rowClassName(row, index) {
       if (index === 10) {
         return 'demo-table-info-row';

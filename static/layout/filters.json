@@ -260,6 +260,14 @@
     {
       "id": "settings",
       "list": []
+    },
+    {
+      "id": "comparative",
+      "list": []
+    },
+    {
+      "id": "footfall",
+      "list": []
     }
   ]
 }

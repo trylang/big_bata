@@ -193,8 +193,6 @@ export default {
               return new Date(a.stat_ymd) - new Date(b.stat_ymd);
             });
 
-            console.log(_this.chartData);
-            
         });
       });
 

@@ -1,4 +1,4 @@
-import { fmoney, sort } from "@/utils/filter.js";
+import { fmoney, sort, isNumber } from "@/utils/filter.js";
 import dayjs from "dayjs";
 
 export const setOptions = function(type, option) {
@@ -20,26 +20,7 @@ export const setOptions = function(type, option) {
     zhoumo: "#fcf1e0",
     activity: "#E4007F"
   };
-  let weatherIconSize = 40;
-  let imgs = {
-    1: 'static/weather/icon-1.png',
-    2: 'static/weather/icon-2.png',
-    3: '/static/weather/icon-3.png',
-    4: '/static/weather/icon-4.png',
-    5: '/static/weather/icon-5.png',
-    6: '/static/weather/icon-6.png',
-    7: '/static/weather/icon-7.png',
-    8: '/static/weather/icon-8.png'
-  };
-
-  var image = new Image();  
-  image.src = '/static/weather/icon-1.png';  
-  image.onload = function() {
-    console.log(1111111111111111, image.width);
-  }
-  image.error = function(err) {
-    console.error(err)
-  }
+  let weatherIconSize = 36;
 
   var dims = {
     ymd: 0,
@@ -213,7 +194,7 @@ export const setOptions = function(type, option) {
     return [
       entry.weather ? entry.weather.ymd : "",
       0,
-      entry.weather ? imgs[entry.weather.weather_id] : "",
+      entry.weather && isNumber(entry.weather.weather_id) && entry.weather.weather_id<9 ? require (`../assets/weather/icon-${entry.weather.weather_id}.png`) : "",
       entry.weather ? entry.weather.l_temp : "",
       entry.weather ? entry.weather.h_temp : "",
       entry.weather ? entry.weather.weather : "",

@@ -96,6 +96,36 @@
 
     <Row class="number_data">
       <div class="number_header">
+        <span class="number_title">会员行为分析</span>
+      </div>
+      <i-Col span="12" class="item">
+        <div class="item_header">
+          <span class="item_title">页面访问深度分析</span>
+        </div>
+        <div class="item_content">
+          <div id="pageBar" :style="{width: '550px', height: '400px'}"></div>
+        </div>
+      </i-Col>
+      <i-Col span="12" class="item">
+        <div class="item_header">
+          <span class="item_title">券领取深度分析</span>
+        </div>
+        <div class="item_content">
+          <div id="ticketBar" :style="{width: '550px', height: '400px'}"></div>
+        </div>
+      </i-Col>
+      <i-Col span="12" class="item" style="border-right:1px solid #F2F2F2;border-bottom:1px solid #F2F2F2;">
+        <div class="item_header">
+          <span class="item_title">活动参与深度分析</span>
+        </div>
+        <div class="item_content">
+          <div id="activityBar" :style="{width: '550px', height: '400px'}"></div>
+        </div>
+      </i-Col>
+    </Row>
+
+    <Row class="number_data">
+      <div class="number_header">
         <span class="number_title">会员画像分析</span>
       </div>
       <i-Col span="12" class="item">
@@ -270,7 +300,65 @@ export default {
       param: {}
     };
   },
+  mounted() {
+    this.drawChart("pageBar", this.pageBar("pageBar"));
+    this.drawChart("ticketBar", this.pageBar("ticketBar"));
+    this.drawChart("activityBar", this.pageBar("activityBar"));
+  },
   methods: {
+    pageBar:function(pageBar){    
+      var option = null;
+      let color = [
+        "#396FFF",
+        "#62A1FF",
+        "#4ED4FF",
+        "#6FFAFF",
+        "#1F7EBF",
+        "#7693FF",
+        "#FF6EBF",
+        "#E4007F"
+      ];
+      option = {
+        color,
+        xAxis: {
+            type: 'category',
+            name: pageBar == 'pageBar' ? '浏览\n页数' : (pageBar == 'ticketBar' ? '领券\n张数' : '参与\n深度'),
+            axisLabel: { interval:0},
+            splitLine: {show: false},
+            data: ['1', '2', '3', '4', '5', '6', '7','8及以上']
+        },
+        yAxis: {
+            type: 'value',
+            name: '人数'
+        },
+        grid: {
+            left: '6%',
+            right: '16%',
+            containLabel: true
+        },
+        series: [{
+            data: [120, 200, 150, 80, 70, 110, 130,19],
+            type: 'bar',
+            barWidth : 20,
+            label: {
+              normal: {
+                  show: true,
+                  position: 'top'
+              }
+            },
+            itemStyle: {
+                normal: {
+                    // 定制显示（按顺序）
+                    color: function(params) { 
+                        var colorList = color; 
+                        return colorList[params.dataIndex] 
+                    }
+                },
+            },
+        }]
+      };
+      return option;        
+    },
     toggleActivity(activity_id) {
       let param = Object.assign({}, this.param, { activity_id });
       this.$api.getMemberActivity({ market_id: this.market_id, ...param }).then(activity => {
@@ -1176,6 +1264,8 @@ export default {
       this.formatTable("channel", sourcesChnnl);
     },
     init() {
+      // 绘制柱状图
+      this.drawChart("pageBar", this.pageBar("pageBar"));
       // 绘制饼图
       this.drawChart("number_channel_chart1", this.setPieOptions("channel"));
       this.drawChart("number_channel_chart2", this.setPieOptions("number"));
