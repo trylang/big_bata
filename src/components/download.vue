@@ -58,17 +58,16 @@ export default {
       modal: false,
       stat_type: ["昨天", "当周", "当月"],
       param: {
-        stat_type: "",
         start_date: dayjs(new Date())
           .subtract(1, "month")
           .format("YYYY-MM-DD"),
         end_date: dayjs(new Date()).format("YYYY-MM-DD"),
         region_id: "1",
-        org_id: null,
-        shop_floor: null,
-        shop_bizcat: null,
-        shop_id: null,
-        activity_id: null
+        // org_id: null,
+        // shop_floor: null,
+        // shop_bizcat: null,
+        // shop_id: null,
+        // activity_id: null
       },
       timeCheckbox: {
         index: ["昨天", "当周", "当月"],
@@ -138,6 +137,8 @@ export default {
             for (let key in _this.disabledObj) {
               _this.disabledObj[key] = false;
             }
+            delete(_this.options.route);
+            _this.options = Object.assign({}, _this.$store.state.BI.options);
           }
         },
         async building (value, item) {
@@ -159,22 +160,22 @@ export default {
             return;
           }
           await _this.$api
-            .getFloorList({ market_id: this.market_id, org_id: value })
+            .getFloorList({ market_id: _this.market_id, org_id: value })
             .then(res => {
               _this.options.floor = res;
             });
           await _this.$api
-            .getBizcatList({ market_id: this.market_id, org_id: value })
+            .getBizcatList({ market_id: _this.market_id, org_id: value })
             .then(res => {
               _this.options.bizcat = res;
             });
           await _this.$api
-            .getShopList({ market_id: this.market_id, org_id: value })
+            .getShopList({ market_id: _this.market_id, org_id: value })
             .then(res => {
               _this.options.shop = res;
             });
           await _this.$api
-            .getActivityList({ market_id: this.market_id, org_id: value })
+            .getActivityList({ market_id: _this.market_id, org_id: value })
             .then(res => {
               _this.options.activity = res;
             });
@@ -185,7 +186,7 @@ export default {
           _this.$set(_this.param, "shop_bizcat", null);
           await _this.$api
             .getShopList({
-              market_id: this.market_id,
+              market_id: _this.market_id,
               org_id: _this.param.org_id,
               shop_floor: value
             })
@@ -194,7 +195,7 @@ export default {
             });
           await _this.$api
             .getBizcatList({
-              market_id: this.market_id,
+              market_id: _this.market_id,
               org_id: _this.param.org_id,
               shop_floor: value
             })
@@ -207,7 +208,7 @@ export default {
           _this.$set(_this.param, "shop_id", null);
           _this.$api
             .getShopList({
-              market_id: this.market_id,
+              market_id: _this.market_id,
               org_id: _this.param.org_id,
               shop_floor: _this.param.shop_floor,
               shop_bizcat: value
@@ -241,7 +242,7 @@ export default {
             period_end_time: dayjs(_this.param.end_date).format("YYYY-MM-DD")
           };
           _this.$api
-            .getActivityList({ market_id: this.market_id, ...param })
+            .getActivityList({ market_id: _this.market_id, ...param })
             .then(res => {
               _this.options.activity = res;
             });
@@ -255,7 +256,7 @@ export default {
             period_end_time: dayjs(date).format("YYYY-MM-DD")
           };
           _this.$api
-            .getActivityList({ market_id: this.market_id, ...param })
+            .getActivityList({ market_id: _this.market_id, ...param })
             .then(res => {
               _this.options.activity = res;
             });

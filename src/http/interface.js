@@ -135,6 +135,90 @@ export const getActivityChart = (data = {}) => {
   });
 };
 
+// 活动转发渠道分布
+export const actChnlReblog = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/activity/actChnlReblog/query",
+    method: "post",
+    data
+  });
+};
+
+// 活动页面漏斗转化
+export const actPage = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/activity/actPage/query",
+    method: "post",
+    data
+  });
+};
+
+
+//====================  活动对比分析   =========================
+// 活动名称列表
+export const actList = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/activity/actList/query",
+    method: "post",
+    data
+  });
+};
+
+// 初始化活动对比页面初始活动
+export const actContrastInit = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/activity/actContrastInit/query",
+    method: "post",
+    data
+  });
+};
+
+//活动对比平均值
+export const actContrastAvg = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/activity/actContrastAvg/query",
+    method: "post",
+    data
+  });
+};
+
+//活动对比总量
+export const actContrastSum = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/activity/actContrastSum/query",
+    method: "post",
+    data
+  });
+};
+
+//====================  客流关联分析   =========================
+// 客流分析.客流数据分析 
+export const getpassengersum = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/passenger/getpassengersum",
+    method: "post",
+    data
+  });
+};
+
+// 客流分析.爬楼率分析
+export const getclimbfloorsum = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/passenger/getclimbfloorsum",
+    method: "post",
+    data
+  });
+};
+
+// 客流分析.停留时长分布
+export const stay = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/passenger/stay",
+    method: "post",
+    data
+  });
+};
+
 
 //====================  系统设置   =========================
 // 获取动作配置
@@ -262,6 +346,15 @@ export const getConponTop10 = (data = {}) => {
   });
 };
 
+//核销时长分布
+export const chkDura = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/conpon/chkDura/query",
+    method: "post",
+    data
+  });
+};
+
 
 // ====================   会员分析   =========================
 
@@ -313,6 +406,15 @@ export const getMemberDist = (data = {}) => {
   });
 };
 
+// 会员行为分析
+export const behavior = (data = {}) => {
+  return axios({
+    url: "/bi/marketing/member/behavior/query",
+    method: "post",
+    data
+  });
+};
+
 export const dataDownload = (name, data = {}) => {
   return axios({
     url: `/bi/marketing/${name}/data/download`,
@@ -355,5 +457,17 @@ export default {
   getMemberSourcesAct,
   getMemberSourcesChnnl,
   getMemberDist,
-  dataDownload
+  dataDownload,
+  actChnlReblog,
+  actPage,
+  actList,
+  actContrastInit,
+  stay,
+  getpassengersum,
+  getclimbfloorsum,
+  actContrastAvg,
+  actContrastSum,
+  chkDura,
+  axios,
+  behavior
 };

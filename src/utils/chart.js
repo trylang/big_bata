@@ -189,16 +189,16 @@ export const setOptions = function(type, option) {
     ],
     series: []
   };
-
   var weatherData = chart_data.map(function(entry) {
-    return [
-      entry.weather ? entry.weather.ymd : "",
-      0,
-      entry.weather && isNumber(entry.weather.weather_id) && entry.weather.weather_id<9 ? require (`../assets/weather/icon-${entry.weather.weather_id}.png`) : "",
-      entry.weather ? entry.weather.l_temp : "",
-      entry.weather ? entry.weather.h_temp : "",
-      entry.weather ? entry.weather.weather : "",
-    ];
+    if(entry.weather){
+      var wea = entry.weather;
+      var weaStr = '';
+      if(wea.weather_id < 24){
+         weaStr = require (`../assets/weather/icon-${entry.weather.weather_id}.png`);
+      }
+      return [wea.ymd,0,weaStr,wea.l_temp,wea.h_temp,wea.weather];
+    }
+    return [];
   });
   function renderWeather(param, api) {
     var point = api.coord([api.value(dims.ymd), 0]);
@@ -219,7 +219,7 @@ export const setOptions = function(type, option) {
         {
           type: "text",
           style: {
-            text: `${api.value(dims.l_temp) || ''}${api.value(dims.l_temp) ? '-' : ''}${api.value(dims.h_temp) || ''}${api.value(dims.h_temp) ? '°C' : ''}`,
+            text: `${api.value(dims.l_temp) || ''}${api.value(dims.l_temp) ? '~' : ''}${api.value(dims.h_temp) || ''}${api.value(dims.h_temp) ? '°C' : ''}`,
             textFont: api.font({ fontSize: 12 }),
             fill: "#999",
             textAlign: "center",

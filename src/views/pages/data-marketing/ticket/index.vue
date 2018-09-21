@@ -36,17 +36,17 @@
         </TabPane>
       </Tabs>
     </div>
-    <div>
+    <div style="margin-top:48px;">
       <div class="table_title">
         <span class="table_title_m">核销时长分布</span>
       </div>
       <Row>
           <Col span="12">
-            <div id="container" :style="{height: '200px'}">{{noData}}
+            <div id="container" :style="{height: '350px'}">{{noData}}
             </div>
           </Col>
           <Col span="12">
-            <i-Table width="100%" :columns="columns1" :data="data1"></i-Table>
+            <i-Table width="100%" :columns="columns1" :data="data1" style="margin-top:30px"></i-Table>
           </Col>
       </Row>
     </div>
@@ -139,27 +139,34 @@ export default {
           },
           {
             title: "券ID",
+            width: 140,
             key: "coupon_id"
           },
           {
             title: "券类型",
+            width: 140,
             key: "category_name"
           },
           {
             title: "发券主体",
+            width: 140,
             key: "rectangleName"
           },
           {
             title: "商户名",
+            width: 140,
             key: "shop_name"
           },
           {
             title: "楼层",
+            width: 140,
             key: "shop_floor"
           },
           {
             title: "发券时间",
-            key: "put_date"
+            width: 140,
+            key: "put_date",
+            width: 120
           },
           {
             title: "领取时间",
@@ -170,6 +177,11 @@ export default {
             title: "核销时间",
             key: "chk_time",
             width: 160
+          },
+          {
+            title: "核销时长",
+            width: 140,
+            key: "chk_dura"
           }
         ],
         curPage: 1
@@ -210,42 +222,29 @@ export default {
           list: []
         }
       ],
+      data1:[],
       noData:'',
+      channelData: [],
       columns1: [
           {
-              title: '转发渠道',
-              key: 'name'
+              title: '核销时长',
+              key: 'chk_dura'
           },
           {
-              title: '转发次数',
-              key: 'age'
+              title: '核销次数',
+              align: 'right',
+              key: 'chk_count'
           },
           {
               title: '占比',
-              key: 'address'
-          }
-      ],
-      data1: [
-          {
-              name: '朋友圈',
-              age: 218,
-              address: '38%'
-          },
-          {
-              name: '小程序',
-              age: 204,
-              address: '26%'
-          },
-          {
-              name: 'H5页面',
-              age: 116,
-              address: '35%'
+              align: 'right',
+              key: 'ratio1'
           }
       ]
     };
   },
-  mounted() {
-    this.typePie();
+  watch: {
+    channelData: "typePie"
   },
   methods: {
     typePie:function(){
@@ -271,10 +270,9 @@ export default {
             },
             series: [
                 {
-                    name:'访问来源',
+                    name:'',
                     type:'pie',
-                    radius: ['40%', '55%'],
-                    center: ['40%', '45%'],
+                    radius: ['55%', '80%'],
                     label: {
                         normal: {
                             formatter: '{b|{b}：}{d}%',
@@ -313,16 +311,7 @@ export default {
                             }
                         }
                     },
-                    data:[
-                        {value:335, name:'直达'},
-                        {value:310, name:'邮件营销'},
-                        {value:234, name:'联盟广告'},
-                        {value:135, name:'视频广告'},
-                        {value:1048, name:'百度'},
-                        {value:251, name:'谷歌'},
-                        {value:147, name:'必应'},
-                        {value:102, name:'其他'}
-                    ]
+                    data:this.channelData
                 }
             ]
         };
@@ -410,6 +399,21 @@ export default {
         this.conponEffect.curPage = 1;
       });
     },
+    getList(param) {
+      this.$api.chkDura(param).then(res => {
+        //console.log(res);
+        let _this = this;
+        _this.channelData = [];
+        res.forEach(item => {
+           item.ratio1 = (item.chk_ratio * 100).toFixed(2) + '%';
+          _this.channelData.push({
+            name: item.chk_dura,
+            value: item.chk_ratio
+          })
+        });
+        _this.data1 = res;
+      });
+    },
     init(param) {
       this.conponChk.curPage = 1;
       this.$api.getConponBizcat({ market_id: this.market_id, ...this.filterParam }).then(res => {
@@ -421,6 +425,7 @@ export default {
         });
         this.bizcatList = res;
       });
+      this.getList({ market_id: this.market_id, ...this.filterParam });
       this.getConponEffect();
       this.getConponChk();
     }

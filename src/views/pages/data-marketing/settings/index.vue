@@ -200,8 +200,8 @@ export default {
           ymd: "",
           content: ""
         },
-        period_start_time: dayjs().subtract(1, "month").format("YYYY-MM-DD"),
-        period_end_time: dayjs().format("YYYY-MM-DD"),
+        period_start_time: dayjs(new Date()).subtract(1, "month").format("YYYY-MM-DD"),
+        period_end_time: dayjs(new Date()).format("YYYY-MM-DD"),
         model: false,
         loading: true,
         content: "",
@@ -248,6 +248,7 @@ export default {
                       this.action.param.remark = row.remark;
                       this.action.param.ymd = row.ymd;
                       this.action.model = true;
+                      this.action.curPage = 1;
                     }
                   }
                 }),
@@ -273,6 +274,7 @@ export default {
                             .then(res => {
                               this.$Message.success("删除成功！");
                               this.toggleTabpan("action");
+                              this.action.curPage = 1;
                             });
                         },
                         onCancel: () => { }
@@ -298,8 +300,8 @@ export default {
         model: false,
         loading: true,
         activity_name: "",
-        period_start_time: dayjs().subtract(1, "month").format("YYYY-MM-DD"),
-        period_end_time: dayjs().format("YYYY-MM-DD"),
+        period_start_time: dayjs(new Date()).subtract(1, "month").format("YYYY-MM-DD"),
+        period_end_time: dayjs(new Date()).format("YYYY-MM-DD"),
         columns: [
           {
             title: "活动名称",
@@ -363,6 +365,7 @@ export default {
                       this.cost.param = Object.assign({}, row);
                       this.cost.param.edit = true;
                       this.cost.model = true;
+                      this.cost.curPage = 1;
                     }
                   }
                 }),
@@ -391,6 +394,7 @@ export default {
                             .then(res => {
                               this.$Message.success("删除成功！");
                               this.toggleTabpan("cost");
+                              this.cost.curPage = 1;
                             });
                         },
                         onCancel: () => { }
@@ -667,7 +671,7 @@ export default {
       this.cost.model = false;
     },
     cancel() {
-      _this.$refs.cost_ref && _this.$refs.cost_ref.clearSingleSelect();
+      this.$refs.cost_ref && this.$refs.cost_ref.clearSingleSelect();
       this.action.param = {};
       this.cost.param = {
         offline_mat_cost: 1,

@@ -39,18 +39,18 @@
         </div>
       </div>
     </div>
-    <!-- 活动转发渠道分布 -->
+    <!-- 活动传播渠道分布 -->
     <div style="margin-top:48px;">
       <div class="table_title">
-        <span class="table_title_s">活动转发渠道分布</span>
+        <span class="table_title_s">活动传播渠道分布</span>
       </div>
       <Row>
           <Col span="12">
-            <div id="container" :style="{height: '200px'}">{{noData}}
+            <div id="container" :style="{height: '320px'}">{{noData}}
             </div>
           </Col>
           <Col span="12">
-            <i-Table width="100%" :columns="columns1" :data="data1"></i-Table>
+            <i-Table width="100%" :columns="columns4" :data="dataT4"></i-Table>
           </Col>
       </Row>
     </div>
@@ -58,16 +58,16 @@
     <div style="margin-top:48px;">
       <div class="table_title">
         <span class="table_title_s">活动页面漏斗转化</span>
-        <download title="活动页面漏斗转化" name="activity1"></download>
+        <download title="活动页面漏斗转化" name="activityPage"></download>
       </div>
-      <i-Table width="100%" :columns="columnsT1" @on-sort-change="handleSortT1" :data="pageT1List"></i-Table>
+      <i-Table width="100%" :columns="columnsT3" @on-sort-change="handleSortT3" :data="pageT3List"></i-Table>
       <div class="table_page">
         <div class="table_page_l">
           <p>共
-            <span>{{dataT1.total>0?dataT1.total:0}}</span> 条数据</p>
+            <span>{{dataT3.total>0?dataT3.total:0}}</span> 条数据</p>
         </div>
         <div class="table_page_r">
-          <Page :total="dataT1.length" :current.sync="curPageT1" :page-size="10" show-elevator @on-change="changePageT1" />
+          <Page :total="dataT3.length" :current.sync="curPageT3" :page-size="10" show-elevator @on-change="changePageT3" />
         </div>
       </div>
     </div>
@@ -88,47 +88,89 @@ export default {
   data() {
     let activityL1 = this.$store.state.BI.activityL1;
     let activityL2 = this.$store.state.BI.activityL2;
+    let activityL3 = this.$store.state.BI.activityL3;
     let activity = this.$store.state.BI.activity;
     return {
       market_id: this.$route.query.market_id || 12555,
       chartData: {},
       curPageT1: 1,
       curPageT2: 1,
+      curPageT3: 1,
       pageT1List: [],
       dataT1: [],
       pageT2List: [],
+      pageT3List: [],
+      pageT4List: [],
       dataT2: [],
+      dataT3: [],
+      channelData: [],
+      dataT4: [],
       totalT2: {},
+      totalT3: {},
       noData:'',
-      columns1: [
+      columnsT3: [
           {
-              title: '转发渠道',
-              key: 'name'
+              title: 'ID',
+              align: 'center',
+              key: 'activity_id'
           },
           {
-              title: '转发次数',
-              key: 'age'
+              title: '活动名称',
+              align: 'center',
+              key: 'activity_name'
+          },
+          {
+              title: '活动时间',
+              sortable: "custom",
+              align: 'center',
+              key: 'period_time',
+              width:180
+          },
+          {
+              title: '浏览数',
+              sortable: "custom",
+              align: 'right',
+              key: 'visit_count'
+          },
+          {
+              title: '转发数',
+              sortable: "custom",
+              align: 'right',
+              key: 'reblog_count'
+          },
+          {
+              title: '转发率',
+              sortable: "custom",
+              align: 'right',
+              key: 'reblog_count_ratio'
+          },
+          {
+              title: '分享数',
+              sortable: "custom",
+              align: 'right',
+              key: 'share_count'
+          },
+          {
+              title: '分享率',
+              sortable: "custom",
+              align: 'right',
+              key: 'share_count_ratio'
+          }
+      ],
+      columns4: [
+          {
+              title: '传播渠道',
+              key: 'chnl_name'
+          },
+          {
+              title: '传播次数',
+              align: 'right',
+              key: 'reblog_count'
           },
           {
               title: '占比',
-              key: 'address'
-          }
-      ],
-      data1: [
-          {
-              name: '朋友圈',
-              age: 218,
-              address: '38%'
-          },
-          {
-              name: '小程序',
-              age: 204,
-              address: '26%'
-          },
-          {
-              name: 'H5页面',
-              age: 116,
-              address: '35%'
+              align: 'right',
+              key: 'ratio1'
           }
       ]
     };
@@ -189,18 +231,9 @@ export default {
     }
   },
   watch: {
-    chartData: "drawChart"
+    chartData: "drawChart",
+    channelData: "typePie"
   },
-  // watch: {
-  //   searchParam: {
-  //     handler: function(val) {
-  //       console.log('watch',val)
-  //       this.init(val);
-  //     },
-  //     deep: true,
-  //     immediate: true
-  //   }
-  // },
   methods: {
     rowClassName(row, index) {
       if (index === 10) {
@@ -229,6 +262,16 @@ export default {
       this.pageT2List = this.dataT2.slice(0, 10);
       this.pageT2List.push(this.totalT2);
       this.curPageT2 = 1;
+    },
+    changePageT3(page) {
+      this.pageT3List.splice(0, this.pageT3List.length - 1);
+      this.pageT3List = this.dataT3.slice((page - 1) * 10, page * 10);
+    },
+    handleSortT3(column) {
+      if (this.dataT3.every(item => item[column.key] === 0)) return;
+      this.dataT3 = sort(this.dataT3, column.key, column.order);
+      this.pageT3List = this.dataT3.slice(0, 10);
+      this.curPageT3 = 1;
     },
     async init(param) {
       let _this = this;
@@ -275,7 +318,7 @@ export default {
         _this.pageT2List = this.dataT2.slice(0, 10);
         _this.pageT2List.push(this.totalT2);
       });
-      await this.$api.getWeather({sno: "430100", period_start_time: param.start_date
+      this.$api.getWeather({sno: "430100", period_start_time: param.start_date
       , period_end_time: param.end_date}).then(weather => {
         this.$api.getActivityChart({market_id: this.market_id, ...param}).then(res => {
           var format = function(item){
@@ -298,6 +341,36 @@ export default {
           _this.chartData = res;
         });
       });
+      //活动转发渠道分布
+      this.$api.actChnlReblog({market_id: this.market_id, ...param}).then(res => {
+        let _this = this;
+        _this.channelData = [];
+        res.forEach(item => {
+           item.ratio1 = (item.ratio * 100).toFixed(2) + '%';
+          _this.channelData.push({
+            name: item.chnl_name,
+            value: item.ratio
+          })
+        });
+        _this.dataT4 = res;
+
+      });
+
+      //活动页面漏斗转化
+      this.$api.actPage({market_id: this.market_id, ...param}).then(res => {
+        let _this = this;
+        res.forEach(item => {
+           item.reblog_count_ratio = (item.reblog_count_ratio * 100).toFixed(2) + '%';
+           item.share_count_ratio = (item.share_count_ratio * 100).toFixed(2) + '%';
+        });
+        _this.dataT3 = res;
+        _this.curPageT3 = 1;
+        _this.pageT3List = this.dataT3.slice(0, 10);
+      });
+
+      //活动页面漏斗转化下载
+      
+
     },  
     drawChart(legendSel) {
       let _this = this;
@@ -368,11 +441,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ['40%', '45%'],
-            data:[
-                    {value:335, name:'朋友圈'},
-                    {value:310, name:'小程序'},
-                    {value:234, name:'H5页面'}
-                ],
+            data: this.channelData,
             label: {
               normal: {
                 show: true,
@@ -393,9 +462,6 @@ export default {
           myChart.setOption(option, true);
       }
     }             
-  },
-  mounted() {
-    this.typePie();
   },
   created() {
     this.init(this.$store.state.BI.searchParam);

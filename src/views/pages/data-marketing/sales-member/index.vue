@@ -35,7 +35,7 @@
 
     <Row class="number_data">
       <div class="number_header">
-        <span class="number_title">数据展示</span>
+        <span class="number_title">活动会员详情图</span>
         <div class="select">
           <span>活动：</span>
           <Select class="select_option" clearable filterable v-model="param.activity_id" @on-change="toggleActivity(param.activity_id)">
@@ -72,17 +72,17 @@
     <Row class="number_data">
       <div class="number_header">
         <span class="number_title">参与会员来源详情</span>
+        <download title="参与会员来源详情_渠道" :meta="$route.meta" :noTimeCheck="true" :slotFilter="slotFilter" name="memberchnl"></download>
       </div>
       <div class="number_content">
 
         <Tabs class="allocation_tabs" value="channel">
           <TabPane label="渠  道" name="channel">
-            <download title="参与会员来源详情_渠道" :meta="$route.meta" :noTimeCheck="true" :slotFilter="slotFilter" name="memberchnl"></download>
-            <i-Table style="margin-top: 2rem;" v-if="tableData.channel.columns.length>1" :columns="tableData.channel.columns" :data="tableData.channel.pageList" @on-sort-change="handleChannelSort"></i-Table>
+            <i-Table style="margin-top: 0rem;" v-if="tableData.channel.columns.length>1" :columns="tableData.channel.columns" :data="tableData.channel.pageList" @on-sort-change="handleChannelSort"></i-Table>
             <div class="table_page">
               <div class="table_page_l">
                 <p>共
-                  <span>{{tableData.channel.list.total}}</span> 条数据</p>
+                  <span>{{tableData.channel.list.length}}</span> 条数据</p>
               </div>
               <div class="table_page_r">
                 <Page :total="tableData.channel.list.length" :current.sync="tableData.channel.curPage" :page-size="10" show-elevator @on-change="changeChannelPage" />
@@ -100,7 +100,7 @@
       </div>
       <i-Col span="12" class="item">
         <div class="item_header">
-          <span class="item_title">页面访问深度分析</span>
+          <span class="item_title">页面访问分析</span>
         </div>
         <div class="item_content">
           <div id="pageBar" :style="{width: '550px', height: '400px'}"></div>
@@ -108,7 +108,7 @@
       </i-Col>
       <i-Col span="12" class="item">
         <div class="item_header">
-          <span class="item_title">券领取深度分析</span>
+          <span class="item_title">券领取分析</span>
         </div>
         <div class="item_content">
           <div id="ticketBar" :style="{width: '550px', height: '400px'}"></div>
@@ -116,7 +116,7 @@
       </i-Col>
       <i-Col span="12" class="item" style="border-right:1px solid #F2F2F2;border-bottom:1px solid #F2F2F2;">
         <div class="item_header">
-          <span class="item_title">活动参与深度分析</span>
+          <span class="item_title">活动参与分析</span>
         </div>
         <div class="item_content">
           <div id="activityBar" :style="{width: '550px', height: '400px'}"></div>
@@ -128,22 +128,14 @@
       <div class="number_header">
         <span class="number_title">会员画像分析</span>
       </div>
-      <i-Col span="12" class="item">
-        <div class="item_header">
-          <span class="item_title">年内到访频次</span>
-        </div>
-        <div class="item_content">
-          <div id="number_other_chart1" :style="{width: '550px', height: '400px'}"></div>
-        </div>
-      </i-Col>
-      <i-Col span="12" class="item">
+      <!-- <i-Col span="12" class="item">
         <div class="item_header">
           <span class="item_title">年内逛店偏好</span>
         </div>
         <div class="item_content">
           <div id="number_other_chart2" :style="{width: '550px', height: '400px'}"></div>
         </div>
-      </i-Col>
+      </i-Col> -->
       <i-Col span="12" class="item">
         <div class="item_header">
           <span class="item_title">性别比例</span>
@@ -160,36 +152,44 @@
           <div id="number_other_chart4" :style="{width: '550px', height: '400px'}"></div>
         </div>
       </i-Col>
-      <i-Col span="12" class="item">
+      <!-- <i-Col span="12" class="item">
         <div class="item_header">
           <span class="item_title">职业分布</span>
         </div>
         <div class="item_content">
           <div id="number_other_chart5" :style="{width: '550px', height: '400px'}"></div>
         </div>
-      </i-Col>
-      <i-Col span="12" class="item">
+      </i-Col> -->
+      <!-- <i-Col span="12" class="item">
         <div class="item_header">
           <span class="item_title">学历分布</span>
         </div>
         <div class="item_content">
           <div id="number_other_chart6" :style="{width: '550px', height: '400px'}"></div>
         </div>
-      </i-Col>
-      <i-Col span="12" class="item">
+      </i-Col> -->
+      <!-- <i-Col span="12" class="item">
         <div class="item_header">
           <span class="item_title">私家车拥有情况</span>
         </div>
         <div class="item_content">
           <div id="number_other_chart7" :style="{width: '550px', height: '400px'}"></div>
         </div>
-      </i-Col>
-      <i-Col span="12" class="item">
+      </i-Col> -->
+      <i-Col span="12" class="item" style="border-bottom:1px solid #eee">
         <div class="item_header">
           <span class="item_title">消费能力分布</span>
         </div>
         <div class="item_content">
           <div id="number_other_chart8" :style="{width: '550px', height: '400px'}"></div>
+        </div>
+      </i-Col>
+      <i-Col span="12" class="item" style="border-bottom:1px solid #eee">
+        <div class="item_header">
+          <span class="item_title">年内到访频次</span>
+        </div>
+        <div class="item_content">
+          <div id="number_other_chart1" :style="{width: '550px', height: '400px'}"></div>
         </div>
       </i-Col>
     </Row>
@@ -228,6 +228,7 @@ export default {
         activity: [],
         sourcesAct: [],
         sourcesChnnl: [],
+        behaviorList: {},
         dist: {}
       },
       tableData: {
@@ -300,13 +301,10 @@ export default {
       param: {}
     };
   },
-  mounted() {
-    this.drawChart("pageBar", this.pageBar("pageBar"));
-    this.drawChart("ticketBar", this.pageBar("ticketBar"));
-    this.drawChart("activityBar", this.pageBar("activityBar"));
-  },
+ 
   methods: {
-    pageBar:function(pageBar){    
+    pageBar:function(pageBar, data){
+      if (!data) return;
       var option = null;
       let color = [
         "#396FFF",
@@ -322,14 +320,35 @@ export default {
         color,
         xAxis: {
             type: 'category',
-            name: pageBar == 'pageBar' ? '浏览\n页数' : (pageBar == 'ticketBar' ? '领券\n张数' : '参与\n深度'),
+            name: pageBar == '页面访问深度分析' ? '浏览\n页数' : (pageBar == '领取深度分析' ? '领券\n张数' : '参与\n个数'),
             axisLabel: { interval:0},
+            axisLine:{
+                lineStyle:{
+                    color:'#999'
+                }
+            },
             splitLine: {show: false},
-            data: ['1', '2', '3', '4', '5', '6', '7','8及以上']
+            data: Object.keys(data)
         },
         yAxis: {
             type: 'value',
-            name: '人数'
+            name: '人数',
+            nameTextStyle:{     //名称的样式
+                  color:'#999'
+              },
+           axisLabel: {  
+                   show: true,  
+                   interval: 'auto', 
+                   textStyle: {
+                color: "#999"
+            }
+                   },  
+                axisLine: {
+              show: false
+          },
+          axisTick: {
+              show: false
+          }
         },
         grid: {
             left: '6%',
@@ -337,7 +356,7 @@ export default {
             containLabel: true
         },
         series: [{
-            data: [120, 200, 150, 80, 70, 110, 130,19],
+            data: Object.values(data),
             type: 'bar',
             barWidth : 20,
             label: {
@@ -495,7 +514,7 @@ export default {
         ]
       };
 
-      if (type === "tag_edu_dist" || type === "tag_m_dist") {
+      if (type === "tag_edu_dist" || type === "消费能力分布") {
         if (!this.chartData.dist[type]) return;
       }
 
@@ -503,81 +522,35 @@ export default {
         if (_this.chartData.number.length == 0) {
           _this.chartData.number.list = [];
         }
-        let activitylist = _this.chartData.number.list.filter(
-          item => item.cat === "activity"
+        // chnlAddMem，渠道新增会员,chnlRegMem，渠道累积会员,actAddMem,活动添加会员,actRegMem,活动累积会员
+        let actRegMemlist = _this.chartData.number.list.filter(
+          item => item.cat === "actRegMem"
         );
         let channelList = _this.chartData.number.list.filter(
-          item => item.cat === "channel"
+          item => item.cat === type
         );
         let series = [];
         switch (type) {
-          case "number":
-            options.tooltip.show = false;
-            options.tooltip.formatter = function (param) {
-              let data = activitylist.find(
-                item => item.target_name === param.name
-              ).reg_mem;
-              return data;
-            };
-            options.legend.data = activitylist.map(item => item.target_name);
-            options.legend.data.forEach((item, index) => {
-              series.push({
-                value: activitylist.find(act => act.target_name === item)
-                  .reg_members,
-                name: item
-              });
-            });
-            options.series[0].data = series;
-            break;
-          case "channel":
-            options.tooltip.show = false;
+          case "chnlRegMem":            
+          case "actRegMem":           
+          case "chnlAddMem":           
+          case "actAddMem":
+            // options.tooltip.show = false;
             options.tooltip.formatter = function (param) {
               return channelList.find(item => item.target_name === param.name)
-                .reg_mem;
+                .weights;
             };
             options.legend.data = channelList.map(item => item.target_name);
             options.legend.data.forEach((item, index) => {
               series.push({
                 value: channelList.find(act => act.target_name === item)
-                  .reg_members,
+                  .visit,
                 name: item
               });
             });
             options.series[0].data = series;
             break;
-          case "add_number":
-            options.tooltip.show = false;
-            options.tooltip.formatter = function (param) {
-              return activitylist.find(item => item.target_name === param.name)
-                .add_mem;
-            };
-            options.legend.data = activitylist.map(item => item.target_name);
-            options.legend.data.forEach((item, index) => {
-              series.push({
-                value: activitylist.find(act => act.target_name === item)
-                  .add_members,
-                name: item
-              });
-            });
-            options.series[0].data = series;
-            break;
-          case "add_channel":
-            options.tooltip.show = false;
-            options.tooltip.formatter = function (param) {
-              return channelList.find(item => item.target_name === param.name)
-                .add_mem;
-            };
-            options.legend.data = channelList.map(item => item.target_name);
-            options.legend.data.forEach((item, index) => {
-              series.push({
-                value: channelList.find(act => act.target_name === item)
-                  .add_members,
-                name: item
-              });
-            });
-            options.series[0].data = series;
-            break;
-          case "tag_m_dist":
+          case "消费能力分布":
           case "tag_edu_dist":
             let legend = Object.keys(_this.chartData.dist[type]);
             legend.forEach((item, index) => {
@@ -617,6 +590,11 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: true,
+          axisLine:{
+              lineStyle:{
+                  color:'#999'
+              }
+          },
           axisLabel: {
             formatter: value => {
               return this.dayjs(value).format("MM.DD");
@@ -625,7 +603,23 @@ export default {
           data: []
         },
         yAxis: {
-          type: "value"
+          type: "value",
+          nameTextStyle:{     //名称的样式
+              color:'#999'
+          },
+          axisLabel: {  
+               show: true,  
+               interval: 'auto', 
+               textStyle: {
+                  color: "#999"
+              }
+          },  
+          axisLine: {
+              show: false
+          },
+          axisTick: {
+              show: false
+          }
         },
         series: [
           {
@@ -679,7 +673,7 @@ export default {
       return options;
     },
     setSemiCircleOptions() {
-      if (!this.chartData.dist.tag_loc_y1_days_dist) return;
+      if (!this.chartData.dist['到访次数分布']) return;
       let _this = this;
       let color = [
         "#396FFF",
@@ -712,14 +706,18 @@ export default {
           {
             name: "年内到访频次",
             type: "pie",
-            radius: ["50%", "70%"],
+            radius: ['36%', '55%'],
+            center: ['50%', '65%'],
             avoidLabelOverlap: false,
             label: {
               normal: {
                 show: true,
                 color: "#666",
                 // formatter: "{b}:{c}" + "\n\r" + "({d}%)"
-                formatter: "{b}({d}%)"
+                formatter(data) {
+                  let value = data.name.indexOf('次') >= 0 ?  data.name : `${data.name}次`;
+                  return `${value}(${data.percent}%)`; 
+                }
               },
               emphasis: {
                 show: true
@@ -738,7 +736,7 @@ export default {
         ]
       };
 
-      let visit = this.chartData.dist.tag_loc_y1_days_dist;
+      let visit = this.chartData.dist['到访次数分布'];
       let visitArr = Object.keys(visit);
       // options.legend.data = visitArr;
       visitArr.forEach(item => {
@@ -839,10 +837,11 @@ export default {
         女:
           "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjRweCIgaGVpZ2h0PSI1MHB4IiB2aWV3Qm94PSIwIDAgMjQgNTAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUxLjEgKDU3NTAxKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5Hcm91cCAyMCBDb3B5QDJ4PC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IkJJ5pWw5o2u5YiG5p6QIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iYzQt5Lya5ZGY57uP6JCl5YiG5p6QLeminOiJsuWvueavlDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NjEuMDAwMDAwLCAtMzEwNC4wMDAwMDApIiBmaWxsPSIjRTQwMDdGIj4KICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTIwLUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDc2MS4wMDAwMDAsIDMxMDQuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNOCwzNCBMMTYsMzQgTDE1LjE4NzEzNDksNDcuMDA1ODQyMyBDMTUuMDgxOTQ2OCw0OC42ODg4NTEyIDEzLjY4NjI5MjgsNTAgMTIsNTAgTDEyLDUwIEMxMC4zMTM3MDcyLDUwIDguOTE4MDUzMiw0OC42ODg4NTEyIDguODEyODY1MTQsNDcuMDA1ODQyMyBMOCwzNCBaIiBpZD0iUmVjdGFuZ2xlLTI2Ij48L3BhdGg+CiAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsLTkiIGN4PSIxMiIgY3k9IjUiIHI9IjUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTQuMDAwODgzNDEsMTIgTDE5Ljk5OTk1MDQsMTIgQzIyLjIwOTA4OTQsMTIgMjMuOTk5OTUwNCwxMy43OTA4NjEgMjMuOTk5OTUwNCwxNiBDMjMuOTk5OTUwNCwxNi4yODM4MTI0IDIzLjk2OTc0NDYsMTYuNTY2ODE4OCAyMy45MDk4NDMzLDE2Ljg0NDIzNzggTDE5Ljg0NTMwMzYsMzUuNjY4MjE2MiBDMTkuMDQ3NTYyMSwzOS4zNjI3NzE5IDE1Ljc4MDExNzEsNDIgMTIuMDAwNDE2OSw0MiBMMTIuMDAwNDE2OSw0MiBDOC4yMjA3MTY2OCw0MiA0Ljk1MzI3MTY5LDM5LjM2Mjc3MTkgNC4xNTU1MzAyLDM1LjY2ODIxNjIgTDAuMDkwOTkwNTEyNCwxNi44NDQyMzc4IEMtMC4zNzUyNjkxNzMsMTQuNjg0ODYzNiAwLjk5NzI3MTM0NywxMi41NTYzNjY4IDMuMTU2NjQ1NTcsMTIuMDkwMTA3MSBDMy40MzQwNjQ1OCwxMi4wMzAyMDU4IDMuNzE3MDcxMDIsMTIgNC4wMDA4ODM0MSwxMiBaIiBpZD0iUmVjdGFuZ2xlLTI1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMi4wMDAwMDAsIDI3LjAwMDAwMCkgc2NhbGUoMSwgLTEpIHRyYW5zbGF0ZSgtMTIuMDAwMDAwLCAtMjcuMDAwMDAwKSAiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
       };
-
       let data = this.chartData.dist[type];
       let keys = Object.keys(data);
-      let values = Object.values(data);
+      let arrVal = Object.values(data);
+      let sum = arrVal.reduce((acc, val) => parseFloat(acc) + parseFloat(val), 0);
+      let values = arrVal.map(item => (item / sum * 100).toFixed(2) );
 
       let options = {
         tooltip: {
@@ -855,6 +854,9 @@ export default {
           borderColor: "#cee5ff",
           borderWidth: 1,
           padding: [5, 10],
+          formatter(data) {
+            return `${data.name}：${data.value}%`
+          },
           textStyle: {
             color: "#444"
           }
@@ -881,7 +883,7 @@ export default {
           {
             type: "bar",
             stack: "性别比例",
-            color: type === "tag_gender_dist" ? (keys[0] == '女' ? "#E4007F" : "#4C7EFF") : (keys[0] == '有车' ? "#4C7EFF" : "#ccc"),
+            color: type === "性别分布" ? (keys[0] == '女' ? "#E4007F" : "#4C7EFF") : (keys[0] == '有车' ? "#4C7EFF" : "#ccc"),
             barWidth: 10,
             label: {
               normal: {
@@ -902,11 +904,11 @@ export default {
                     ].join("\n"),
                     rich: {
                       Male: {
-                        height: type === "tag_gender_dist" ? 40 : 25,
+                        height: type === "性别分布" ? 40 : 25,
                         align: "center",
                         backgroundColor: {
                           image:
-                            type === "tag_gender_dist"
+                            type === "性别分布"
                               ? sexIcon[keys[0]]
                               : carIcon[keys[0]]
                         }
@@ -920,7 +922,7 @@ export default {
           {
             type: "bar",
             stack: "性别比例",
-            color: type === "tag_gender_dist" ? (keys[1] == '女' ? "#E4007F" : "#4C7EFF") : (keys[1] == '有车' ? "#4C7EFF" : "#ccc"),
+            color: type === "性别分布" ? (keys[1] == '女' ? "#E4007F" : "#4C7EFF") : (keys[1] == '有车' ? "#4C7EFF" : "#ccc"),
             barWidth: 10,
             label: {
               normal: {
@@ -940,11 +942,11 @@ export default {
                     ),
                     rich: {
                       Female: {
-                        height: type === "tag_gender_dist" ? 40 : 25,
+                        height: type === "性别分布" ? 40 : 25,
                         align: "center",
                         backgroundColor: {
                           image:
-                            type === "tag_gender_dist"
+                            type === "性别分布"
                               ? sexIcon[keys[1]]
                               : carIcon[keys[1]]
                         }
@@ -962,7 +964,9 @@ export default {
     setMultipleProportion(type) {
       if (!this.chartData.dist[type]) return;
       var titlename = Object.keys(this.chartData.dist[type]);
-      var valdata = Object.values(this.chartData.dist[type]);
+      let arrVal = Object.values(this.chartData.dist[type]);
+      let sum = arrVal.reduce((acc, val) => parseFloat(acc) + parseFloat(val), 0);
+      let valdata = arrVal.map(item => (item / sum * 100).toFixed(2) );
       var xMax = Math.max.apply(null, valdata);
       let options = {
         xAxis: {
@@ -1029,7 +1033,7 @@ export default {
           }
         ],
         grid: {
-          width: "70%",
+          width: "65%",
           left: "18%",
           top: "3%"
         },
@@ -1218,14 +1222,16 @@ export default {
         qrcord,
         // sourcesAct,
         sourcesChnnl,
-        dist
+        dist,
+        behavior
       ] = await Promise.all([
         $api.getMemberNumber({ market_id: this.market_id, ...param }),
         $api.getMemberActivity({ market_id: this.market_id, ...param }),
         $api.getMemberQrcord({ market_id: this.market_id, ...param }),
         // $api.getMemberSourcesAct({market_id: this.market_id, ...param}),
         $api.getMemberSourcesChnnl({ market_id: this.market_id, ...param }),
-        $api.getMemberDist({ market_id: this.market_id, ...param })
+        $api.getMemberDist({ market_id: this.market_id, ...param }),
+        $api.behavior({market_id: this.market_id, ...param})
       ]);
       this.chartData.number = number;
       if (activity.length > 0) {
@@ -1248,11 +1254,19 @@ export default {
       };
 
       dist.forEach(item => {
-        _this.chartData.dist[item.illustrate] = format(item.dist);
+        _this.chartData.dist[item.stat_type] = format(item.stat_val);
       });
+
+      let obj = {};
+      behavior.forEach(item => {
+        obj[item.stat_type] = format(item.stat_val);
+      });
+      this.chartData.behaviorList = obj;
+
       qrcord.map(
         item => (item.rel_mbr = item.rel_mbr == 2 ? "关联" : "不关联")
       );
+
       this.tableData.qrcord.list = qrcord;
       this.tableData.qrcord.curPage = 1;
       this.tableData.qrcord.pageList =
@@ -1260,42 +1274,44 @@ export default {
 
       // this.formatTable("activity", sourcesAct);
 
-      delete sourcesChnnl.total;
+      // delete sourcesChnnl.total;
       this.formatTable("channel", sourcesChnnl);
     },
     init() {
       // 绘制柱状图
-      this.drawChart("pageBar", this.pageBar("pageBar"));
+       this.drawChart("activityBar", this.pageBar('活动参与深度分析', this.chartData.behaviorList['活动参与深度分析']));
+       this.drawChart("pageBar", this.pageBar('页面访问深度分析', this.chartData.behaviorList['页面访问深度分析']));
+       this.drawChart("ticketBar", this.pageBar('领取深度分析', this.chartData.behaviorList['领取深度分析']));
       // 绘制饼图
-      this.drawChart("number_channel_chart1", this.setPieOptions("channel"));
-      this.drawChart("number_channel_chart2", this.setPieOptions("number"));
+      this.drawChart("number_channel_chart1", this.setPieOptions("chnlRegMem"));
+      this.drawChart("number_channel_chart2", this.setPieOptions("actRegMem"));
       this.drawChart(
         "number_channel_chart3",
-        this.setPieOptions("add_channel")
+        this.setPieOptions("chnlAddMem")
       );
-      this.drawChart("number_channel_chart4", this.setPieOptions("add_number"));
+      this.drawChart("number_channel_chart4", this.setPieOptions("actAddMem"));
       this.drawChart("number_channel_chart5", this.setLineOptions());
 
       this.drawChart("number_other_chart1", this.setSemiCircleOptions());
-      this.drawChart("number_other_chart2", this.setBubbleOptions());
+      // this.drawChart("number_other_chart2", this.setBubbleOptions());
       this.drawChart(
         "number_other_chart3",
-        this.setTwoProportion("tag_gender_dist")
+        this.setTwoProportion("性别分布")
       );
       this.drawChart(
         "number_other_chart4",
-        this.setMultipleProportion("tag_age_dist")
+        this.setMultipleProportion("年龄分布")
       );
-      this.drawChart(
-        "number_other_chart5",
-        this.setMultipleProportion("tag_ocp_dist")
-      );
-      this.drawChart("number_other_chart6", this.setPieOptions("tag_edu_dist"));
-      this.drawChart(
-        "number_other_chart7",
-        this.setTwoProportion("tag_car_dist")
-      );
-      this.drawChart("number_other_chart8", this.setPieOptions("tag_m_dist"));
+      // this.drawChart(
+      //   "number_other_chart5",
+      //   this.setMultipleProportion("tag_ocp_dist")
+      // );
+      // this.drawChart("number_other_chart6", this.setPieOptions("tag_edu_dist"));
+      // this.drawChart(
+      //   "number_other_chart7",
+      //   this.setTwoProportion("tag_car_dist")
+      // );
+      this.drawChart("number_other_chart8", this.setPieOptions("消费能力分布"));
     }
   },
   watch: {
@@ -1312,10 +1328,6 @@ export default {
     }
   },
   async created() {
-    let param = {
-      start_date: "2018-08-01",
-      end_date: "2018-08-21"
-    };
     this.param = this.$store.state.BI.searchParam;
     this.getData(this.$store.state.BI.searchParam);
     eventBus.$on("updateSearchParam_sales-member", data => {
@@ -1338,7 +1350,7 @@ export default {
   margin-bottom: 3rem;
   .number_header {
     display: flex;
-    height: 2.4rem;
+    height: 1.6rem;
     .number_title {
       flex: 1;
       font-size: 14px;
